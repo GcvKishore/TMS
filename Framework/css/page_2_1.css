@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); *{ font-family: "Nunito",sans-serif; }
+#Quest{
+    background-color: #3B4D5E;
+    width: 150px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+#Test{
+    color: #3B4D5E;
+    padding-left: 200px;
+    padding-top: 50px;
+}
+#Choice{
+    color: #3B4D5E;
+    padding-left: 20px;
+    padding-bottom: 25px;
+}
+#Button #button-1{
+    display: inline; 
+    margin-right: 700px; /* space between buttons */ 
+    margin-top: 5px; 
+    background-color: #ffe0ab; 
+    color: #3b4d5e; 
+} 
+#button-2, #button-3{ 
+    background-color: #ffe0ab; 
+    color: #3b4d5e; 
+    margin-top: 5px; 
+    margin-left: 5px; 
+    margin-right: 0px; 
+}
+body{
+    color: #fbf8f2;
+}
+h1{
+    text-align: center;
+}
+h2{
+    padding-left: 20px;
+}
