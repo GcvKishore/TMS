@@ -1,106 +1,68 @@
-/* ############################# TAG SELECTIONS ############################# */
+/* ################################## TAG SELECTION ################################## */
 body{
-  background-color: #A9A9A9;
-}
-li {
-  padding: .1vw
+    background-color: #E5E5E5;
 }
 
-hr{
-  width: 100%;
-  border-color: #3B4D5E
+/* ################################## CLASS SELECTION ################################## */
+.container-md{
+    background-color: #FBF8F2;
+    height: 100vh;
 }
 
-input{
-  background-color: #FFE0AB;
-  border: .5px solid #3B4D5E
+.my_logo{
+    color: #FBF8F2;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 2rem;
+    height: 100px
 }
 
-input:hover{
-  background-color: #FABC75;
-  border: .5px solid #3B4D5E
+.my_nav{
+    height: 100vh;
+    background-color: #3B4D5E;
 }
 
-/* ############################# CLASS SELECTIONS ############################# */
-.side_nav_bar{
-  background-color: #3B4D5E;
-  height: 100%;
-  position: fixed;
-  width: 16.66%;
+.my_font{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
 }
 
-.page_body{
-  background-color: #FBF8F2;
-  height: 100%;
-  margin-left: 16.66%;
-  position: fixed;
-  width: 83.34%;
-  padding: 2vw 6vw;
+.my_font_bolder{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 1rem;
+}
+.my_font_2em{
+    font-size: 2rem;
 }
 
-.logo_white{
-  align-items: center;
-  color: #FBF8F2;
-  display: flex;
-  font-family: 'Viga', sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 3vw;
-  height: 3vw;
-  margin: 14% 0 0 14%;
-  text-align: center;
+.btn{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+    background-color: #FFE0AB;
+    border-color: #3B4D5E;
 }
 
-.sections_overview{
-  margin: 30% 0 0 14%;
-  color: #FBF8F2;
-  font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1vw;
-
+.btn:hover{
+    color: #3B4D5E;
+    background-color: #FABC75;
+    border-color: #3B4D5E;
 }
 
-.time_remaining{
-  /* background-color: #FFE0AB; */
-  font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1vw;
-  padding: 2%;
-  width: 11.5vw;
-  height: 6.5vw;
 
-  border-radius: 1vw;
-  border: .15vw solid #3B4D5E;
-  padding: 1.25vw;
+.FIB{
+    height: 3vh;
+    border: none;
+    background-color: #FABC75;
 }
 
-.right {
-  float: right;
-}
-.time_left {
-  font-size: 1.75vw;
-}
-
-.page_header{
-  height: 8vw;
-}
-
-.page_sub_title{
-  font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 1vw;
-  color: #3B4D5E
-}
-
-.page_title{
-  font-family: 'Nunito', sans-serif;
-  font-style: normal;
-  font-weight: bolder;
-  font-size: 3vw;
-  color: #3B4D5E
-}
-
-/* ############################# ID SELECTIONS ############################# */
+/* ################################## ID SELECTION ################################## */
