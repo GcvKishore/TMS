@@ -1,0 +1,95 @@
+/* ################################## TAG SELECTION ################################## */
+body {
+    background-color: #E5E5E5;
+}
+
+hr {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ################################## CLASS SELECTION ################################## */
+.container-fluid {
+    height: 100vh;
+    background-color: #E5E5E5
+}
+
+.head {
+    height: 100px;
+}
+
+.my_logo {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 2rem;
+    height: 100px
+}
+
+.exam_details {
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+}
+
+.title {
+    font-style: italic;
+    text-decoration: underline;
+    font-weight: bolder;
+    font-size: 2.5rem;
+}
+
+.exam_instructions {
+    /* height: 40vh; */
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    overflow-y: auto;
+}
+
+.my_font {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.my_font_bolder {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 1em;
+}
+
+.my_font_2em {
+    font-size: 2rem;
+}
+
+.btn {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: .8rem;
+    background-color: #FFE0AB;
+    border-color: #3B4D5E;
+    width: 100%;
+}
+
+.btn:hover {
+    color: #3B4D5E;
+    background-color: #FABC75;
+    border-color: #3B4D5E;
+}
+
+.footer {
+    height: 100px
+}
+
+/* ################################## ID SELECTION ################################## */

@@ -2,6 +2,12 @@
 * {
   font-family: "Nunito", sans-serif;
 }
+<<<<<<< HEAD
+=======
+/* body {
+  background-color: #e5e5e5;
+} */
+>>>>>>> a2058924bad602a79af6844b339d306ea7fb07a8
 
 .my_logo {
   color: #fbf8f2;
@@ -26,6 +32,10 @@
 
 .my_font {
   color: #3b4d5e;
+<<<<<<< HEAD
+=======
+  font-family: "Nunito", sans-serif;
+>>>>>>> a2058924bad602a79af6844b339d306ea7fb07a8
   font-style: normal;
   font-weight: normal;
   font-size: 1rem;
@@ -33,6 +43,10 @@
 
 .my_font_bolder {
   color: #3b4d5e;
+<<<<<<< HEAD
+=======
+  font-family: "Nunito", sans-serif;
+>>>>>>> a2058924bad602a79af6844b339d306ea7fb07a8
   font-style: normal;
   font-weight: bolder;
   font-size: 1rem;
@@ -50,11 +64,25 @@ textarea {
 
 .my_button {
   color: #3b4d5e;
+<<<<<<< HEAD
+=======
+  font-family: Viga, sans-serif;
+>>>>>>> a2058924bad602a79af6844b339d306ea7fb07a8
   font-style: normal;
   font-weight: normal;
   font-size: 0.8rem;
   width: 10vw;
+<<<<<<< HEAD
   background-color: #ffe0ab;
+=======
+  background-color: #fabc75;
+  border-color: #3b4d5e;
+}
+
+.my_button:hover {
+  color: #3b4d5e;
+  background-color: #fabc75;
+>>>>>>> a2058924bad602a79af6844b339d306ea7fb07a8
   border-color: #3b4d5e;
 }
 
