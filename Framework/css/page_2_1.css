@@ -1,44 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap'); *{ font-family: "Nunito",sans-serif; }
-#Quest{
-    background-color: #3B4D5E;
-    width: 150px;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+* {
+  font-family: "Nunito", sans-serif;
 }
-#Test{
-    color: #3B4D5E;
-    padding-left: 200px;
-    padding-top: 50px;
+
+.my_logo {
+  color: #fbf8f2;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 2rem;
+  height: 100px;
 }
-#Choice{
-    color: #3B4D5E;
-    padding-left: 20px;
-    padding-bottom: 25px;
+
+.my_nav {
+  background-color: #3b4d5e;
+  color: #fbf8f2;
+  height: 100vh;
 }
-#Button #button-1{
-    display: inline; 
-    margin-right: 700px; /* space between buttons */ 
-    margin-top: 5px; 
-    background-color: #ffe0ab; 
-    color: #3b4d5e; 
-} 
-#button-2, #button-3{ 
-    background-color: #ffe0ab; 
-    color: #3b4d5e; 
-    margin-top: 5px; 
-    margin-left: 5px; 
-    margin-right: 0px; 
+
+.my_main {
+  background-color: #fbf8f2;
+  height: 100vh;
+  overflow-y: auto;
 }
-body{
-    color: #fbf8f2;
+
+.my_font {
+  color: #3b4d5e;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
 }
-h1{
-    text-align: center;
+
+.my_font_bolder {
+  color: #3b4d5e;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 1rem;
 }
-h2{
-    padding-left: 20px;
+.my_font_2em {
+  font-size: 2rem;
+}
+
+.my_button {
+  color: #3b4d5e;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.8rem;
+  width: 10vw;
+  background-color: #ffe0ab;
+  border-color: #3b4d5e;
+}
+
+.my_button:hover {
+  color: #3b4d5e;
+  background-color: #fabc75;
+  border-color: #3b4d5e;
 }

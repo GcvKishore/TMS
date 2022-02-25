@@ -1,47 +1,98 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Paragraph Writing</title>
-        <link rel="stylesheet" href="../Framework/css/page_2_4.css">
-    </head>
-<body>
-    <div id="Quest">
-    <h1><b>Tutest</b></h1>
-    <hr size="1" width="100%"/>
-    <h2>Section-1</h2>
-    <ul>
-        <li>Question - 1</li> 
-        <li>Question - 2</li>
-        <li>Question - 3</li>
-     </ul>
-     <!-- <hr size="1" width="100%"/> -->
-    <h2> Section-2</h2>
-    <ul>
-        <li>Question - 1</li> 
-        <li>Question - 2</li>
-        <li>Question - 3</li>
-    </ul> 
-    <!-- <hr size="1" width="100%"/> -->
-    </div>
-    <div id="Test">
-        <p><h3> Section-2 | Question-2 </h3><h3> File Upload</h3></p> 
-        <!-- <p align="right"> <b>Time Remaining : </b></p>
-        <p align="right"> <b> 2:30 </b></p> -->
-        <hr size="1" width="100%" /> 
-    <p><h4>Describe the most stressful situation you've faced so far in your professional environment.<br>
-        How did you manage to handle it ? What advice would you give to a friend/ coworker if she/he is extremely 
-        stressed about a deadline ? </h4></p>
-        <div class="file">
-            <button type="button" class="cf">Choose File</button>
-            <p><b>/Drag & Drop</b></p> 
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../Framework/css/page_2_4.css" />
+    <link rel="icon" href="../Framework/image/favicon.ico" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row h-100">
+        <div class="col col-xs-4 col-sm-3 col-md-3 col-lg-2 my_nav">
+          <!-- placing Logo -->
+          <div class="row align-items-center my_logo"> 
+            <div class="col text-center">
+              <pr>TUTEST</pr> 
+            </div>
+          </div>
+          <hr size="1" width="100%" /> 
+          <h2>Section-1</h2>
+          <ul>
+            <li>Question-1</li>
+            <li>Question-2</li>
+            <li>Question-3</li>
+          </ul>
+          <h2>Section-2</h2>
+          <ul>
+            <li>Question-1</li>
+            <li>Question-2</li>
+            <li>Question-3</li>
+          </ul>
         </div>
-    <div id="button"> 
-        <button id="button1" class="left"><b>Previous</b></button>
-        <button id="button2" class="center"><b>Mark As Unsolved</b></button>
-        <button id="button3" class="right"><b>Next</b></button>
+        <div class="col-8 col-xs-8 col-sm-9 col-md-9 col-lg-10 px-5 py-5">
+          <!-- Time Remaining Block -->
+          <div class="row justify-content-end">
+            <div class="col-md-5 col-lg-3 text-center my_font_bolder">
+              <span>TIME REMAINING</span>
+              <br />
+              <span class="my_font_2em">02:00 sec</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col my_font py-2">
+              <!-- Page Sub Title -->
+              <span class="my_font">Section - 1 | Question 2</span>
+              <br />
+              <!-- Page Title -->
+              <span class="my_font_2em">Paragraph Answer</span>
+            </div>
+          </div>
+          <hr />
+          <div>
+          <p>Describe the most stressful situation you've faced so far in your professional environment.<br>
+            How did you manage to handle it ? What advice would you give to a friend/ coworker if she/he is extremely 
+            stressed about a deadline ?</p>
+            <div class="file">
+                <button type="button" class="cf">Choose File</button>
+                <p><b>/Drag & Drop</b></p> 
+            </div>
+            </div>
+            <hr />
+              <div class="row justify-content-between">
+                <div class="col-4">
+                  <button class="btn my_button" type="submit">PREVIOUS</button>
+                </div>
+                <div class="col-5">
+                  <div class="row">
+                    <div class="col text-end">
+                      <button class="btn my_button" type="button">
+                        MARK AS UNSOLVED
+                      </button>
+                    </div>
+                    <div class="col text-end">
+                      <button class="btn my_button" type="submit">NEXT</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-</div>
-</body>
+
+    <script
+      src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
