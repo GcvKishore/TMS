@@ -5,10 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tutest(page2.3)</title>
     <link rel="stylesheet" href="../Framework/css/page_2_3.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   </head>
   <body>
-    <div id="Header">
-      <h1>Tutest</h1>
+    <div class="container-md">
+      <div class="row h-100">
+          <div class="col col-xs-4 col-sm-3 col-md-3 col-lg-2 my_nav">
+
+              <!-- placing Logo -->
+              <div class="row align-items-center my_logo">
+                  <div class="col text-center">
+                      <pr>TUTEST</pr>
+                  </div>
+              </div>
+          </div>
       <hr size="1" width="100%" />
       <h2>Section-1</h2>
       <ul>
@@ -24,16 +35,22 @@
       </ul>
     </div>
     <div id="Test">
+      <div id="time">
+        <pr>Time Remaining</pr><br>
+        <pr id="time-left">02.30 SEC</pr>
+      </div>
       <p>Section-2 | Question-1<br /><h3>Paragraph Answer</h3></p>
       <hr size="1" width="100%" />
       <p>Why do areas near the Equator receive more heat from the Sun, than those near the poles?</p>
     <textarea name="question2" cols="50" rows="5" maxlength="10000">Type your answer here</textarea>
     <hr size="1" width="100%" />
-    <div id="Button">
+    <div id="Button">   
     <button id="button1"><b>PREVIOUS</b></button>
     <button id="button2"><b>MARK AS UNSOLVED</b></button>
     <button id="button3"><b>NEXT</b></button>
   </div>
+   
+  
 </div>
   </body>
 </html>

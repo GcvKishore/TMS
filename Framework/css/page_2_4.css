@@ -1,56 +1,73 @@
-#Quest{
-    background-color: #3B4D5E;
+#Quest {
+  /* background-color: #3B4D5E;
     width: 150px; 
     height: 100%;
     position: absolute;
     top: 0px;
     bottom: 0px;
     right: 0px;
-    left: 0px;
+    left: 0px; */
+  background-color: #3b4d5e;
+  color: #fbf8f2;
+  height: 100%;
+  position: absolute;
+  width: 16.66%;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 }
-#Test{
-    color: #3B4D5E;
-    padding-left: 200px;
-    padding-top:50px;
+#Test {
+  /* color: #3b4d5e;
+  padding-left: 200px;
+  padding-top: 50px; */
+  background-color: #fbf8f2;
+  color: #3b4d5e;
+  height: 100%;
+  margin-left: 16.66%;
+  position: fixed;
+  width: 83.34%;
+  padding: 2vw 6vw;
 }
 #button #button1 {
-    display: inline;
-    margin-right: 720px; 
-    margin-top: 25px;
-    background-color: #ffe0ab;
-    color: #3b4d5e;
-  }
-  #button2, #button3 {
-    background-color: #ffe0ab;
-    color: #3b4d5e;
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 0px;
-  }
-.file{
-    padding: 0 15px;
-    width: 90%;
-    height:150px;
-    text-align: center;
-    font-size: 100%;
-    background-color: rgb(243, 208, 142);
-    font-family: Cambria;   
+  display: inline;
+  margin-right: 720px;
+  margin-top: 25px;
+  background-color: #ffe0ab;
+  color: #3b4d5e;
 }
-.cf{
-    margin-top: 5%;
-    display: inline-block;
-    text-align: center;
-    height:50px;
-    font-size: 100%;
-    background-color: orange;
-    font-family: Cambria;
+#button2,
+#button3 {
+  background-color: #ffe0ab;
+  color: #3b4d5e;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 0px;
 }
-body{
-    color:#fbf8f2;
+.file {
+  padding: 0 15px;
+  width: 90%;
+  height: 150px;
+  text-align: center;
+  font-size: 100%;
+  background-color: rgb(243, 208, 142);
+  font-family: Cambria;
 }
-h1{
-    text-align: center;
+.cf {
+  margin-top: 5%;
+  display: inline-block;
+  text-align: center;
+  height: 50px;
+  font-size: 100%;
+  background-color: orange;
+  font-family: Cambria;
 }
-h2{
-    padding-left: 20px;
-}  
+body {
+  color: #fbf8f2;
+}
+h1 {
+  text-align: center;
+}
+h2 {
+  padding-left: 20px;
+}
