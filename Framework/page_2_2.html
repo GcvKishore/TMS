@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="container-md">
+    <div class="container-fluid">
         <div class="row h-100">
 
             <!-- LeftSide Navigation  -->
@@ -46,17 +46,20 @@
             </div>
 
             <!-- Page Body(Main Content) -->
-            <div class="col-8 col-xs-8 col-sm-9 col-md-9 col-lg-10 col-xl-10 px-5 py-5 main">
+            <div class="col-8 col-xs-8 col-sm-9 col-md-9 col-lg-10 col-xl-10 px-5 py-5 my_main">
+
 
                 <!-- Time Remaining Block -->
+                <!-- <div class="d-flex flex-row justify-content-end"> -->
                 <div class="row justify-content-end">
-                    <div class="col-md-5 col-lg-3 text-center my_font_bolder">
+                    <div class="col-sm-6	col-md-5 col-lg-3 text-center my_font_bolder">
                         <span>TIME REMAINING</span>
                         <br>
                         <span class="my_font_2em">02:00 sec</span>
                     </div>
                 </div>
 
+                <!-- title section -->
                 <div class="row">
                     <div class="col my_font py-2">
                         <!-- Page Sub Title -->
@@ -69,11 +72,14 @@
                 <hr>
 
                 <!-- Question Text and Answer Field -->
-                <div>
+                <div class="row">
                     <p>
-                        Animals have played a major role in human’s lives throughout history. Today, scientific research is trying to (1)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the positive
-                        aspects of living with companion animals. Animals have been used as an (2)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> form of treatment for many years. More recently it
-                        has been discovered that owning a pet can help lower people’s blood pressure, (3)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the chances of living after a heart attack,
+                        Animals have played a major role in human’s lives throughout history. Today, scientific research is trying to (1)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the
+                        positive
+                        aspects of living with companion animals. Animals have been used as an (2)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> form of treatment for many years. More recently
+                        it
+                        has been discovered that owning a pet can help lower people’s blood pressure, (3)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the chances of living after a heart
+                        attack,
                         keep people more active and provide more satisfaction with life. It is (4)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> that this happens because pets help people become
                         more social, provide a means to giveand receive (5)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span>, and help connect us with the natural world.
                     </p>
@@ -81,19 +87,17 @@
                 <hr>
 
                 <!-- submission button field -->
-                <div class="row justify-content-between">
-                    <div class="col-4">
-                        <button class="btn btn-primary" type="submit" style="width: 10vw;">PREVIOUS</button>
+                <div class="row">
+                    <div class="col-md-3 col-lg-2 text-center">
+                        <button class="btn " type="submit" name="button">PREVIOUS</button>
                     </div>
-                    <div class="col-5">
-                        <div class="row">
-                            <div class="col text-end">
-                                <button type="button" class="btn btn-warning" style="width: 14vw;">MARK AS UNSOLVED</button>
-                            </div>
-                            <div class="col text-end">
-                                <button class="btn btn-primary" type="submit" style="width: 10vw;">NEXT</button>
-                            </div>
-                        </div>
+                    <div class="col-md-1 col-lg-5">
+                    </div>
+                    <div class="col-md-5 col-lg-3 text-center">
+                        <button class="btn" type="submit" name="button">MARK AS UNSOLVED</button>
+                    </div>
+                    <div class="col-md-3 col-lg-2 text-center">
+                        <button class="btn" type="submit" name="button">NEXT</button>
                     </div>
                 </div>
             </div>

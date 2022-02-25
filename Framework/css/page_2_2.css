@@ -4,10 +4,6 @@ body{
 }
 
 /* ################################## CLASS SELECTION ################################## */
-.container-md{
-    background-color: #FBF8F2;
-    height: 100vh;
-}
 
 .my_logo{
     color: #FBF8F2;
@@ -20,13 +16,12 @@ body{
 
 .my_nav{
     background-color: #3B4D5E;
-    height: 100vh;
-    /* position: fixed; */
 }
 
 .my_main{
-    /* position: absolute; */
-
+    background-color: #FBF8F2;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .my_font{
@@ -56,6 +51,8 @@ body{
     font-size: .8rem;
     background-color: #FFE0AB;
     border-color: #3B4D5E;
+    width: 100%;
+    padding: 6px;
 }
 
 .btn:hover{
