@@ -2,25 +2,47 @@
 * {
   font-family: "Nunito", sans-serif;
 }
-.container-md {
-  background-color: #fbf8f2;
-  height: 100vh;
-  left: 0px;
-}
+/* body {
+  background-color: #e5e5e5;
+} */
+
 .my_logo {
   color: #fbf8f2;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
   font-weight: bolder;
   font-size: 2rem;
   height: 100px;
 }
+
 .my_nav {
   background-color: #3b4d5e;
-  height: 100vh;
   color: #fbf8f2;
 }
 
 .my_main {
+  background-color: #fbf8f2;
+  height: 100vh;
   overflow-y: auto;
+}
+
+.my_font {
+  color: #3b4d5e;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.my_font_bolder {
+  color: #3b4d5e;
+  font-family: "Nunito", sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+.my_font_2em {
+  font-size: 2rem;
 }
 
 textarea {
@@ -31,12 +53,15 @@ textarea {
 }
 
 .btn {
-  background-color: #ffe0ab;
   color: #3b4d5e;
+  font-family: "Nunito", sans-serif;
+  background-color: #ffe0ab;
+  border-color: #3b4d5e;
+  width: 100%;
 }
-.btn btn-primary {
-  width: 14vw;
-}
-.btn btn-warning {
-  width: 20vw;
+
+.btn:hover {
+  color: #3b4d5e;
+  background-color: #fabc75;
+  border-color: #3b4d5e;
 }

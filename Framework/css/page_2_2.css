@@ -1,82 +1,84 @@
 /* ################################## TAG SELECTION ################################## */
-body{
-    background-color: #E5E5E5;
+body {
+  background-color: #e5e5e5;
 }
 
 /* ################################## CLASS SELECTION ################################## */
-.container-md{
-    background-color: #FBF8F2;
-    height: 100vh;
+
+.my_logo {
+  color: #fbf8f2;
+  font-family: Viga, sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 2rem;
+  height: 100px;
 }
 
-.my_logo{
-    color: #FBF8F2;
-    font-family: Viga, sans-serif;
-    font-style: normal;
-    font-weight: bolder;
-    font-size: 2rem;
-    height: 100px
+.my_nav {
+  background-color: #3b4d5e;
 }
 
-.my_nav{
-    background-color: #3B4D5E;
-    height: 100vh;
-    /* position: fixed; */
+.my_main {
+  background-color: #fbf8f2;
+  height: 100vh;
+  overflow-y: auto;
 }
 
-.my_main{
-    /* position: absolute; */
-
+.my_font {
+  color: #3b4d5e;
+  font-family: Viga, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
 }
 
-.my_font{
-    color: #3B4D5E;
-    font-family: Viga, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 1rem;
+.my_font_bolder {
+  color: #3b4d5e;
+  font-family: Viga, sans-serif;
+  font-style: normal;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+.my_font_2em {
+  font-size: 2rem;
 }
 
-.my_font_bolder{
-    color: #3B4D5E;
-    font-family: Viga, sans-serif;
-    font-style: normal;
-    font-weight: bolder;
-    font-size: 1rem;
-}
-.my_font_2em{
-    font-size: 2rem;
-}
-
-.btn{
-    color: #3B4D5E;
-    font-family: Viga, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: .8rem;
-    background-color: #FFE0AB;
-    border-color: #3B4D5E;
+.btn {
+  color: #3b4d5e;
+  font-family: Viga, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.8rem;
+  background-color: #ffe0ab;
+  border-color: #3b4d5e;
+  width: 100%;
 }
 
-.btn:hover{
-    color: #3B4D5E;
-    background-color: #FABC75;
-    border-color: #3B4D5E;
+.btn:hover {
+  color: #3b4d5e;
+  background-color: #fabc75;
+  border-color: #3b4d5e;
 }
 
-
-.FIB{
-    height: 3vh;
-    border: none;
-    background-color: #FABC75;
+.FIB {
+  border: none;
+  color: #3b4d5e;
+  border-bottom: 1px dashed #3b4d5e;
+  background-color: #ffe0ab;
 }
 
-.my_overview_nav{
-    font-size: .9rem;
-    color: #FBF8F2;
-    font-family: Viga, sans-serif;
-    font-style: normal;
-    font-weight: bolder;
+.FIB:hover {
+  color: #3b4d5e;
+  background-color: #fabc75;
+  border-color: #3b4d5e;
+}
+
+.my_overview_nav {
+  font-size: 0.9rem;
+  color: #fbf8f2;
+  font-family: Viga, sans-serif;
+  font-style: normal;
+  font-weight: bolder;
 }
 
 /* ################################## ID SELECTION ################################## */
