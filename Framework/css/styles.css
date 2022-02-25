@@ -3,6 +3,12 @@ body{
     background-color: #E5E5E5;
 }
 
+hr {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* ################################## CLASS SELECTION ################################## */
 
 .my_logo{
@@ -13,6 +19,17 @@ body{
     font-size: 2rem;
     height: 100px
 }
+
+.container-fluid {
+    background-color: #fbf8f2;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.head {
+    height: 100px;
+}
+
 
 .my_nav{
     background-color: #3B4D5E;
@@ -80,6 +97,53 @@ body{
     font-family: Viga, sans-serif;
     font-style: normal;
     font-weight: bolder;
+}
+
+.upload_box{
+    height: 30vh;
+    background-color: #FFE0AB;
+    vertical-align: middle;
+}
+
+.green_tick{
+    width: 30%;
+    height: 30%;
+}
+
+.my_logo_opposit {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 2rem;
+    height: 100px
+}
+
+.exam_details {
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+}
+
+.title {
+    font-style: italic;
+    text-decoration: underline;
+    font-weight: bolder;
+    font-size: 2.5rem;
+}
+
+.exam_instructions {
+    /* height: 40vh; */
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    overflow-y: auto;
+}
+
+.footer {
+    height: 100px
 }
 
 /* ################################## ID SELECTION ################################## */
