@@ -5,6 +5,7 @@
 .container-md {
   background-color: #fbf8f2;
   height: 100vh;
+  left: 0px;
 }
 .my_logo {
   color: #fbf8f2;
@@ -15,6 +16,8 @@
 .my_nav {
   background-color: #3b4d5e;
   height: 100vh;
+  color: #fbf8f2;
+  left: 0vh;
 }
 
 #Test {
