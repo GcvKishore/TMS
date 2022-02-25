@@ -19,8 +19,14 @@ body{
 }
 
 .my_nav{
-    height: 100vh;
     background-color: #3B4D5E;
+    height: 100vh;
+    /* position: fixed; */
+}
+
+.my_main{
+    /* position: absolute; */
+
 }
 
 .my_font{
@@ -47,7 +53,7 @@ body{
     font-family: Viga, sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: .8rem;
     background-color: #FFE0AB;
     border-color: #3B4D5E;
 }
@@ -63,6 +69,14 @@ body{
     height: 3vh;
     border: none;
     background-color: #FABC75;
+}
+
+.my_overview_nav{
+    font-size: .9rem;
+    color: #FBF8F2;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
 }
 
 /* ################################## ID SELECTION ################################## */
