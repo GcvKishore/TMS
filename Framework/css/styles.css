@@ -11,6 +11,13 @@ hr {
 
 /* ################################## CLASS SELECTION ################################## */
 
+.hr_full {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 .my_logo{
     color: #FBF8F2;
     font-family: Viga, sans-serif;
