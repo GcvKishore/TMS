@@ -1,0 +1,159 @@
+/* ################################## TAG SELECTION ################################## */
+body{
+    background-color: #E5E5E5;
+}
+
+hr {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ################################## CLASS SELECTION ################################## */
+
+.hr_full {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.timer_row{
+    height: 75px;
+}
+
+.my_logo{
+    color: #FBF8F2;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 2rem;
+    height: 100px
+}
+
+.container-fluid {
+    background-color: #fbf8f2;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.head {
+    height: 100px;
+}
+
+
+.my_nav{
+    background-color: #3B4D5E;
+}
+
+.my_main{
+    background-color: #FBF8F2;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.my_font{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.my_font_bolder{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 1rem;
+}
+.my_font_2em{
+    font-size: 2rem;
+}
+
+.btn{
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: .8rem;
+    background-color: #FFE0AB;
+    border-color: #3B4D5E;
+    width: 100%;
+}
+
+.btn:hover{
+    color: #3B4D5E;
+    background-color: #FABC75;
+    border-color: #3B4D5E;
+}
+
+
+.FIB{
+    border: none;
+    color: #3B4D5E;
+    border-bottom: 1px dashed #3B4D5E;
+    background-color: #FFE0AB;
+}
+
+.FIB:hover{
+    color: #3B4D5E;
+    background-color: #FABC75;
+    border-color: #3B4D5E;
+}
+
+.my_overview_nav{
+    font-size: 1rem;
+    color: #FBF8F2;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+}
+
+.upload_box{
+    height: 30vh;
+    background-color: #FFE0AB;
+    vertical-align: middle;
+}
+
+.green_tick{
+    width: 30%;
+    height: 30%;
+}
+
+.my_logo_opposit {
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 2rem;
+    height: 100px
+}
+
+.exam_details {
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+}
+
+.title {
+    font-style: italic;
+    text-decoration: underline;
+    font-weight: bolder;
+    font-size: 2.5rem;
+}
+
+.exam_instructions {
+    /* height: 40vh; */
+    border: 1px solid #3B4D5E;
+    border-radius: 10px;
+    color: #3B4D5E;
+    font-family: Viga, sans-serif;
+    overflow-y: auto;
+}
+
+.footer {
+    height: 100px
+}
+
+/* ################################## ID SELECTION ################################## */
