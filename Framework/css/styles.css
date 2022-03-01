@@ -17,6 +17,9 @@ hr {
     margin-right: auto;
 }
 
+.timer_row{
+    height: 75px;
+}
 
 .my_logo{
     color: #FBF8F2;

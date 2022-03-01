@@ -25,7 +25,7 @@
                         <pr>TUTEST</pr>
                     </div>
                 </div>
-                <div class="row px-4 my_overview_nav">
+                <div class="row px-4 my_overview_nav" id="exam-overview">
                     <ol>
                         <li class="py-2">Section 1
                             <ul class="px-1">
@@ -51,11 +51,11 @@
 
                 <!-- Time Remaining Block -->
                 <!-- <div class="d-flex flex-row justify-content-end"> -->
-                <div class="row justify-content-end">
-                    <div class="col-sm-6	col-md-5 col-lg-3 text-center my_font_bolder">
+                <div class="row justify-content-end timer_row">
+                    <div class="col-sm-6 col-md-5 col-lg-3 text-center my_font_bolder">
                         <span>TIME REMAINING</span>
                         <br>
-                        <span class="my_font_2em">02:00 sec</span>
+                        <span class="my_font_2em timer_box" id="countdown"></span>
                     </div>
                 </div>
 
@@ -63,48 +63,64 @@
                 <div class="row">
                     <div class="col my_font py-2">
                         <!-- Page Sub Title -->
-                        <span class="my_font">Section - 1 | Question 2</span>
+                        <span class="my_font">Section - <span id="current-section">1</span> | Question - <span id="current-question">1</span></span>
                         <br>
                         <!-- Page Title -->
-                        <span class="my_font_bolder my_font_2em">Fill In The Blank</span>
+                        <span class="my_font_bolder my_font_2em" id="question-type-title">Multiple Answer</span>
                     </div>
                 </div>
                 <hr class="hr_full">
 
                 <!-- Question Text and Answer Field -->
                 <div class="row">
-                    <p>
-                        Animals have played a major role in human’s lives throughout history. Today, scientific research is trying to (1)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the
-                        positive
-                        aspects of living with companion animals. Animals have been used as an (2)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> form of treatment for many years. More recently
-                        it
-                        has been discovered that owning a pet can help lower people’s blood pressure, (3)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> the chances of living after a heart
-                        attack,
-                        keep people more active and provide more satisfaction with life. It is (4)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span> that this happens because pets help people become
-                        more social, provide a means to giveand receive (5)<span><input class="FIB" name="FIB" spellcheck="false" maxlength="28" style="width: 10vw;"></span>, and help connect us with the natural world.
-                    </p>
+                    <div class="" id="question-text">
+                        <p>Choose all the types of carbohydrates</p>
+                    </div>
+
+                    <div class="" id="answer-input-options">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">Galactose</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                            <label class="form-check-label" for="defaultCheck2">Fructose</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                            <label class="form-check-label" for="defaultCheck3">Surcrose</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+                            <label class="form-check-label" for="defaultCheck4">Maltose</label>
+                        </div>
+
+                    </div>
                 </div>
                 <hr class="hr_full">
 
                 <!-- submission button field -->
                 <div class="row">
                     <div class="col-md-3 col-lg-2 text-center">
-                        <!-- <a href="../Framework/page_2_1.html" class="btn active" role="button" aria-pressed="true">PREVIOUS</a> -->
+                        <!-- <a href="../Framework/page_1.html" class="btn active" role="button" aria-pressed="true">PREVIOUS</a> -->
                     </div>
                     <div class="col-md-1 col-lg-5">
                     </div>
                     <div class="col-md-5 col-lg-3 text-center">
-                        <!-- <a href="../Framework/page_2_2.html" class="btn active" role="button" aria-pressed="true" disabled>MARK AS UNSOLVED</a> -->
+                        <!-- <a href="../Framework/page_2_1.html" class="btn active" role="button" aria-pressed="true" disabled>MARK AS UNSOLVED</a> -->
                     </div>
                     <div class="col-md-3 col-lg-2 text-center">
-                        <a href="../Framework/page_2_3.html" class="btn active" role="button" aria-pressed="true">NEXT</a>
+                        <button onclick="location.href='../Framework/test_summary.html';" type="button" class="btn active" name="button" id="next-btn">NEXT</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js" charset="utf-8"></script>
 </body>
 
 </html>
