@@ -1,0 +1,72 @@
+{
+  "sections": [
+    {
+      "questions": [
+        {
+          "questionType": "Multiple Choice - Multiple Answers",
+          "maxTime": 120,
+          "questionDetails": {
+            "questionText": "Each employee of a certain company is in either Department X or Department Y, and there are more than twice as many employees in Department X as in Department Y. The average (arithmetic mean) salary is $25,000 for the employees in Department X and $35,000 for the employees in Department Y. Which of the following amounts could be the average salary for all of the employees of the company?",
+            "options": [
+              "$26,000",
+              "$28,000",
+              "$29,000",
+              "$30,000",
+              "$31,000",
+              "$32,000",
+              "$34,000"
+            ],
+            "answer": [
+              "a",
+              "b"
+            ],
+            "evaluationType": "auto",
+            "difficultyLevel": "easy"
+          }
+        },
+        {
+          "questionType": "Fill in the blanks",
+          "maxTime": 240,
+          "questionDetails": {
+            "questionText": "Throughout 2021 and 2022, Russian military buildup on the border of Ukraine has escalated tensions between the two countries and strained bilateral relations, with the United States sending a strong message that invasion would be met with dire consequences for Russia's economy.",
+            "answers": [
+              2021,
+              2022,
+              "Ukraine",
+              "United States",
+              "invasion",
+              "economy"
+            ],
+            "evaluationType": "auto",
+            "difficultyLevel": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "questionType": "Short Answer",
+          "maxTime": 300,
+          "questionDetails": {
+            "answer": "Europe wants to drastically reduce the number of plastic bags in the battle against plastic soup. In 2010, an estimated 198 plastic bags were used per capita per year. That number must be reduced to 90 in 2019 and to 40 in 2025. EU member states are free to choose their own methods to meet this goal.\nDistributing free plastic bags will be forbidden in the Netherlands beginning on January 1, 2016. In 2002 Ireland introduced a fee of 22 cents per plastic bag in stores, which led to a 90% reduction in their use. Because of this, Ireland is often cited as a shining example of how to address the issue of single-use plastic bags.",
+            "questionText": "Write an essay on - Should plastic be banned?",
+            "maxWords": 500,
+            "evaluationType": "manually",
+            "difficultyLevel": "hard"
+          }
+        },
+        {
+          "questionType": "File Submission",
+          "maxTime": 300,
+          "questionDetails": {
+            "questionText": "Draw any animal of your choice and upload the drawing.",
+            "maxFileSize": 4,
+            "evaluationType": "manually",
+            "difficultyLevel": "hard"
+          }
+        }
+      ]
+    }
+  ]
+}
