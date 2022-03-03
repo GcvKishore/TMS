@@ -1,6 +1,8 @@
-// Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
-
-
+//Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
+let JSONpaper = $.getJSON({
+    url : "../framework/sample_test.json",
+    async: false,
+  });
 
 // Global Variables
 let current_section = 0;
@@ -11,20 +13,19 @@ let current_question_details;
 let current_question_type;
 let user_inputs = [];
 
+startExam();
 
 // Start exam (Chaitanya)
 function startExam(){
-    // Summary:
-    // para:
-    // return:
-
+    // Starts the test once the function is invoked and calls the displayQuestion().
+    displayQuestion();
 }
 
 //Display Questions (Amulya)
 function displayQuestion(){
-    // Summary:
-    // para:
-    // return:
+    // Summary: 
+    // para: 
+    // return: 
 
 }
 
