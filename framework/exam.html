@@ -26,20 +26,6 @@
                     </div>
                 </div>
                 <div class="row px-4 my_overview_nav" id="exam-overview">
-                    <ol>
-                        <li class="py-2">Section 1
-                            <ul class="px-1">
-                                <li class="py-1">Question 1</li>
-                                <li class="py-1">Question 2</li>
-                            </ul>
-                        </li>
-                        <li class="py-2">Section 2
-                            <ul class="px-1">
-                                <li class="py-1">Question 1</li>
-                                <li class="py-1">Question 2</li>
-                            </ul>
-                        </li>
-                    </ol>
                 </div>
 
 
@@ -63,41 +49,21 @@
                 <div class="row">
                     <div class="col my_font py-2">
                         <!-- Page Sub Title -->
-                        <span class="my_font">Section - <span id="current-section">1</span> | Question - <span id="current-question">1</span></span>
+                        <span class="my_font">Section - <span id="current-section"></span> | Question - <span id="current-question"></span></span>
                         <br>
                         <!-- Page Title -->
-                        <span class="my_font_bolder my_font_2em" id="question-type-title">Multiple Answer</span>
+                        <span class="my_font_bolder my_font_2em" id="question-type-title"></span>
                     </div>
                 </div>
                 <hr class="hr_full">
 
                 <!-- Question Text and Answer Field -->
                 <div class="row">
-                    <div class="" id="question-text">
-                        <p>Choose all the types of carbohydrates</p>
+                    <div class="">
+                        <p id="question-text"></p>
                     </div>
 
                     <div class="" id="answer-input-options">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">Galactose</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                            <label class="form-check-label" for="defaultCheck2">Fructose</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                            <label class="form-check-label" for="defaultCheck3">Surcrose</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-                            <label class="form-check-label" for="defaultCheck4">Maltose</label>
-                        </div>
-
                     </div>
                 </div>
                 <hr class="hr_full">
@@ -113,7 +79,7 @@
                         <!-- <a href="../framework/page_2_1.html" class="btn active" role="button" aria-pressed="true" disabled>MARK AS UNSOLVED</a> -->
                     </div>
                     <div class="col-md-3 col-lg-2 text-center">
-                        <button onclick="location.href='../framework/test_summary.html';" type="button" class="btn active" name="button" id="next-btn">NEXT</button>
+                        <button onclick="onNextClick()" type="button" class="btn active" name="button" id="next-btn">NEXT</button>
                     </div>
                 </div>
             </div>
