@@ -25,7 +25,7 @@ function startExam() {
 //Display Questions (Amulya)
 function displayQuestion() {
   // Summary: Used to display the current question in the respective section.
-  // para: Using the current section and current question variables we called the functions to generate the questions for different formats.
+  // para: None
   // return: None
   document.getElementById("question-text").innerHTML = "";
   document.getElementById("answer-input-options").innerHTML = "";
@@ -85,8 +85,8 @@ function generateFITB() {
   // 2.0 create blanks in question_text
   let blanks = current_question_details.answers;
   for (const i in blanks) {
-      let HTML_tag = `<span><input class="FIB" id=fITB-option-${i} spellcheck="false" maxlength="28" style="width: 10vw;"></span>`;
-      question_text = question_text.replace(blanks[i], HTML_tag);
+    let HTML_tag = `<span><input class="FIB" id=fITB-option-${i} spellcheck="false" maxlength="28" style="width: 10vw;"></span>`;
+    question_text = question_text.replace(blanks[i], HTML_tag);
   }
   document.getElementById("question-text").innerHTML = question_text;
 }
@@ -133,18 +133,18 @@ function onNextClick() {
 
   // 3.0 Check if they are more questions in the section
   if (current_question >= num_questions) {
-      current_question = 0;
-      current_section++;
+    current_question = 0;
+    current_section++;
   }
 
   // 4.0 Check if they are more sections in the exam paper
   if (current_section >= num_sections) {
-      // 4.1 Save user inputes in a JSON File
-      createExamSummary();
-      location.href = "../Framework/test_summary.html";
-  } else{
-      // 4.2 if more questions available then display next question
-      displayQuestion();
+    // 4.1 Save user inputes in a JSON File
+    createExamSummary();
+    location.href = "../Framework/test_summary.html";
+  } else {
+    // 4.2 if more questions available then display next question
+    displayQuestion();
   }
 }
 
@@ -175,24 +175,30 @@ function recordFITB() {
 
   // 2.0 Save the user inputs into an Array/List
   try {
-      for (const i in user_inputs) {
-          user_input = user_inputs[i].value;
-          if (typeof(user_input) != "undefined") {
-              answers.push(user_input);
-          }
+    for (const i in user_inputs) {
+      user_input = user_inputs[i].value;
+      if (typeof user_input != "undefined") {
+        answers.push(user_input);
       }
+    }
   } finally {
-      // 3.0 finally retuen the user inputs which contains string elements
-      return answers;
+    // 3.0 finally retuen the user inputs which contains string elements
+    return answers;
   }
-
 }
 
 // Short Answer (Amulya)
 function recordSA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: records all the short answers entered by the user.
+  // para: None
+  // return: None
+  let answer = "";
+  try {
+    var SA_input = document.getElementById("exampleFormControlTextarea1").value;
+    answer = SA_input;
+  } finally {
+    return answer;
+  }
 }
 
 // File Submission (Chaitanya)
