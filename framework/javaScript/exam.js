@@ -187,18 +187,10 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
-<<<<<<< HEAD
 function recordUserInputs(){
     // Summary: Records all the user inputs by calling all the different types of questions.
     // para: None
     // return: None
-=======
-function recordUserInputs() {
-  // Summary:
-  // para:
-  // return:
-}
->>>>>>> 140588352eddca03f83e16ce01451bea7be57db9
 
     let ans_submitted=[];
     let status="Pending";
