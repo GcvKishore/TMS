@@ -72,7 +72,7 @@ function startCountDown(max_time) {
   timer = setInterval(function () {
     if (timing <= 0.0) {
       clearInterval(timer);
-      document.getElementById("next_button").click();
+      document.getElementById("next-btn").click();
     } else {
       mins = Math.floor(timing / 60);
       secs = Math.floor(timing % 60);
