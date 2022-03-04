@@ -286,9 +286,17 @@ function recordSA() {
 
 // File Submission (Chaitanya)
 function recordFS() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: Records every answer given as an input from the user.
+  // para: None
+  // return: answers
+  let ans="";
+  try{
+  let data=document.getElementById("myfile").value;
+  ans=data;
+}
+  finally{
+    return ans;
+}
 }
 
 // evaluate user Answers (Priyusha)
