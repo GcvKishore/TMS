@@ -32,6 +32,7 @@ function displayQuestion() {
   document.getElementById("question-text").innerHTML = "";
   document.getElementById("answer-input-options").innerHTML = "";
   start_time_stamp = new Date().toLocaleTimeString();
+
   let section = JSONpaper.sections[current_section];
   let question = section.questions[current_question];
   current_question_type = question.questionType;
@@ -46,7 +47,6 @@ function displayQuestion() {
   document.getElementById("current-question").innerHTML = current_question + 1;
   document.getElementById("question-type-title").innerHTML =
     current_question_type;
-  console.log(current_question_type);
   switch (current_question_type) {
     case "Multiple Choice - Multiple Answers":
       generateMCMA();
