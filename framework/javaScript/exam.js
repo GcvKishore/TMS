@@ -66,7 +66,6 @@ function generateSA(){
 // File Submission (Chaitanya)
 function generateFU(){
     //  Represents the code for uploading a file
-    
     let quesText = questionDetails.questionText;
     document.getElementById("ques").innerHTML = quesText;
     input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
