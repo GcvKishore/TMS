@@ -1,8 +1,8 @@
 //Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
 let JSONpaper = $.getJSON({
-    url : "../sampleData/sample_test.json",
-    async: false,
-  });
+  url: "../sampleData/sample_test.json",
+  async: false,
+});
 
 JSONpaper = JSON.parse(JSONpaper.responseText);
 // Global Variables
@@ -35,6 +35,10 @@ function displayQuestion() {
   current_question_type = question.questionType;
   current_question_details = question.questionDetails;
   max_Time = question.maxTime;
+  let currrent_question_class = `sec-${current_section + 1}-que-${
+    current_question + 1
+  }`;
+  document.getElementById(currrent_question_class).style.color = "#FABC75";
   startCountDown(max_Time);
   document.getElementById("current-section").innerHTML = current_section + 1;
   document.getElementById("current-question").innerHTML = current_question + 1;
@@ -87,9 +91,9 @@ function generateMCMA() {
   document.getElementById("question-text").innerHTML = quesText;
   let numOptions = current_question_details.options.length;
   let options = current_question_details.options;
-  let input_tag="";
-  for(var i=0;i<numOptions;i++){
-      input_tag+= `<div class="form-check">
+  let input_tag = "";
+  for (var i = 0; i < numOptions; i++) {
+    input_tag += `<div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="defaultCheck${i}">
       <label class="form-check-label" for="defaultCheck${i}">${options[i]}</label>
   </div>`;
@@ -133,13 +137,13 @@ function generateSA() {
 }
 
 // File Submission (Chaitanya)
-function generateFU(){
-    //  Represents the code for uploading a file
-    let quesText = questionDetails.questionText;
-    document.getElementById("ques").innerHTML = quesText;
-    input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
-    document.getElementById("answer").innerHTML = input_tag;
-  }
+function generateFU() {
+  //  Represents the code for uploading a file
+  let quesText = questionDetails.questionText;
+  document.getElementById("ques").innerHTML = quesText;
+  input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
+  document.getElementById("answer").innerHTML = input_tag;
+}
 
 // on next button click
 // record user_inputs (Vedavyas)
@@ -150,10 +154,11 @@ function onNextClick() {
   // return: None
 
   // 1.0 Reset current_question color and countdown
-  let currrent_question_class =  `sec-${current_section+1}-que-${current_question+1}`
+  let currrent_question_class = `sec-${current_section + 1}-que-${
+    current_question + 1
+  }`;
   document.getElementById(currrent_question_class).style.color = "#FBF8F2";
   clearInterval(timer);
-
 
   // 2.0 record user inputs in JSON format
   recordUserInputs();
@@ -181,11 +186,18 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
+<<<<<<< HEAD
 function recordUserInputs(){
     // Summary:
     // para:
     // return:
 
+=======
+function recordUserInputs() {
+  // Summary:
+  // para:
+  // return:
+>>>>>>> 6fbf96428f729d32dacea51edefc448c7cd097e9
 }
 
 // get user answers based on question type
@@ -258,21 +270,20 @@ function examOverview() {
   let num_sections = JSONpaper.sections.length;
 
   // 2.0 generate exam overview html tags
-  let sections_overview = ""
+  let sections_overview = "";
   for (let i = 1; i <= num_sections; i++) {
-      let num_questions = JSONpaper.sections[i-1].questions.length;
-      let questions_html_tags = "";
-      for (let j = 1; j <= num_questions; j++) {
-          questions_html_tags += `<li class="py-1" id="sec-${i}-que-${j}">Question ${j}</li>`;
-      }
-      let questions_overview = `<ul class="px-1">${questions_html_tags}</ul>`;
-      sections_overview += `<li class="py-2"><span id="sec-${i}">Section ${i}</span>${questions_overview}</li>`;
+    let num_questions = JSONpaper.sections[i - 1].questions.length;
+    let questions_html_tags = "";
+    for (let j = 1; j <= num_questions; j++) {
+      questions_html_tags += `<li class="py-1" id="sec-${i}-que-${j}">Question ${j}</li>`;
+    }
+    let questions_overview = `<ul class="px-1">${questions_html_tags}</ul>`;
+    sections_overview += `<li class="py-2"><span id="sec-${i}">Section ${i}</span>${questions_overview}</li>`;
   }
-  let overview_html_tag = `<ol>${sections_overview}</ol>`
+  let overview_html_tag = `<ol>${sections_overview}</ol>`;
 
   // 3.0 Display exam overview
   document.getElementById("exam-overview").innerHTML = overview_html_tag;
-
 }
 
 // generate exam summary json file (Optional)
