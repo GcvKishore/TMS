@@ -140,10 +140,10 @@ function generateSA() {
 // File Submission (Chaitanya)
 function generateFU() {
   //  Represents the code for uploading a file
-  let quesText = questionDetails.questionText;
-  document.getElementById("ques").innerHTML = quesText;
+  let quesText = current_question_details.questionText;
+  document.getElementById("question-text").innerHTML = quesText;
   input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
-  document.getElementById("answer").innerHTML = input_tag;
+  document.getElementById("answer-input-options").innerHTML = input_tag;
 }
 
 // on next button click
@@ -223,7 +223,7 @@ function recordUserInputs(){
         ansSubmitted: ans_submitted,
         resultStatus: status
     };
-    user_answers.push(summary);
+    user_inputs.push(summary);
 }
    
 // get user answers based on question type
