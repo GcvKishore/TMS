@@ -180,7 +180,7 @@ function onNextClick() {
   // 5.0 Check if they are more sections in the exam paper
   if (current_section >= num_sections) {
     // 5.1 Save user inputes in a JSON File
-    createExamSummary();
+    saveExamSummary();
     location.href = "../framework/exam_summary.html";
   } else {
     // 5.2 if more questions available then display next question
@@ -339,8 +339,10 @@ function examOverview() {
 }
 
 // generate exam summary json file (Optional)
-function createExamSummary() {
-  // Summary:
-  // para:
-  // return:
+function saveExamSummary() {
+  // Summary: save user inputs and exam paper in the browser
+  // para: None
+  // return: None
+  const jsonData = JSON.stringify(user_inputs);
+  localStorage.setItem("user_inputs", jsonData);
 }
