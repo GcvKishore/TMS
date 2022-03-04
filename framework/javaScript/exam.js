@@ -32,6 +32,7 @@ function displayQuestion() {
   document.getElementById("question-text").innerHTML = "";
   document.getElementById("answer-input-options").innerHTML = "";
   start_time_stamp = new Date().toLocaleTimeString();
+
   let section = JSONpaper.sections[current_section];
   let question = section.questions[current_question];
   current_question_type = question.questionType;
@@ -46,7 +47,6 @@ function displayQuestion() {
   document.getElementById("current-question").innerHTML = current_question + 1;
   document.getElementById("question-type-title").innerHTML =
     current_question_type;
-  console.log(current_question_type);
   switch (current_question_type) {
     case "Multiple Choice - Multiple Answers":
       generateMCMA();
@@ -129,6 +129,7 @@ function generateSA() {
   let quesText = current_question_details.questionText;
   document.getElementById("question-text").innerHTML = quesText;
   let maxchars = current_question_details.MaxWords * 6;
+  let input_tag = "";
   input_tag = `<div class="mb-3">
     <textarea class="form-control"
     id="exampleFormControlTextarea1"
@@ -180,7 +181,7 @@ function onNextClick() {
   if (current_section >= num_sections) {
     // 5.1 Save user inputes in a JSON File
     createExamSummary();
-    location.href = "../framework/test_summary.html";
+    location.href = "../framework/exam_summary.html";
   } else {
     // 5.2 if more questions available then display next question
     displayQuestion();
@@ -212,7 +213,7 @@ function recordUserInputs() {
   }
   eval_Type = current_question_details.evaluationType;
   crct_Ans = current_question_details.answers;
-  if (evaluationType == "auto") {
+  if (eval_Type == "auto") {
     evaluateUserAnswer(ans_submitted, crct_Ans);
   }
   let summary = {
@@ -223,7 +224,7 @@ function recordUserInputs() {
     ansSubmitted: ans_submitted,
     resultStatus: status,
   };
-  user_answers.push(summary);
+  user_inputs.push(summary);
 }
 
 // get user answers based on question type
