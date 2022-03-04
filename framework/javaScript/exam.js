@@ -180,9 +180,40 @@ function recordUserInputs(){
     // Summary:
     // para:
     // return:
-    
+    let ans_submitted=[];
+    let status="Pending";
+  switch (current_question_type) {
+    case "Multiple Choice - Multiple Answers":
+      ans_submitted=recordMCMA();
+      break;
+    case "Fill in the blanks":
+      ans_submitted=recordFITB();
+      break;
+    case "Short Answer":
+      ans_submitted=recordSA();
+      break;
+    case "File Submission":
+      ans_submitted= recordFS();
+      break;
+    default:
+  }
+    eval_Type=current_question_details.evaluationType;
+    crct_Ans=current_question_details.answers;
+    if(evaluationType=="auto")
+        {
+            evaluateUserAnswer(ans_submitted, crct_Ans);
+        }
+    let summary={
+        startTimeStamp: start_time_stamp,
+        endTimeStamp: end_time_stamp,
+        section:current_section,
+        question:current_question,
+        ansSubmitted: ans_submitted,
+        resultStatus: status
+    };
+    user_answers.push(summary);
 }
-
+   
 // get user answers based on question type
 // Multiple Choice - Multiple Answers (Priyusha)
 function recordMCMA() {
