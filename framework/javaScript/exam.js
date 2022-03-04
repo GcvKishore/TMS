@@ -14,7 +14,6 @@ let current_question_details;
 let current_question_type;
 let user_inputs = [];
 
-JSONpaper = JSON.parse(JSONpaper.responseText);
 startExam();
 
 // Start exam (Chaitanya)
@@ -172,21 +171,12 @@ function onNextClick() {
 
   // 5.0 Check if they are more sections in the exam paper
   if (current_section >= num_sections) {
-<<<<<<< HEAD
-      // 5.1 Save user inputes in a JSON File
-      createExamSummary();
-      location.href = "../Framework/test_summary.html";
-  } else{
-      // 5.2 if more questions available then display next question
-      displayQuestion();
-=======
-    // 4.1 Save user inputes in a JSON File
+    // 5.1 Save user inputes in a JSON File
     createExamSummary();
-    location.href = "../Framework/test_summary.html";
+    location.href = "../framework/test_summary.html";
   } else {
-    // 4.2 if more questions available then display next question
+    // 5.2 if more questions available then display next question
     displayQuestion();
->>>>>>> 2e0df19aff4f616a581efc6f7d0d6b34a1640c63
   }
 }
 
@@ -195,7 +185,7 @@ function recordUserInputs(){
     // Summary:
     // para:
     // return:
-    
+
 }
 
 // get user answers based on question type
