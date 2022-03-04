@@ -1,6 +1,6 @@
 //Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
 let JSONpaper = $.getJSON({
-  url: "../sampleData/sample_test.json",
+  url: "../framework/sampleData/sample_test.json",
   async: false,
 });
 
@@ -88,7 +88,7 @@ function generateMCMA() {
   // Summary:Generates multiplechoice questions  and answers
   // para:None
   // return:None
-  let quesText = current_question_details.question;
+  let quesText = current_question_details.questionText;
   document.getElementById("question-text").innerHTML = quesText;
   let numOptions = current_question_details.options.length;
   let options = current_question_details.options;
@@ -187,57 +187,56 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
-function recordUserInputs(){
-    // Summary: Records all the user inputs by calling all the different types of questions.
-    // para: None
-    // return: None
+function recordUserInputs() {
+  // Summary: Records all the user inputs by calling all the different types of questions.
+  // para: None
+  // return: None
 
-    let ans_submitted=[];
-    let status="Pending";
+  let ans_submitted = [];
+  let status = "Pending";
   switch (current_question_type) {
     case "Multiple Choice - Multiple Answers":
-      ans_submitted=recordMCMA();
+      ans_submitted = recordMCMA();
       break;
     case "Fill in the blanks":
-      ans_submitted=recordFITB();
+      ans_submitted = recordFITB();
       break;
     case "Short Answer":
-      ans_submitted=recordSA();
+      ans_submitted = recordSA();
       break;
     case "File Submission":
-      ans_submitted= recordFS();
+      ans_submitted = recordFS();
       break;
     default:
   }
-    eval_Type=current_question_details.evaluationType;
-    crct_Ans=current_question_details.answers;
-    if(evaluationType=="auto")
-        {
-            evaluateUserAnswer(ans_submitted, crct_Ans);
-        }
-    let summary={
-        startTimeStamp: start_time_stamp,
-        endTimeStamp: end_time_stamp,
-        section:current_section,
-        question:current_question,
-        ansSubmitted: ans_submitted,
-        resultStatus: status
-    };
-    user_answers.push(summary);
+  eval_Type = current_question_details.evaluationType;
+  crct_Ans = current_question_details.answers;
+  if (evaluationType == "auto") {
+    evaluateUserAnswer(ans_submitted, crct_Ans);
+  }
+  let summary = {
+    startTimeStamp: start_time_stamp,
+    endTimeStamp: end_time_stamp,
+    section: current_section,
+    question: current_question,
+    ansSubmitted: ans_submitted,
+    resultStatus: status,
+  };
+  user_answers.push(summary);
 }
-   
+
 // get user answers based on question type
 // Multiple Choice - Multiple Answers (Priyusha)
 function recordMCMA() {
   // Summary:Records all the answers of multiple choice entered by  the user
   // para:None
   // return:None
-  let checkbox=document.querySelectorAll("input[type=checkbox]:checked");
-  let checked_options=[];
-  try{
-    for(const i in checkbox){
-      check_box_value=checkbox[i].value;
-      if(typeof(check_box_value)!="undefined"){
+  let checkbox = document.querySelectorAll("input[type=checkbox]:checked");
+  let checked_options = [];
+  try {
+    for (const i in checkbox) {
+      check_box_value = checkbox[i].value;
+      if (typeof check_box_value != "undefined") {
         checked_options.push(check_box_value);
       }
     }
@@ -289,14 +288,13 @@ function recordFS() {
   // Summary: Records every answer given as an input from the user.
   // para: None
   // return: answers
-  let ans="";
-  try{
-  let data=document.getElementById("myfile").value;
-  ans=data;
-}
-  finally{
+  let ans = "";
+  try {
+    let data = document.getElementById("myfile").value;
+    ans = data;
+  } finally {
     return ans;
-}
+  }
 }
 
 // evaluate user Answers (Priyusha)
@@ -304,12 +302,12 @@ function evaluateUserAnswer(user_answers, actual_answers) {
   // Summary:Evaluates the user answers
   // para:User entered answers and actual answers
   // return:Answer is correct or wrong
-  for(const i in actual_answers) {
-    if(actual_answers[i]!==user_answers[i]){
-      return ("Wrong Answer");
+  for (const i in actual_answers) {
+    if (actual_answers[i] !== user_answers[i]) {
+      return "Wrong Answer";
     }
   }
-  return("Correct Answer");
+  return "Correct Answer";
 }
 
 // Show exam overview and highlight current question (Vedavyas)
