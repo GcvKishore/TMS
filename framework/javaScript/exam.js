@@ -1,8 +1,8 @@
 //Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
 let JSONpaper = $.getJSON({
-    url : "../sampleData/sample_test.json",
-    async: false,
-  });
+  url: "../sampleData/sample_test.json",
+  async: false,
+});
 
 JSONpaper = JSON.parse(JSONpaper.responseText);
 // Global Variables
@@ -36,6 +36,10 @@ function displayQuestion() {
   current_question_type = question.questionType;
   current_question_details = question.questionDetails;
   max_Time = question.maxTime;
+  let currrent_question_class = `sec-${current_section + 1}-que-${
+    current_question + 1
+  }`;
+  document.getElementById(currrent_question_class).style.color = "#FABC75";
   startCountDown(max_Time);
   document.getElementById("current-section").innerHTML = current_section + 1;
   document.getElementById("current-question").innerHTML = current_question + 1;
@@ -61,7 +65,7 @@ function displayQuestion() {
 
 // Start countdown (Priyusha)
 function startCountDown(max_time) {
-  // Summary:Used to  display the timer and clears the timer for next question 
+  // Summary:Used to  display the timer and clears the timer for next question
   // para:Implemented timer
   // return:None
   var timing = max_time;
@@ -88,9 +92,9 @@ function generateMCMA() {
   document.getElementById("question-text").innerHTML = quesText;
   let numOptions = current_question_details.options.length;
   let options = current_question_details.options;
-  let input_tag="";
-  for(var i=0;i<numOptions;i++){
-      input_tag+= `<div class="form-check">
+  let input_tag = "";
+  for (var i = 0; i < numOptions; i++) {
+    input_tag += `<div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="defaultCheck${i}">
       <label class="form-check-label" for="defaultCheck${i}">${options[i]}</label>
   </div>`;
@@ -134,13 +138,13 @@ function generateSA() {
 }
 
 // File Submission (Chaitanya)
-function generateFU(){
-    //  Represents the code for uploading a file
-    let quesText = questionDetails.questionText;
-    document.getElementById("ques").innerHTML = quesText;
-    input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
-    document.getElementById("answer").innerHTML = input_tag;
-  }
+function generateFU() {
+  //  Represents the code for uploading a file
+  let quesText = questionDetails.questionText;
+  document.getElementById("ques").innerHTML = quesText;
+  input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
+  document.getElementById("answer").innerHTML = input_tag;
+}
 
 // on next button click
 // record user_inputs (Vedavyas)
@@ -176,11 +180,10 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
-function recordUserInputs(){
-    // Summary:
-    // para:
-    // return:
-    
+function recordUserInputs() {
+  // Summary:
+  // para:
+  // return:
 }
 
 // get user answers based on question type
