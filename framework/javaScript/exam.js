@@ -60,17 +60,41 @@ function displayQuestion() {
 
 // Start countdown (Priyusha)
 function startCountDown(max_time) {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Used to  display the timer and clears the timer for next question 
+  // para:Implemented timer
+  // return:None
+  var timing = max_time;
+  var timer = setInterval(function () {
+    if (timing <= 0.0) {
+      clearInterval(timer);
+      document.getElementById("next_button").click();
+    } else {
+      mins = Math.floor(timing / 60);
+      secs = Math.floor(timing % 60);
+      document.getElementById("countdown").innerHTML = `${mins}:${secs}`;
+    }
+    timing -= 1;
+  }, 1000);
 }
 
 // Generate questions based on questionType
 // Multiple Choice - Multiple Answers (Priyusha)
 function generateMCMA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Generates multiplechoice questions  and answers
+  // para:None
+  // return:None
+  let quesText = current_question_details.question;
+  document.getElementById("question-text").innerHTML = quesText;
+  let numOptions = current_question_details.options.length;
+  let options = current_question_details.options;
+  let input_tag="";
+  for(var i=0;i<numOptions;i++){
+      input_tag+= `<div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="defaultCheck${i}">
+      <label class="form-check-label" for="defaultCheck${i}">${options[i]}</label>
+  </div>`;
+  }
+  document.getElementById("answer-input-options").innerHTML = input_tag;
 }
 
 // Fill in the blanks (Vedavyas)
