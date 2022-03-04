@@ -1,8 +1,8 @@
 //Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
 let JSONpaper = $.getJSON({
-    url : "../sampleData/sample_test.json",
-    async: false,
-  });
+  url: "../sampleData/sample_test.json",
+  async: false,
+});
 
 JSONpaper = JSON.parse(JSONpaper.responseText);
 // Global Variables
@@ -13,8 +13,8 @@ let end_time_stamp;
 let current_question_details;
 let current_question_type;
 let user_inputs = [];
+let timer;
 
-JSONpaper = JSON.parse(JSONpaper.responseText);
 startExam();
 
 // Start exam (Chaitanya)
@@ -26,16 +26,20 @@ function startExam() {
 //Display Questions (Amulya)
 function displayQuestion() {
   // Summary: Used to display the current question in the respective section.
-  // para: Using the current section and current question variables we called the functions to generate the questions for different formats.
+  // para: None
   // return: None
   document.getElementById("question-text").innerHTML = "";
   document.getElementById("answer-input-options").innerHTML = "";
-
+  start_time_stamp = new Date().toLocaleTimeString();
   let section = JSONpaper.sections[current_section];
   let question = section.questions[current_question];
   current_question_type = question.questionType;
   current_question_details = question.questionDetails;
   max_Time = question.maxTime;
+  let currrent_question_class = `sec-${current_section + 1}-que-${
+    current_question + 1
+  }`;
+  document.getElementById(currrent_question_class).style.color = "#FABC75";
   startCountDown(max_Time);
   document.getElementById("current-section").innerHTML = current_section + 1;
   document.getElementById("current-question").innerHTML = current_question + 1;
@@ -61,11 +65,11 @@ function displayQuestion() {
 
 // Start countdown (Priyusha)
 function startCountDown(max_time) {
-  // Summary:Used to  display the timer and clears the timer for next question 
+  // Summary:Used to  display the timer and clears the timer for next question
   // para:Implemented timer
   // return:None
   var timing = max_time;
-  var timer = setInterval(function () {
+  timer = setInterval(function () {
     if (timing <= 0.0) {
       clearInterval(timer);
       document.getElementById("next_button").click();
@@ -88,9 +92,9 @@ function generateMCMA() {
   document.getElementById("question-text").innerHTML = quesText;
   let numOptions = current_question_details.options.length;
   let options = current_question_details.options;
-  let input_tag="";
-  for(var i=0;i<numOptions;i++){
-      input_tag+= `<div class="form-check">
+  let input_tag = "";
+  for (var i = 0; i < numOptions; i++) {
+    input_tag += `<div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="defaultCheck${i}">
       <label class="form-check-label" for="defaultCheck${i}">${options[i]}</label>
   </div>`;
@@ -110,8 +114,8 @@ function generateFITB() {
   // 2.0 create blanks in question_text
   let blanks = current_question_details.answers;
   for (const i in blanks) {
-      let HTML_tag = `<span><input class="FIB" id=fITB-option-${i} spellcheck="false" maxlength="28" style="width: 10vw;"></span>`;
-      question_text = question_text.replace(blanks[i], HTML_tag);
+    let HTML_tag = `<span><input class="FIB" id=fITB-option-${i} spellcheck="false" maxlength="28" style="width: 10vw;"></span>`;
+    question_text = question_text.replace(blanks[i], HTML_tag);
   }
   document.getElementById("question-text").innerHTML = question_text;
 }
@@ -134,13 +138,13 @@ function generateSA() {
 }
 
 // File Submission (Chaitanya)
-function generateFU(){
-    //  Represents the code for uploading a file
-    let quesText = questionDetails.questionText;
-    document.getElementById("ques").innerHTML = quesText;
-    input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
-    document.getElementById("answer").innerHTML = input_tag;
-  }
+function generateFU() {
+  //  Represents the code for uploading a file
+  let quesText = questionDetails.questionText;
+  document.getElementById("ques").innerHTML = quesText;
+  input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
+  document.getElementById("answer").innerHTML = input_tag;
+}
 
 // on next button click
 // record user_inputs (Vedavyas)
@@ -150,36 +154,51 @@ function onNextClick() {
   // para: None
   // return: None
 
-  // 1.0 record user inputs in JSON format
+  // 1.0 Reset current_question color and countdown
+  let currrent_question_class = `sec-${current_section + 1}-que-${
+    current_question + 1
+  }`;
+  document.getElementById(currrent_question_class).style.color = "#FBF8F2";
+  clearInterval(timer);
+
+  // 2.0 record user inputs in JSON format
   recordUserInputs();
 
-  // 2.0 get current section and questions details
+  // 3.0 get current section and questions details
   num_questions = JSONpaper.sections[current_section].questions.length;
   num_sections = JSONpaper.sections.length;
   current_question = current_question + 1;
 
-  // 3.0 Check if they are more questions in the section
+  // 4.0 Check if they are more questions in the section
   if (current_question >= num_questions) {
-      current_question = 0;
-      current_section++;
+    current_question = 0;
+    current_section++;
   }
 
-  // 4.0 Check if they are more sections in the exam paper
+  // 5.0 Check if they are more sections in the exam paper
   if (current_section >= num_sections) {
-      // 4.1 Save user inputes in a JSON File
-      createExamSummary();
-      location.href = "../Framework/test_summary.html";
-  } else{
-      // 4.2 if more questions available then display next question
-      displayQuestion();
+    // 5.1 Save user inputes in a JSON File
+    createExamSummary();
+    location.href = "../framework/test_summary.html";
+  } else {
+    // 5.2 if more questions available then display next question
+    displayQuestion();
   }
 }
 
 // record user_inputs (Chaitanya)
+<<<<<<< HEAD
 function recordUserInputs(){
     // Summary: Records all the user inputs by calling all the different types of questions.
     // para: None
     // return: None
+=======
+function recordUserInputs() {
+  // Summary:
+  // para:
+  // return:
+}
+>>>>>>> 140588352eddca03f83e16ce01451bea7be57db9
 
     let ans_submitted=[];
     let status="Pending";
@@ -218,9 +237,21 @@ function recordUserInputs(){
 // get user answers based on question type
 // Multiple Choice - Multiple Answers (Priyusha)
 function recordMCMA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Records all the answers of multiple choice entered by  the user
+  // para:None
+  // return:None
+  let checkbox=document.querySelectorAll("input[type=checkbox]:checked");
+  let checked_options=[];
+  try{
+    for(const i in checkbox){
+      check_box_value=checkbox[i].value;
+      if(typeof(check_box_value)!="undefined"){
+        checked_options.push(check_box_value);
+      }
+    }
+  } finally {
+    return checked_options;
+  }
 }
 
 // Fill in the blanks (Vedavyas)
@@ -235,24 +266,30 @@ function recordFITB() {
 
   // 2.0 Save the user inputs into an Array/List
   try {
-      for (const i in user_inputs) {
-          user_input = user_inputs[i].value;
-          if (typeof(user_input) != "undefined") {
-              answers.push(user_input);
-          }
+    for (const i in user_inputs) {
+      user_input = user_inputs[i].value;
+      if (typeof user_input != "undefined") {
+        answers.push(user_input);
       }
+    }
   } finally {
-      // 3.0 finally retuen the user inputs which contains string elements
-      return answers;
+    // 3.0 finally retuen the user inputs which contains string elements
+    return answers;
   }
-
 }
 
 // Short Answer (Amulya)
 function recordSA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: records all the short answers entered by the user.
+  // para: None
+  // return: None
+  let answer = "";
+  try {
+    var SA_input = document.getElementById("exampleFormControlTextarea1").value;
+    answer = SA_input;
+  } finally {
+    return answer;
+  }
 }
 
 // File Submission (Chaitanya)
@@ -264,16 +301,41 @@ function recordFS() {
 
 // evaluate user Answers (Priyusha)
 function evaluateUserAnswer(user_answers, actual_answers) {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Evaluates the user answers
+  // para:User entered answers and actual answers
+  // return:Answer is correct or wrong
+  for(const i in actual_answers) {
+    if(actual_answers[i]!==user_answers[i]){
+      return ("Wrong Answer");
+    }
+  }
+  return("Correct Answer");
 }
 
-// Show exam overview and highlight current question (optional)
+// Show exam overview and highlight current question (Vedavyas)
 function examOverview() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: displays exam overview
+  // para: None
+  // return: None
+
+  // 1.0 Get no of sections and no of rows
+  let num_sections = JSONpaper.sections.length;
+
+  // 2.0 generate exam overview html tags
+  let sections_overview = "";
+  for (let i = 1; i <= num_sections; i++) {
+    let num_questions = JSONpaper.sections[i - 1].questions.length;
+    let questions_html_tags = "";
+    for (let j = 1; j <= num_questions; j++) {
+      questions_html_tags += `<li class="py-1" id="sec-${i}-que-${j}">Question ${j}</li>`;
+    }
+    let questions_overview = `<ul class="px-1">${questions_html_tags}</ul>`;
+    sections_overview += `<li class="py-2"><span id="sec-${i}">Section ${i}</span>${questions_overview}</li>`;
+  }
+  let overview_html_tag = `<ol>${sections_overview}</ol>`;
+
+  // 3.0 Display exam overview
+  document.getElementById("exam-overview").innerHTML = overview_html_tag;
 }
 
 // generate exam summary json file (Optional)
