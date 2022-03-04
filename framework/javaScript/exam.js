@@ -154,28 +154,43 @@ function onNextClick() {
   // para: None
   // return: None
 
-  // 1.0 record user inputs in JSON format
+  // 1.0 Reset current_question color and countdown
+  let currrent_question_class =  `sec-${current_section+1}-que-${current_question+1}`
+  document.getElementById(currrent_question_class).style.color = "#FBF8F2";
+  clearInterval(timer);
+
+
+  // 2.0 record user inputs in JSON format
   recordUserInputs();
 
-  // 2.0 get current section and questions details
+  // 3.0 get current section and questions details
   num_questions = JSONpaper.sections[current_section].questions.length;
   num_sections = JSONpaper.sections.length;
   current_question = current_question + 1;
 
-  // 3.0 Check if they are more questions in the section
+  // 4.0 Check if they are more questions in the section
   if (current_question >= num_questions) {
     current_question = 0;
     current_section++;
   }
 
-  // 4.0 Check if they are more sections in the exam paper
+  // 5.0 Check if they are more sections in the exam paper
   if (current_section >= num_sections) {
+<<<<<<< HEAD
+      // 5.1 Save user inputes in a JSON File
+      createExamSummary();
+      location.href = "../Framework/test_summary.html";
+  } else{
+      // 5.2 if more questions available then display next question
+      displayQuestion();
+=======
     // 4.1 Save user inputes in a JSON File
     createExamSummary();
     location.href = "../Framework/test_summary.html";
   } else {
     // 4.2 if more questions available then display next question
     displayQuestion();
+>>>>>>> 2e0df19aff4f616a581efc6f7d0d6b34a1640c63
   }
 }
 
@@ -246,11 +261,31 @@ function evaluateUserAnswer(user_answers, actual_answers) {
   // return:
 }
 
-// Show exam overview and highlight current question (optional)
+// Show exam overview and highlight current question (Vedavyas)
 function examOverview() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: displays exam overview
+  // para: None
+  // return: None
+
+  // 1.0 Get no of sections and no of rows
+  let num_sections = JSONpaper.sections.length;
+
+  // 2.0 generate exam overview html tags
+  let sections_overview = ""
+  for (let i = 1; i <= num_sections; i++) {
+      let num_questions = JSONpaper.sections[i-1].questions.length;
+      let questions_html_tags = "";
+      for (let j = 1; j <= num_questions; j++) {
+          questions_html_tags += `<li class="py-1" id="sec-${i}-que-${j}">Question ${j}</li>`;
+      }
+      let questions_overview = `<ul class="px-1">${questions_html_tags}</ul>`;
+      sections_overview += `<li class="py-2"><span id="sec-${i}">Section ${i}</span>${questions_overview}</li>`;
+  }
+  let overview_html_tag = `<ol>${sections_overview}</ol>`
+
+  // 3.0 Display exam overview
+  document.getElementById("exam-overview").innerHTML = overview_html_tag;
+
 }
 
 // generate exam summary json file (Optional)
