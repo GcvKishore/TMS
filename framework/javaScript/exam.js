@@ -186,18 +186,11 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
-<<<<<<< HEAD
 function recordUserInputs(){
     // Summary:
     // para:
     // return:
 
-=======
-function recordUserInputs() {
-  // Summary:
-  // para:
-  // return:
->>>>>>> 6fbf96428f729d32dacea51edefc448c7cd097e9
 }
 
 // get user answers based on question type
