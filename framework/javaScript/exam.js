@@ -29,7 +29,7 @@ function displayQuestion() {
   // return: None
   document.getElementById("question-text").innerHTML = "";
   document.getElementById("answer-input-options").innerHTML = "";
-
+  start_time_stamp = new Date().toLocaleTimeString();
   let section = JSONpaper.sections[current_section];
   let question = section.questions[current_question];
   current_question_type = question.questionType;
@@ -186,11 +186,10 @@ function onNextClick() {
 }
 
 // record user_inputs (Chaitanya)
-function recordUserInputs(){
-    // Summary:
-    // para:
-    // return:
-
+function recordUserInputs() {
+  // Summary:
+  // para:
+  // return:
 }
 
 // get user answers based on question type
