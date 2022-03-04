@@ -177,9 +177,10 @@ function onNextClick() {
 
 // record user_inputs (Chaitanya)
 function recordUserInputs(){
-    // Summary:
-    // para:
-    // return:
+    // Summary: Records all the user inputs by calling all the different types of questions.
+    // para: None
+    // return: None
+
     let ans_submitted=[];
     let status="Pending";
   switch (current_question_type) {
