@@ -4,7 +4,7 @@
       "questions": [
         {
           "questionType": "Multiple Choice - Multiple Answers",
-          "maxTime": 120,
+          "maxTime": 90,
           "questionDetails": {
             "questionText": "Each employee of a certain company is in either Department X or Department Y, and there are more than twice as many employees in Department X as in Department Y. The average (arithmetic mean) salary is $25,000 for the employees in Department X and $35,000 for the employees in Department Y. Which of the following amounts could be the average salary for all of the employees of the company?",
             "options": [
@@ -26,10 +26,10 @@
         },
         {
           "questionType": "Fill in the blanks",
-          "maxTime": 240,
+          "maxTime": 90,
           "questionDetails": {
             "questionText": "Throughout 2021 and 2022, Russian military buildup on the border of Ukraine has escalated tensions between the two countries and strained bilateral relations, with the United States sending a strong message that invasion would be met with dire consequences for Russia's economy.",
-            "answers": [
+            "answer": [
               2021,
               2022,
               "Ukraine",
