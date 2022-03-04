@@ -1,6 +1,6 @@
 //Load json -- Load json and store it in a global variable ==> exam_details (Chaitanya)
 let JSONpaper = $.getJSON({
-    url : "../framework/sample_test.json",
+    url : "../sampleData/sample_test.json",
     async: false,
   });
 
@@ -13,6 +13,7 @@ let current_question_details;
 let current_question_type;
 let user_inputs = [];
 
+JSONpaper = JSON.parse(JSONpaper.responseText);
 startExam();
 
 // Start exam (Chaitanya)
@@ -64,11 +65,13 @@ function generateSA(){
 
 // File Submission (Chaitanya)
 function generateFU(){
-    // Summary:
-    // para:
-    // return:
-
-}
+    //  Represents the code for uploading a file
+    
+    let quesText = questionDetails.questionText;
+    document.getElementById("ques").innerHTML = quesText;
+    input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
+    document.getElementById("answer").innerHTML = input_tag;
+  }
 
 // on next button click
 // record user_inputs (Vedavyas)
@@ -85,7 +88,6 @@ function recordUserInputs(){
     // Summary:
     // para:
     // return:
-
 }
 
 
@@ -119,7 +121,15 @@ function recordFS(){
     // Summary:
     // para:
     // return:
-
+    const fileInput = document.getElementById('input');
+    const button = document.querySelector('button');
+    button.onclick = () => {
+        fileInput.click();
+}
+    fileInput.onchange = () => {
+        const selectedFiles = [...fileInput.files];
+        console.log(selectedFiles);
+}
 }
 
 // evaluate user Answers (Priyusha)
