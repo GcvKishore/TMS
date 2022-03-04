@@ -82,9 +82,19 @@ function generateFITB() {
 
 // Short Answer (Amulya)
 function generateSA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary: In this we have generated the current question and answer area.
+  // para: None
+  // return: None
+  let quesText = current_question_details.questionText;
+  document.getElementById("question-text").innerHTML = quesText;
+  let maxchars = current_question_details.MaxWords * 6;
+  input_tag = `<div class="mb-3">
+    <textarea class="form-control"
+    id="exampleFormControlTextarea1"
+    rows="6"
+    maxlength="${maxchars}">Type your answer here</textarea>
+  </div> `;
+  document.getElementById("answer-input-options").innerHTML = input_tag;
 }
 
 // File Submission (Chaitanya)
