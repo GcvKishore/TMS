@@ -13,6 +13,7 @@ let end_time_stamp;
 let current_question_details;
 let current_question_type;
 let user_inputs = [];
+let timer;
 
 startExam();
 
@@ -68,7 +69,7 @@ function startCountDown(max_time) {
   // para:Implemented timer
   // return:None
   var timing = max_time;
-  var timer = setInterval(function () {
+  timer = setInterval(function () {
     if (timing <= 0.0) {
       clearInterval(timer);
       document.getElementById("next_button").click();
@@ -195,9 +196,21 @@ function recordUserInputs() {
 // get user answers based on question type
 // Multiple Choice - Multiple Answers (Priyusha)
 function recordMCMA() {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Records all the answers of multiple choice entered by  the user
+  // para:None
+  // return:None
+  let checkbox=document.querySelectorAll("input[type=checkbox]:checked");
+  let checked_options=[];
+  try{
+    for(const i in checkbox){
+      check_box_value=checkbox[i].value;
+      if(typeof(check_box_value)!="undefined"){
+        checked_options.push(check_box_value);
+      }
+    }
+  } finally {
+    return checked_options;
+  }
 }
 
 // Fill in the blanks (Vedavyas)
@@ -247,9 +260,15 @@ function recordFS() {
 
 // evaluate user Answers (Priyusha)
 function evaluateUserAnswer(user_answers, actual_answers) {
-  // Summary:
-  // para:
-  // return:
+  // Summary:Evaluates the user answers
+  // para:User entered answers and actual answers
+  // return:Answer is correct or wrong
+  for(const i in actual_answers) {
+    if(actual_answers[i]!==user_answers[i]){
+      return ("Wrong Answer");
+    }
+  }
+  return("Correct Answer");
 }
 
 // Show exam overview and highlight current question (Vedavyas)
