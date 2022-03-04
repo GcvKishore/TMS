@@ -88,7 +88,7 @@ function generateMCMA() {
   // Summary:Generates multiplechoice questions  and answers
   // para:None
   // return:None
-  let quesText = current_question_details.question;
+  let quesText = current_question_details.questionText;
   document.getElementById("question-text").innerHTML = quesText;
   let numOptions = current_question_details.options.length;
   let options = current_question_details.options;
