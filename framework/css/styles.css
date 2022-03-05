@@ -160,4 +160,21 @@ hr {
     background-color: #FABC75;
 }
 
+.result-pending{
+    color: Orange;
+    font-size: bold;
+}
+
+.answer-correct{
+color: green;
+}
+
+.answer-wrong{
+    color: red;
+}
+
+.answer-pending{
+    color: Orange;
+}
+
 /* ################################## ID SELECTION ################################## */
