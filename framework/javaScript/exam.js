@@ -38,8 +38,8 @@ function displayQuestion() {
     document.getElementById("current-question").innerHTML = current_question + 1;
     document.getElementById("question-type-title").innerHTML = current_question_type;
 
-    let currrent_question_class = `sec-${current_section + 1}-que-${current_question + 1}`;
-    document.getElementById(currrent_question_class).style.color = "#FABC75";
+    let current_question_class = `sec-${current_section + 1}-que-${current_question + 1}`;
+    document.getElementById(current_question_class).style.color = "#FABC75";
 
     switch (current_question_type) {
         case "Multiple Choice - Multiple Answers":
@@ -60,9 +60,11 @@ function displayQuestion() {
 
 
 function startCountDown(max_time) {
-    var timing = max_time;
-    timer = setInterval(function() {
+    let timing = max_time;
+    timer = setInterval(function () {
 
+        let mins;
+        let secs;
         if (timing <= 0) {
             clearInterval(timer);
             document.getElementById("next-btn").click();
@@ -78,15 +80,14 @@ function startCountDown(max_time) {
 
 
 function generateMCMA() {
-    let question_text = current_question_details.questionText;
-    document.getElementById("question-text").innerHTML = question_text;
+    document.getElementById("question-text").innerHTML = current_question_details.questionText;
 
     let num_options = current_question_details.options.length;
     let options = current_question_details.options;
     let input_tag = "";
 
     for (var i = 0; i < num_options; i++) {
-        input_tag += `<div class="form-check"><label><input class="form-check-input" type="checkbox" value="${String.fromCharCode(97+i)}" id="defaultCheck${i}">${options[i]}</label></div>`;
+        input_tag += `<div class="form-check"><label><input class="form-check-input" type="checkbox" value="${String.fromCharCode(97 + i)}" id="defaultCheck${i}">${options[i]}</label></div>`;
     }
 
     document.getElementById("answer-input-options").innerHTML = input_tag;
@@ -107,8 +108,7 @@ function generateFITB() {
 
 
 function generateSA() {
-    let question_text = current_question_details.questionText;
-    document.getElementById("question-text").innerHTML = question_text;
+    document.getElementById("question-text").innerHTML = current_question_details.questionText;
 
     let maxchars = current_question_details.MaxWords * 6;
     let input_tag = "";
@@ -120,8 +120,7 @@ function generateSA() {
 
 
 function generateFU() {
-    let question_text = current_question_details.questionText;
-    document.getElementById("question-text").innerHTML = question_text;
+    document.getElementById("question-text").innerHTML = current_question_details.questionText;
 
     input_tag = `<div class="row upload_box align-items-center"> <div class="col text-center"><input type="file" id="myfile" name="myfile"></div></div> `;
     document.getElementById("answer-input-options").innerHTML = input_tag;
@@ -134,8 +133,8 @@ function onNextClick() {
     recordUserInputs();
     resetDisplayText();
 
-    num_questions = exam_paper.sections[current_section].questions.length;
-    num_sections = exam_paper.sections.length;
+    let num_questions = exam_paper.sections[current_section].questions.length;
+    let num_sections = exam_paper.sections.length;
     current_question = current_question + 1;
 
     if (current_question >= num_questions) {
@@ -153,8 +152,8 @@ function onNextClick() {
 
 
 function resetDisplayText() {
-    let currrent_question_class = `sec-${current_section + 1}-que-${current_question + 1}`;
-    document.getElementById(currrent_question_class).style.color = "#FBF8F2";
+    let current_question_class = `sec-${current_section + 1}-que-${current_question + 1}`;
+    document.getElementById(current_question_class).style.color = "#FBF8F2";
 
     document.getElementById("countdown").innerHTML = "";
     document.getElementById("question-text").innerHTML = "";
@@ -190,7 +189,7 @@ function recordUserInputs() {
     let evaluation_type = current_question_details.evaluationType;
     let correct_answer = current_question_details.answer;
 
-    if (evaluation_type == "auto") {
+    if (evaluation_type === "auto") {
         status = evaluateUserAnswer(submitted_answer, correct_answer);
     }
 
@@ -212,6 +211,7 @@ function recordMCMA() {
     let checkbox = document.querySelectorAll("input[type=checkbox]:checked");
     let checked_options = [];
 
+    let check_box_value;
     try {
         for (const i in checkbox) {
             check_box_value = checkbox[i].value;
@@ -229,6 +229,7 @@ function recordFITB() {
     let user_exam_inputs = document.querySelectorAll(".FIB");
     let answers = [];
 
+    let user_input;
     try {
         for (const i in user_exam_inputs) {
             user_input = user_exam_inputs[i].value;
@@ -246,8 +247,7 @@ function recordSA() {
     let answer = "";
 
     try {
-        var SA_input = document.getElementById("exampleFormControlTextarea1").value;
-        answer = SA_input;
+        answer = document.getElementById("exampleFormControlTextarea1").value;
     } finally {
         return answer;
     }
@@ -257,8 +257,7 @@ function recordSA() {
 function recordFS() {
     let answer = "";
     try {
-        let data = document.getElementById("myfile").value;
-        answer = data;
+        answer = document.getElementById("myfile").value;
     } finally {
         return answer;
     }
@@ -268,7 +267,7 @@ function recordFS() {
 function evaluateUserAnswer(submitted_answer, correct_answer) {
     for (let i = 0; i < correct_answer.length; i++) {
         let result = String(correct_answer[i]).localeCompare(String(submitted_answer[i]));
-        if (result != 0) {
+        if (result !== 0) {
             return ("Wrong Answer");
         }
     }
@@ -293,8 +292,7 @@ function examOverview() {
         sections_overview += `<li class="py-2"><span id="sec-${i}">Section ${i}</span>${questions_overview}</li>`;
     }
 
-    let overview_html_tag = `<ol>${sections_overview}</ol>`;
-    document.getElementById("exam-overview").innerHTML = overview_html_tag;
+    document.getElementById("exam-overview").innerHTML = `<ol>${sections_overview}</ol>`;
 }
 
 
