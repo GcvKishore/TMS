@@ -6,6 +6,7 @@ let current_question_details;
 let current_question_type;
 let user_exam_inputs = [];
 let timer;
+let timeElapsed = 0;
 let exam_paper = $.getJSON({
     url: "../framework/sampleData/sample_test.json",
     async: false,
@@ -71,6 +72,7 @@ function startCountDown(max_time) {
             document.getElementById("countdown").innerHTML = `${mins}:${secs}`;
         }
         timing--;
+        timeElapsed++;
     }, 1000);
 }
 
@@ -162,6 +164,7 @@ function resetDisplayText() {
     document.getElementById("question-type-title").innerHTML = "";
 
     clearInterval(timer);
+    timeElapsed = 0;
 }
 
 
@@ -197,7 +200,8 @@ function recordUserInputs() {
         answerSubmitted: submitted_answer,
         resultStatus: status,
         questionStartTimestamp: question_start_timestamp,
-        questionEndTimestamp: question_end_timestamp
+        questionEndTimestamp: question_end_timestamp,
+        timeElapsed: `${timeElapsed}'s`
     };
 
     user_exam_inputs.push(current_question_summary);
