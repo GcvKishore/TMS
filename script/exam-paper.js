@@ -8,7 +8,7 @@ let user_exam_inputs = [];
 let timer;
 let timeElapsed = 0;
 let exam_paper = $.getJSON({
-  url: "../docs/exam-paper.json",
+  url: "docs/exam-paper.json",
   async: false,
 });
 exam_paper = JSON.parse(exam_paper.responseText);
@@ -140,7 +140,7 @@ function onNextClick() {
 
   if (current_section >= num_sections) {
     saveExamSummary();
-    location.href = "../exam-summary.html";
+    location.href = "exam-summary.html";
   } else {
     displayQuestion();
   }
