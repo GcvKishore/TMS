@@ -19,7 +19,7 @@ function onTestSummaryBtnClick() {
 function generateExamSummary() {
     let result_summary = createResultsSummaryJSON();
     createPageTags();
-    displayResulatSummary(result_summary);
+    displayResultSummary(result_summary);
 }
 
 function createResultsSummaryJSON() {
@@ -47,7 +47,7 @@ function createResultsSummaryJSON() {
 }
 
 function createPageTags() {
-    let overview_html_tag = `
+    document.getElementById("overview").innerHTML = `
                     <div class="row justify-content-center">
                         <div class="col-8 text-center"><h1>Exam Summary</h1><hr><h3 class="" id="result-summary-text"></h3>
                             <table class="table"><thead class="thead-dark header">
@@ -56,23 +56,22 @@ function createPageTags() {
                                 <tbody id="exam-summary"></tbody>
                             </table>
                         </div>
-                    </div>`
-    document.getElementById("overview").innerHTML = overview_html_tag;
+                    </div>`;
 }
 
-function displayResulatSummary(result_summary) {
+function displayResultSummary(result_summary) {
 
-    results_html_tags = ""
+    let results_html_tags = ""
 
     for (let i in result_summary) {
         i = parseInt(i)
         let current_section = i + 1;
         for (let j in result_summary[i]) {
             j = parseInt(j)
-            var current_question = j + 1;
-            var current_question_result = result_summary[i][j].result;
-            var current_question_timeelapsed = result_summary[i][j].timeElapsed;
-            // console.log(`section-${current_section} question-${current_question} ${current_question_result} ${current_question_timeelapsed}`);
+            const current_question = j + 1;
+            const current_question_result = result_summary[i][j].result;
+            const current_question_time_elapsed = result_summary[i][j].timeElapsed;
+            // console.log(`section-${current_section} question-${current_question} ${current_question_result} ${current_question_time_elapsed}`);
 
             total_points++;
             let td_class = '<td class="answer-wrong">';
@@ -90,7 +89,7 @@ function displayResulatSummary(result_summary) {
                             <th scope="row">section ${current_section}</th>
                             <td>question ${current_question}</td>
                             ${td_class}${current_question_result}</td>
-                            <td>${current_question_timeelapsed}</td>
+                            <td>${current_question_time_elapsed}</td>
                         </tr>`
         }
     }
