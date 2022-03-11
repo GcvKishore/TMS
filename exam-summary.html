@@ -1,78 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <title>TUTEST</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="icon" href="../images/favicon.ico" />
-  </head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/favicon.ico">
+</head>
 
-  <body>
-    <div class="container-fluid">
-      <!-- Top Nav Bar -->
-      <div class="row head">
+<body>
+<div class="container-fluid">
+    <!-- Top Nav Bar -->
+    <div class="row head">
         <div class="col-4 col-xs-4 col-sm-3 col-md-3 col-lg-2 col-xl-2">
-          <div class="row align-items-center my_logo_opposite">
-            <div class="col text-center">
-              <p>TUTEST</p>
+            <div class="row align-items-center my_logo_opposite">
+                <div class="col text-center">
+                    <p>TUTEST</p>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 
-      <!-- Overview -->
-      <div id="overview">
-        <center>
-          <img
-            src="../images/green-tick.png"
-            alt="Green Tick PNG"
-            width="250vw"
-            height="250vw"
-          />
-        </center>
+    <!-- Overview -->
+    <div id="overview">
+        <center><img src="images/green-tick.png" alt="Green Tick PNG" width="250vw" height="250vw"></center>
 
         <div class="row justify-content-center">
-          <div class="col-md-8">
-            <div class="row text-center">
-              <h1>Congratulations</h1>
-              <h5>Your exam has been submitted successfully!!!</h5>
+            <div class="col-md-8">
+                <div class="row text-center">
+                    <h1>Congratulations</h1>
+                    <h5>Your exam has been submitted successfully!!!</h5>
+                </div>
             </div>
-          </div>
         </div>
 
-        <hr />
+        <hr>
 
         <!-- Test Summary -->
         <div class="row justify-content-center">
-          <div class="col-md-3 col-lg-2 text-center">
-            <button
-              class="btn"
-              onClick="onTestSummaryBtnClick()"
-              id="test-summary-btn"
-              type="submit"
-              name="button"
-            >
-              TEST SUMMARY
-            </button>
-          </div>
+            <div class="col-md-3 col-lg-2 text-center">
+                <button
+                        class="btn"
+                        onClick="onTestSummaryBtnClick()"
+                        id="test-summary-btn"
+                        type="submit"
+                        name="button"
+                >
+                    TEST SUMMARY
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="row footer"></div>
     </div>
-    <script
-      src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../script/exam-summary.js" charset="utf-8"></script>
-  </body>
+    <div class="row footer"></div>
+</div>
+<script
+        src=" https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"
+></script>
+<script src="script/exam-summary.js" charset="utf-8"></script>
+</body>
 </html>

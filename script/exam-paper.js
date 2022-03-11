@@ -257,8 +257,8 @@ function recordFS() {
 
 function evaluateUserAnswer(submitted_answer, correct_answer) {
   for (let i = 0; i < correct_answer.length; i++) {
-    let result = String(correct_answer[i]).localeCompare(
-      String(submitted_answer[i])
+    let result = String(correct_answer[i]).toLowerCase().localeCompare(
+      String(submitted_answer[i]).toLowerCase()
     );
     if (result != 0) {
       return "Wrong Answer";
