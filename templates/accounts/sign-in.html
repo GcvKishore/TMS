@@ -1,0 +1,62 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+    Tutest - Sign in
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .sign-in-area {
+            height: 80vh;
+        }
+
+        .sign-in-box {
+            width: 375px;
+        }
+
+        .btn-primary {
+            color: #FFFAE0;
+            border-color: #3B4D5E;
+            background-color: #3B4D5E;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            color: #3B4D5E;
+            border-color: #FDC088;
+            background-color: #FDC088;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'account:sign-in' %}" method="post">
+        {% csrf_token %}
+        <div class="row sign-in-area justify-content-center align-content-center py-5">
+            <div class="col-md-5 text-center sign-in-box">
+                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <div class="form-floating">
+                    <input type="text" name="username" class="form-control" id="floatingInput"
+                           placeholder="name@example.com" autocomplete="username" required>
+                    <label for="floatingInput">username</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" name="password" class="form-control" id="floatingPassword"
+                           placeholder="Password" required autocomplete="password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+
+                <div class="checkbox mt-3 mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+            </div>
+        </div>
+
+    </form>
+
+{% endblock %}
