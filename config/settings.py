@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY', default='abc')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fsd-tutest.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'vedvund-tutest.herokuapp.com']
 
 # Application definition
 
@@ -58,8 +58,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / "templates"],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -118,6 +118,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
@@ -182,3 +185,7 @@ LOGGING = {
 # heroku settings
 db_from_env = dj_database_url.config(conn_max_age=0, ssl_require=False)
 django_on_heroku.settings(locals(), staticfiles=False)
+
+LOGIN_URL = 'accounts:sign-in'
+LOGIN_REDIRECT_URL = 'website:index'
+LOGOUT_REDIRECT_URL = 'website:index'
