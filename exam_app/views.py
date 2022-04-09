@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
 from .models import MakeExam, MakeQuestion, Option, Answer
 
+# additional modules
+from datetime import date
+
 
 # Create your views here.
 def createExam(request):

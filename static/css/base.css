@@ -79,6 +79,14 @@ footer {
 }
 
 
+.btn-primary:focus {
+    color: #3B4D5E;
+    border-color: #3B4D5E;
+    background-color: #FDC088;
+    font-weight: bold;
+}
+
+
 .dropdown-menu {
     min-width: 11rem;
 }

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block body %}
@@ -13,7 +14,6 @@
         <hr>
         <form action="{% url 'exam_app:add-question' exam_id %}" method="post">
             {% csrf_token %}
-            {{ make_question_form }}
             <div class="py-3">
                 <label class="form-label" for="questionType">Choose question type:</label>
                 <select name="question_type" id="questionType" class="form-select-sm">
@@ -43,6 +43,11 @@
                     <button class="btn btn-primary" type="submit" id="generateBtn" name="btn_action" value="save">
                         Save & Exit
                     </button>
+                    <a href="{% url 'exam_app:edit-exam' exam_id %}">
+                        <button class="btn btn-primary ms-3" type="button" name="btn_action" value="exit">
+                            Exit
+                        </button>
+                    </a>
                 </div>
             </div>
         </form>
