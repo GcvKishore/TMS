@@ -1,0 +1,50 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        <h4><strong>Question Details</strong></h4>
+        <hr>
+        <form action="{% url 'exam_app:add-question' exam_id %}" method="post">
+            {% csrf_token %}
+            {{ make_question_form }}
+            <div class="py-3">
+                <label class="form-label" for="questionType">Choose question type:</label>
+                <select name="question_type" id="questionType" class="form-select-sm">
+                    <option value="Multiple Choice - Multiple Answers">Multiple Choice - Multiple Answers</option>
+                    <option value="Fill In The Blanks">Fill In The Blanks</option>
+                    <option value="Short Answers">Short Answers</option>
+                    <option value="File Upload">File Upload</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" type="button" id="generateBtn" onclick="generateFormat()">Generate fields
+            </button>
+            <hr>
+            <div class="
+            " id="questionArea">
+            </div>
+            <div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary" type="submit" disabled id="generateBtn">Previous</button>
+                    <button class="btn btn-primary mx-3" type="submit" id="generateBtn" name="btn_action" value="add">
+                        Add Next
+                    </button>
+                </div>
+                <div class="col text-end">
+                    <button class="btn btn-primary" type="submit" id="generateBtn" name="btn_action" value="save">
+                        Save & Exit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
