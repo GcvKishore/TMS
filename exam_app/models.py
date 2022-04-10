@@ -20,8 +20,8 @@ class MakeQuestion(models.Model):
     question_text = models.TextField()
     question_type = models.CharField(max_length=64)
     max_time = models.DurationField(blank=True, null=True)
-    max_points = models.IntegerField(blank=True, null=True)
-    difficulty_level = models.CharField(max_length=64)
+    max_points = models.IntegerField(blank=True, default=1)
+    difficulty_level = models.CharField(max_length=64, blank=True, default="")
     exam_model = models.ManyToManyField('MakeExam')
 
     def __str__(self):
