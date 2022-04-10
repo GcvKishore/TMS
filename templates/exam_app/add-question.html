@@ -17,6 +17,7 @@
             <div class="py-3">
                 <label class="form-label" for="questionType">Choose question type:</label>
                 <select name="question_type" id="questionType" class="form-select-sm">
+                    <option value="none" selected disabled hidden>Select type</option>
                     <option value="Multiple Choice - Multiple Answers">Multiple Choice - Multiple Answers</option>
                     <option value="Fill In The Blanks">Fill In The Blanks</option>
                     <option value="Short Answers">Short Answers</option>
@@ -53,3 +54,7 @@
         </form>
     </div>
 {% endblock %}
+{% block script %}
+    <script src="{% static 'js/add-question.js' %}"></script>
+{% endblock %}
+

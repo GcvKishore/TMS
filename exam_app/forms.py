@@ -24,7 +24,7 @@ class MakeQuestionForm(ModelForm):
     question_type = forms.CharField(max_length=64)
     max_time = forms.DurationField(required=False)
     max_points = forms.IntegerField(required=False)
-    difficulty_level = forms.CharField(max_length=64)
+    difficulty_level = forms.CharField(max_length=64, required=False)
 
     class Meta:
         model = MakeQuestion

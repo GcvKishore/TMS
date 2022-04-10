@@ -84,7 +84,9 @@
                         <td>{{ question.max_time }}</td>
                         <td>{{ question.difficulty_level }}</td>
                         <td>
-                            <button class="btn btn-primary" type="button" disabled>view/edit</button>
+                            <a href="{% url 'exam_app:edit-question' exam.id question.id %}">
+                                <button class="btn btn-primary" type="button">view/edit</button>
+                            </a>
                         </td>
                     </tr>
                 {% empty %}
