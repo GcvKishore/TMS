@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
 from .models import MakeExam, MakeQuestion, Option, Answer
 
+# additional modules
+from datetime import date
+
 
 # Create your views here.
 def createExam(request):
@@ -29,6 +32,25 @@ def editExam(request, exam_id):
     })
 
 
+def addOptionsAnswers(request, question):
+    option_count = 0
+    answer_count = 0
+    for field in request.POST:
+        if 'option' in field:
+            option_count += 1
+            text = request.POST[field]
+            option = Option.objects.create(option=text, question=question, index=option_count)
+            option.save()
+        elif 'answer' in field:
+            answer_count += 1
+            text = request.POST[field]
+            if question.question_type == 'Multiple Choice - Multiple Answers':
+                correct_option = request.POST[field]
+                text = request.POST[correct_option]
+            answer = Answer.objects.create(answer=text, question=question, index=answer_count)
+            answer.save()
+
+
 def addQuestion(request, exam_id):
     if request.method == 'POST':
         btn_action = request.POST['btn_action']
@@ -37,19 +59,7 @@ def addQuestion(request, exam_id):
             question = make_question_form.save()
             question.exam_model.add(exam_id)
 
-            option_count = 0
-            answer_count = 0
-            for field in request.POST:
-                if 'option' in field:
-                    option_count += 1
-                    text = request.POST[field]
-                    option = Option.objects.create(option=text, question=question, index=option_count)
-                    option.save()
-                elif 'answer' in field:
-                    answer_count += 1
-                    text = request.POST[field]
-                    answer = Answer.objects.create(answer=text, question=question, index=answer_count)
-                    answer.save()
+            addOptionsAnswers(request, question)
 
             if btn_action == 'add':
                 return redirect('exam_app:add-question', exam_id)
@@ -72,4 +82,36 @@ def viewAllExamsInstructors(request):
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
+    })
+
+
+def EditQuestion(request, exam_id, question_id):
+    if request.method == 'POST':
+        question_model = MakeQuestion.objects.get(id=question_id)
+        make_question_form = MakeQuestionForm(request.POST, instance=question_model)
+        if make_question_form.is_valid():
+            question = make_question_form.save()
+            question.exam_model.add(exam_id)
+            Option.objects.filter(question=question).delete()
+            Answer.objects.filter(question=question).delete()
+            print("Passed ")
+            addOptionsAnswers(request, question)
+            print("success")
+        print("Failed")
+    # End of post if exists
+
+    question = MakeQuestion.objects.get(id=question_id)
+    option_objects = Option.objects.filter(question=question)
+    answer_objects = Answer.objects.filter(question=question)
+    options = []
+    answers = []
+    for option in option_objects:
+        options.append(option.option)
+    for answer in answer_objects:
+        answers.append(answer.answer)
+    return render(request, 'exam_app/edit-question.html', {
+        'exam_id': exam_id,
+        'question': question,
+        'options': options,
+        'answers': answers,
     })
