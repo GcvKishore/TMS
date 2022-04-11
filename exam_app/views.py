@@ -36,17 +36,6 @@ def editExam(request, exam_id):
     })
 
 
-def deleteQuestion(request, exam_id):
-    exam = MakeExam.objects.all(id=exam_id)
-    question = MakeQuestion.objects.filter(exam_model=exam).delete()
-    questions_list = MakeQuestion.objects.filter(exam_model_id=exam_id)
-
-    return render(request, 'exam_app/edit-exam.html', {
-        'exam': exam,
-        'questions': questions_list
-    })
-
-
 def addOptionsAnswers(request, question):
     option_count = 0
     answer_count = 0
