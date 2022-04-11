@@ -9,7 +9,7 @@
 {% block body %}
     <div class="p-3">
         <h4><strong>List of all Exams</strong></h4>
-        <table class="table">
+        <table class="table align-middle">
             <thead class="thead-dark">
             <tr class="text-center">
                 <th scope="col">#</th>
@@ -36,8 +36,8 @@
                     <td>{{ exam.duration }}</td>
                     <td>Status</td>
                     <td>
-                        <a href="#">
-                            <button type="button" class="btn btn-primary">Start</button>
+                        <a href="{% url 'exam_app:view-exam' exam.id %}">
+                            <button type="button" class="btn btn-primary">View</button>
                         </a>
                     </td>
                     <td>

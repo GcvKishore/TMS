@@ -122,3 +122,10 @@ def viewAllExamsTutee(request):
     return render(request, 'exam_app/view-all-exams-tutee.html', {
         'exams': exams,
     })
+
+
+def viewExam(request, exam_id):
+    exam = MakeExam.objects.get(id=exam_id)
+    return render(request, 'exam_app/view-exam.html', {
+        'exam': exam,
+    })
