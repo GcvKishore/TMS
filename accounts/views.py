@@ -79,6 +79,3 @@ def instructorSignUp(request):
     else:
         form = SignUpForm()
         return render(request, 'accounts/instructor-sign-up.html')
-
-def signIn(request):
-    return None
