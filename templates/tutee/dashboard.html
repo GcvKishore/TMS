@@ -1,0 +1,21 @@
+{% extends 'instructor/base.html' %}
+
+{% block title %}
+    Tutest - Dashboard
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="py-3 px-5">
+        <h4><strong>Hi... {{ user.first_name }}</strong></h4>
+    </div>
+    <hr>
+    <div class="p-5">
+        <a href="#">
+            <button class="btn btn-primary btn-lg" type="button" name="btn_action" value="">View Exams</button>
+        </a>
+    </div>
+    <hr>
+{% endblock %}

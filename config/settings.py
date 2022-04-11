@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'website',
     'accounts',
     'instructor',
-    'exam_app'
+    'exam_app',
+    'tutee',
 ]
 
 MIDDLEWARE = [
