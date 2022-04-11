@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
-from .models import MakeExam, MakeQuestion, Option, Answer
+from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
+    UserAnswerFileUpload, UserAnswerTextInput
 
 # additional modules
 from datetime import date
@@ -128,4 +129,39 @@ def viewExam(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     return render(request, 'exam_app/view-exam.html', {
         'exam': exam,
+    })
+
+
+def generateFITB(question_text, answers):
+    text = question_text
+    for answer in answers:
+        blank = "__________"
+        text = text.replace(answer.text, blank, 1)
+    return text
+
+
+def takeExam(request, exam_id, question_index):
+    # Register user to the exams list
+    username = request.user.username
+    exam = MakeExam.objects.get(id=exam_id)
+    status = "Ongoing"
+    UserExamDetails.objects.create(username=username, exam=exam, status=status).save()
+
+    # get exam object and linked questions(sorted)
+    questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+    question = questions[question_index]
+
+    # extract question details
+    question_text = question.question_text
+    options = Option.objects.filter(question=question.id)
+    answers = Answer.objects.filter(question=question.id)
+
+    if question.question_type == "Fill In The Blanks":
+        question_text = generateFITB(question.question_text, answers)
+    return render(request, 'exam_app/takeExam.html', {
+        'question': question,
+        'question_text': question_text,
+        'num_questions': len(questions),
+        'options': options,
+        'question_index': question_index,
     })
