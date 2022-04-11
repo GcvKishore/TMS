@@ -23,11 +23,26 @@ def createExam(request):
 
 
 def editExam(request, exam_id):
+    if request.method == 'POST':
+        delete_question_id = request.POST['delete_question']
+        MakeQuestion.objects.get(id = delete_question_id).delete()
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
+    
 
     return render(request, 'exam_app/edit-exam.html', {
         'exam': exam_model,
+        'questions': questions_list
+    })
+
+
+def deleteQuestion(request, exam_id):
+    exam = MakeExam.objects.all(id=exam_id)
+    question = MakeQuestion.objects.filter(exam_model=exam).delete()
+    questions_list = MakeQuestion.objects.filter(exam_model_id=exam_id)
+
+    return render(request, 'exam_app/edit-exam.html', {
+        'exam': exam,
         'questions': questions_list
     })
 
@@ -79,6 +94,9 @@ def addQuestion(request, exam_id):
 
 
 def viewAllExamsInstructors(request):
+    if request.method == 'POST':
+        delete_exam = request.POST['delete_exam']
+        MakeExam.objects.get(id = delete_exam).delete()
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
