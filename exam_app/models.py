@@ -50,26 +50,26 @@ class UserExamDetails(models.Model):
     username = models.CharField(max_length=64)
     exam = models.ForeignKey('MakeExam', on_delete=models.CASCADE)
     status = models.CharField(max_length=64, blank=True)
-    result_status = models.CharField(max_length=64, blank=True)
-    overall_points = models.IntegerField(blank=True)
+    result_status = models.CharField(max_length=64, blank=True, null=True)
+    overall_points = models.IntegerField(blank=True, null=True)
     time_elapsed = models.DurationField(null=True)
 
 
 class UserQuestionDetails(models.Model):
     question = models.ForeignKey('MakeQuestion', on_delete=models.CASCADE)
     exam = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
-    points = models.IntegerField(blank=True)
-    evaluation_status = models.CharField(max_length=64, blank=True)
+    points = models.IntegerField(blank=True, null=True)
+    evaluation_status = models.CharField(max_length=64, blank=True, null=True)
     time_elapsed = models.DurationField(null=True)
 
 
 class UserAnswerTextInput(models.Model):
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
-    answer_text_input = models.TextField(blank=True)
-    index = models.IntegerField(blank=True)
+    answer_text_input = models.TextField(blank=True, null=True)
+    index = models.IntegerField(blank=True, null=True)
 
 
 class UserAnswerFileUpload(models.Model):
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
-    answer_text_input = models.TextField(blank=True)
-    index = models.IntegerField(blank=True)
+    answer_text_input = models.TextField(blank=True, null=True)
+    index = models.IntegerField(blank=True, null=True)

@@ -136,16 +136,51 @@ def generateFITB(question_text, answers):
     text = question_text
     for answer in answers:
         blank = "__________"
-        text = text.replace(answer.text, blank, 1)
+        text = text.replace(answer.answer, blank, 1)
     return text
 
 
 def takeExam(request, exam_id, question_index):
+    if request.method == 'POST':
+        username = request.user.username
+
+        questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+        question = questions[question_index]
+
+        exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+
+        UserQuestionDetails.objects.filter(question=question, exam=exam_details).delete()
+        question_details = UserQuestionDetails.objects.create(question=question, exam=exam_details)
+
+        count = 1
+        for user_input in request.POST:
+            if 'answer' in user_input:
+                count += 1
+                user_answer = request.POST[user_input]
+                print(user_answer)
+                UserAnswerTextInput.objects.filter(question=question_details, index=count).delete()
+                UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
+                                                   index=count)
+
+        btn_action = request.POST['btn_action']
+
+        if btn_action == 'next':
+            question_index += 1
+            return redirect('exam_app:takeExam', exam_id, question_index)
+        elif btn_action == 'previous':
+            question_index -= 1
+            return redirect('exam_app:takeExam', exam_id, question_index)
+        else:
+            return redirect('exam_app:exam-summary', exam_id)
+
     # Register user to the exams list
     username = request.user.username
     exam = MakeExam.objects.get(id=exam_id)
     status = "Ongoing"
-    UserExamDetails.objects.create(username=username, exam=exam, status=status).save()
+
+    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
+    if len(exam_details) == 0:
+        UserExamDetails.objects.create(username=username, exam=exam, status=status).save()
 
     # get exam object and linked questions(sorted)
     questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
@@ -158,10 +193,17 @@ def takeExam(request, exam_id, question_index):
 
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
+
     return render(request, 'exam_app/takeExam.html', {
+        'exam': exam,
         'question': question,
         'question_text': question_text,
-        'num_questions': len(questions),
+        'num_questions': len(questions) - 1,
         'options': options,
         'question_index': question_index,
+        'question_number': question_index + 1,
     })
+
+
+def examSummary(request, exam_id):
+    return render(request, 'exam_app/exam-summary.html')
