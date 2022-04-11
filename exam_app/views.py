@@ -115,3 +115,10 @@ def EditQuestion(request, exam_id, question_id):
         'options': options,
         'answers': answers,
     })
+
+
+def viewAllExamsTutee(request):
+    exams = MakeExam.objects.all()
+    return render(request, 'exam_app/view-all-exams-tutee.html', {
+        'exams': exams,
+    })

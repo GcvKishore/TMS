@@ -1,0 +1,54 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <h4><strong>List of all Exams</strong></h4>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Class/Level</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Status</th>
+                <th scope="col">Exam</th>
+                <th scope="col">Results</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exam in exams %}
+                <tr class="text-center">
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ exam.title }}</td>
+                    <td>{{ exam.subject }}</td>
+                    <td>{{ exam.level }}</td>
+                    <td>{{ exam.date }}</td>
+                    <td>{{ exam.time }}</td>
+                    <td>{{ exam.duration }}</td>
+                    <td>Status</td>
+                    <td>
+                        <a href="#">
+                            <button type="button" class="btn btn-primary">Start</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                            <button type="button" class="btn btn-primary" disabled>Show</button>
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
