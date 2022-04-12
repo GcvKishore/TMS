@@ -203,6 +203,7 @@ def takeExam(request, exam_id, question_index):
     now = datetime.now()
     if request.method == 'POST':
         username = request.user.username
+        btn_action = request.POST['btn_action']
 
         questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
         question = questions[question_index]
@@ -223,7 +224,12 @@ def takeExam(request, exam_id, question_index):
                 UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
                                                    index=count).save()
 
-        btn_action = request.POST['btn_action']
+            elif 'user-upload' in request.FILES:
+                count += 1
+                file2 = request.FILES["user-upload"]
+                UserAnswerFileUpload.objects.create(question=question_details,answer_text_input=file2,
+                                                        index=count).save()
+                    
 
         if btn_action == 'next':
             question_index += 1
@@ -316,8 +322,11 @@ def questionResult(request, exam_details_id, question_details):
 
     user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
 
+    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details)
+
     return render(request, 'exam_app/question-result-details.html', {
         'question': question,
         'user_inputs': user_inputs,
+        'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
     })

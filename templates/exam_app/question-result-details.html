@@ -16,6 +16,9 @@
             {% for user_input in user_inputs %}
                 <li>{{ user_input.answer_text_input }}</li>
             {% endfor %}
+            {% for user_upload in user_uploads %}
+                <li>{{ user_upload.answer_text_input }}</li>
+            {% endfor %}
         </ul>
         <div class="text-end">
             <a href="{% url 'exam_app:exam-result' exam_details_id %}">

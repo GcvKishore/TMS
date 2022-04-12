@@ -77,7 +77,7 @@ class UserAnswerTextInput(models.Model):
 
 class UserAnswerFileUpload(models.Model):
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
-    answer_text_input = models.TextField(blank=True, null=True)
+    answer_text_input = models.FileField(null=True)
     index = models.IntegerField(blank=True, null=True)
 
 
