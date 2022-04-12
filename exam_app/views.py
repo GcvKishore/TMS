@@ -15,9 +15,27 @@ def createExam(request):
             exam_id = exam.id
             return redirect('exam_app:edit-exam', exam_id)
         else:
-            return render(request, 'exam_app/create-exam.html', {
-                'error_message': "error occurred"
-            })
+            content = { 
+                'title': request.POST['title'],
+                'subject': request.POST['subject'],
+                'level': request.POST['level'],
+                'date': request.POST['date'],
+                'time': request.POST['time'],
+                'duration': request.POST['duration'],
+                'min_pass_points': request.POST['min_pass_points'],
+                'title_error':'',
+                'subject_error':'',
+                'level_error':'',
+                'date_error':'',
+                'time_error':'',
+                'duration_error':'',
+                'min_pass_points_error':'',
+            }
+
+            for error in make_exam_form.errors:
+                label = error + '_error'
+                content[label] = make_exam_form.errors[error]
+            return render(request, 'exam_app/create-exam.html',content)
     else:
         return render(request, 'exam_app/create-exam.html')
 
