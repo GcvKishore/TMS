@@ -16,7 +16,6 @@ function editExam() {
 
     document.getElementById('action-buttons-view').style.visibility = "hidden"
     document.getElementById('action-buttons-edit').removeAttribute("hidden")
-
 }
 
 let question_tag = `

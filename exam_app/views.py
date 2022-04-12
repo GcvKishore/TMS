@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
-from .models import MakeExam, MakeQuestion, Option, Answer
-
+from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
+    UserAnswerFileUpload, UserAnswerTextInput, UserResults
+from .functions import checkUserAnswers
 # additional modules
-from datetime import date
+from datetime import datetime
 
 
 # Create your views here.
@@ -41,6 +42,9 @@ def createExam(request):
 
 
 def editExam(request, exam_id):
+    if request.method == 'POST':
+        delete_question_id = request.POST['delete_question']
+        MakeQuestion.objects.get(id=delete_question_id).delete()
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
 
@@ -68,6 +72,11 @@ def addOptionsAnswers(request, question):
             answer = Answer.objects.create(answer=text, question=question, index=answer_count)
             answer.save()
 
+    question.max_points = answer_count
+    question.save()
+
+    return answer_count
+
 
 def addQuestion(request, exam_id):
     if request.method == 'POST':
@@ -75,9 +84,18 @@ def addQuestion(request, exam_id):
         make_question_form = MakeQuestionForm(request.POST)
         if make_question_form.is_valid():
             question = make_question_form.save()
-            question.exam_model.add(exam_id)
+            if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
+                question.evaluation_type = True
+            else:
+                question.evaluation_type = False
 
+            question.exam_model.add(exam_id)
+            question.save()
             addOptionsAnswers(request, question)
+
+            if question.max_points == 0:
+                question.max_points = 1
+                question.save()
 
             if btn_action == 'add':
                 return redirect('exam_app:add-question', exam_id)
@@ -96,6 +114,10 @@ def addQuestion(request, exam_id):
         })
 
 def viewAllExamsInstructors(request):
+    if request.method == 'POST':
+        delete_exam = request.POST['delete_exam']
+        MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
+        MakeExam.objects.get(id=delete_exam).delete()
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
@@ -123,13 +145,19 @@ def EditQuestion(request, exam_id, question_id):
         make_question_form = MakeQuestionForm(request.POST, instance=question_model)
         if make_question_form.is_valid():
             question = make_question_form.save()
+            if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
+                question.evaluation_type = True
+            else:
+                question.evaluation_type = False
             question.exam_model.add(exam_id)
+            question.save()
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
-            print("Passed ")
             addOptionsAnswers(request, question)
-            print("success")
-        print("Failed")
+            if question.max_points == 0:
+                question.max_points = 1
+                question.save()
+
     # End of post if exists
 
     question = MakeQuestion.objects.get(id=question_id)
@@ -146,4 +174,150 @@ def EditQuestion(request, exam_id, question_id):
         'question': question,
         'options': options,
         'answers': answers,
+    })
+
+
+def viewAllExamsTutee(request):
+    exams = MakeExam.objects.all()
+    return render(request, 'exam_app/view-all-exams-tutee.html', {
+        'exams': exams,
+    })
+
+
+def viewExam(request, exam_id):
+    exam = MakeExam.objects.get(id=exam_id)
+    return render(request, 'exam_app/view-exam.html', {
+        'exam': exam,
+    })
+
+
+def generateFITB(question_text, answers):
+    text = question_text
+    for answer in answers:
+        blank = "__________"
+        text = text.replace(answer.answer, blank, 1)
+    return text
+
+
+def takeExam(request, exam_id, question_index):
+    now = datetime.now()
+    if request.method == 'POST':
+        username = request.user.username
+
+        questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+        question = questions[question_index]
+
+        exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+
+        question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details)
+        question_details.end_time = now.strftime("%H:%M:%S")
+        question_details.save()
+
+        count = 0
+        for user_input in request.POST:
+            if 'answer' in user_input:
+                count += 1
+                user_answer = request.POST[user_input]
+                print(user_answer)
+                UserAnswerTextInput.objects.filter(question=question_details, index=count).delete()
+                UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
+                                                   index=count).save()
+
+        btn_action = request.POST['btn_action']
+
+        if btn_action == 'next':
+            question_index += 1
+            return redirect('exam_app:takeExam', exam_id, question_index)
+        elif btn_action == 'previous':
+            question_index -= 1
+            return redirect('exam_app:takeExam', exam_id, question_index)
+        else:
+            exam_details.status = 'Completed'
+            exam_details.result_status = 'Pending'
+            exam_details.end_time = now.strftime("%H:%M:%S")
+            exam_details.save()
+            return redirect('exam_app:exam-summary', exam_details.id)
+
+    # Register user to the exams list
+    username = request.user.username
+    exam = MakeExam.objects.get(id=exam_id)
+    status = "Ongoing"
+
+    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
+    if len(exam_details) == 0:
+        UserExamDetails.objects.create(username=username, exam=exam, status=status,
+                                       start_time=now.strftime("%H:%M:%S")).save()
+    exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+
+    # get exam object and linked questions(sorted)
+    questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+    question = questions[question_index]
+
+    # extract question details
+    question_text = question.question_text
+    options = Option.objects.filter(question=question.id)
+    answers = Answer.objects.filter(question=question.id)
+
+    if question.question_type == "Fill In The Blanks":
+        question_text = generateFITB(question.question_text, answers)
+
+    UserQuestionDetails.objects.filter(question=question, exam_details=exam_details).delete()
+    UserQuestionDetails.objects.create(question=question, exam_details=exam_details,
+                                       start_time=now.strftime("%H:%M:%S"))
+
+    return render(request, 'exam_app/take-exam.html', {
+        'exam': exam,
+        'question': question,
+        'question_text': question_text,
+        'num_questions': len(questions) - 1,
+        'options': options,
+        'question_index': question_index,
+        'question_number': question_index + 1,
+    })
+
+
+def examSummary(request, exam_details_id):
+    checkUserAnswers(exam_details_id)
+    user_exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    return render(request, 'exam_app/exam-summary.html', {
+        'user_exam_details': user_exam_details,
+    })
+
+
+def examResult(request, exam_details_id):
+    checkUserAnswers(exam_details_id)
+
+    username = request.user.username
+    exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
+    exam_id = exam_details.exam_id
+    all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
+    return render(request, 'exam_app/exam-result.html', {
+        'exam_details': exam_details,
+        'all_exam_questions_results': all_exam_questions_results,
+        'exam_details_id': exam_details_id,
+        'exam_id': exam_id,
+    })
+
+
+def examResultsList(request, exam_id):
+    exam = MakeExam.objects.get(id=exam_id)
+    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user.username)
+    return render(request, 'exam_app/tutee-exam-results-list.html', {
+        'all_exam_details': exam_details,
+        'exam': exam,
+    })
+
+
+def questionResult(request, exam_details_id, question_details):
+    user_question_details = UserQuestionDetails.objects.get(id=question_details)
+
+    question_id = user_question_details.question_id
+    question = MakeQuestion.objects.get(id=question_id)
+
+    user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
+
+    return render(request, 'exam_app/question-result-details.html', {
+        'question': question,
+        'user_inputs': user_inputs,
+        'exam_details_id': exam_details_id,
     })

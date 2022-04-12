@@ -1,0 +1,29 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        {{ question.question_type }}
+        {{ question.question_text }}
+        <hr>
+        <p>Your Answers</p>
+        <ul>
+            {% for user_input in user_inputs %}
+                <li>{{ user_input.answer_text_input }}</li>
+            {% endfor %}
+        </ul>
+        <div class="text-end">
+            <a href="{% url 'exam_app:exam-result' exam_details_id %}">
+                <button type="button" class="btn btn-primary">Back to results</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

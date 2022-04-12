@@ -65,6 +65,8 @@
         <hr>
         <h6 class="my-3"><strong>Questions</strong></h6>
         <div>
+            <form action="{% url 'exam_app:edit-exam' exam.id %}" method = "POST">
+                {% csrf_token %}
             <table class="table align-middle">
                 <thead class="thead-dark">
                 <tr>
@@ -74,6 +76,7 @@
                     <th scope="col">Max Time</th>
                     <th scope="col">Difficulty Level</th>
                     <th scope="col">View/Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -89,6 +92,9 @@
                                 <button class="btn btn-primary" type="button">view/edit</button>
                             </a>
                         </td>
+                        <td>
+                            <button class = "btn btn-primary" type="submit" name="delete_question" value="{{ question.id }}">delete</button>
+                        </td>
                     </tr>
                 {% empty %}
                     <tr>
@@ -102,6 +108,7 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </form>
 
         </div>
         <div class="row">
