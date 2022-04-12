@@ -95,12 +95,26 @@ def addQuestion(request, exam_id):
             'exam_id': exam_id,
         })
 
-
 def viewAllExamsInstructors(request):
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
     })
+
+
+def editExamDetails(request,exam_id):
+    examModel = MakeExam.objects.get(id=exam_id)
+    if request.method == 'POST':   
+        exam_form = MakeExamForm(request.POST,instance=examModel)
+        if exam_form.is_valid():
+            details = exam_form.save()
+        return redirect("exam_app:edit-exam",exam_id=exam_id)
+
+    return render(request, 'exam_app/edit-exam-details.html',{
+        'exam_id':exam_id,
+        'exam':examModel
+    })
+
 
 
 def EditQuestion(request, exam_id, question_id):
