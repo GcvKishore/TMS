@@ -22,9 +22,22 @@ def tuteeSignUp(request):
             login(request, user)
             return redirect('website:index')
         else:
-            return render(request, 'accounts/tutee-sign-up.html', {
-                'error_message': 'Error'
-            })
+            content = {
+                'first_name': request.POST['first_name'],
+                'last_name': request.POST['last_name'],
+                'username': request.POST['username'],
+                'email': request.POST['email'],
+                'username_error': '',
+                'password1_error': '',
+                'password2_error': '',
+                'email_error': '',
+            }
+
+            for error in form.errors:
+                label = error + '_error'
+                content[label] = form.errors[error]
+
+            return render(request, 'accounts/tutee-sign-up.html', content)
     else:
         form = SignUpForm()
         return render(request, 'accounts/tutee-sign-up.html')
@@ -66,7 +79,3 @@ def instructorSignUp(request):
     else:
         form = SignUpForm()
         return render(request, 'accounts/instructor-sign-up.html')
-
-
-def signIn(request):
-    return None

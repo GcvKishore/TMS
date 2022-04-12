@@ -58,8 +58,9 @@
                 </tr>
                 </tbody>
             </table>
-
-            <button class="btn btn-primary" disabled>Edit details</button>
+            <a href="{% url 'exam_app:edit-details' exam.id %}">
+            <button class="btn btn-primary" type="button">Edit details</button>
+        </a>
         </div>
         <hr>
         <h6 class="my-3"><strong>Questions</strong></h6>
