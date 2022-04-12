@@ -58,14 +58,20 @@
                         <td>{{ question_result.result }}</td>
                         <td>{{ question_result.points }}</td>
                         <td>
-                            <a href="">
-                                <button type="button" class="btn btn-primary" disabled>Details</button>
+                            <a href="{% url 'exam_app:question-result' exam_details_id question_result.question_details_id %}">
+                                <button type="button" class="btn btn-primary">Details</button>
                             </a>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <hr>
+        <div class="text-end">
+            <a href="{% url 'exam_app:tutee-exam-results-list' exam_id %}">
+                <button type="button" class="btn btn-primary">back to exam results list</button>
+            </a>
 
         </div>
 

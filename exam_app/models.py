@@ -53,7 +53,10 @@ class UserExamDetails(models.Model):
     status = models.CharField(max_length=64, blank=True)
     result_status = models.CharField(max_length=64, blank=True, null=True)
     overall_points = models.IntegerField(blank=True, null=True)
+    start_time = models.TimeField(null=True, default=None)
+    end_time = models.TimeField(null=True, default=None)
     time_elapsed = models.DurationField(null=True)
+    date = models.DateTimeField(auto_now=True, null=True)
 
 
 class UserQuestionDetails(models.Model):
@@ -61,6 +64,8 @@ class UserQuestionDetails(models.Model):
     exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
     points = models.IntegerField(blank=True, null=True)
     evaluation_status = models.CharField(max_length=64, blank=True, null=True)
+    start_time = models.TimeField(null=True, default=None)
+    end_time = models.TimeField(null=True, default=None)
     time_elapsed = models.DurationField(null=True)
 
 
@@ -78,8 +83,9 @@ class UserAnswerFileUpload(models.Model):
 
 class UserResults(models.Model):
     username = models.CharField(max_length=64)
-    question_type = models.CharField(max_length=64, default="")
+    question_type = models.CharField(max_length=64)
     exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
+    question_details = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
     question = models.ForeignKey('MakeQuestion', on_delete=models.CASCADE)
     status = models.CharField(max_length=64)
     result = models.CharField(max_length=64)

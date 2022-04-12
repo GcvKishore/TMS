@@ -4,7 +4,7 @@ from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, Use
     UserAnswerFileUpload, UserAnswerTextInput, UserResults
 from .functions import checkUserAnswers
 # additional modules
-from datetime import date
+from datetime import datetime
 
 
 # Create your views here.
@@ -168,6 +168,7 @@ def generateFITB(question_text, answers):
 
 
 def takeExam(request, exam_id, question_index):
+    now = datetime.now()
     if request.method == 'POST':
         username = request.user.username
 
@@ -176,8 +177,9 @@ def takeExam(request, exam_id, question_index):
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
 
-        UserQuestionDetails.objects.filter(question=question, exam_details=exam_details).delete()
-        question_details = UserQuestionDetails.objects.create(question=question, exam_details=exam_details)
+        question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details)
+        question_details.end_time = now.strftime("%H:%M:%S")
+        question_details.save()
 
         count = 0
         for user_input in request.POST:
@@ -200,6 +202,7 @@ def takeExam(request, exam_id, question_index):
         else:
             exam_details.status = 'Completed'
             exam_details.result_status = 'Pending'
+            exam_details.end_time = now.strftime("%H:%M:%S")
             exam_details.save()
             return redirect('exam_app:exam-summary', exam_details.id)
 
@@ -210,7 +213,9 @@ def takeExam(request, exam_id, question_index):
 
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
     if len(exam_details) == 0:
-        UserExamDetails.objects.create(username=username, exam=exam, status=status).save()
+        UserExamDetails.objects.create(username=username, exam=exam, status=status,
+                                       start_time=now.strftime("%H:%M:%S")).save()
+    exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
 
     # get exam object and linked questions(sorted)
     questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
@@ -223,6 +228,10 @@ def takeExam(request, exam_id, question_index):
 
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
+
+    UserQuestionDetails.objects.filter(question=question, exam_details=exam_details).delete()
+    UserQuestionDetails.objects.create(question=question, exam_details=exam_details,
+                                       start_time=now.strftime("%H:%M:%S"))
 
     return render(request, 'exam_app/take-exam.html', {
         'exam': exam,
@@ -248,8 +257,35 @@ def examResult(request, exam_details_id):
 
     username = request.user.username
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
+    exam_id = exam_details.exam_id
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
     return render(request, 'exam_app/exam-result.html', {
         'exam_details': exam_details,
         'all_exam_questions_results': all_exam_questions_results,
+        'exam_details_id': exam_details_id,
+        'exam_id': exam_id,
+    })
+
+
+def examResultsList(request, exam_id):
+    exam = MakeExam.objects.get(id=exam_id)
+    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user.username)
+    return render(request, 'exam_app/tutee-exam-results-list.html', {
+        'all_exam_details': exam_details,
+        'exam': exam,
+    })
+
+
+def questionResult(request, exam_details_id, question_details):
+    user_question_details = UserQuestionDetails.objects.get(id=question_details)
+
+    question_id = user_question_details.question_id
+    question = MakeQuestion.objects.get(id=question_id)
+
+    user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
+
+    return render(request, 'exam_app/question-result-details.html', {
+        'question': question,
+        'user_inputs': user_inputs,
+        'exam_details_id': exam_details_id,
     })
