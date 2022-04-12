@@ -23,7 +23,7 @@ class MakeQuestion(models.Model):
     max_points = models.IntegerField(default=1, null=True)
     difficulty_level = models.CharField(max_length=64, default="None", null=True)
     exam_model = models.ManyToManyField('MakeExam')
-    evaluation_type = models.BooleanField(default=False, null=True)
+    evaluation_type = models.BooleanField(default=False)
 
     def __str__(self):
         return self.question_type

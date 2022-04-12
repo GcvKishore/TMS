@@ -26,10 +26,9 @@ def createExam(request):
 def editExam(request, exam_id):
     if request.method == 'POST':
         delete_question_id = request.POST['delete_question']
-        MakeQuestion.objects.get(id = delete_question_id).delete()
+        MakeQuestion.objects.get(id=delete_question_id).delete()
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
-    
 
     return render(request, 'exam_app/edit-exam.html', {
         'exam': exam_model,
@@ -55,6 +54,11 @@ def addOptionsAnswers(request, question):
             answer = Answer.objects.create(answer=text, question=question, index=answer_count)
             answer.save()
 
+    question.max_points = answer_count
+    question.save()
+
+    return answer_count
+
 
 def addQuestion(request, exam_id):
     if request.method == 'POST':
@@ -62,9 +66,18 @@ def addQuestion(request, exam_id):
         make_question_form = MakeQuestionForm(request.POST)
         if make_question_form.is_valid():
             question = make_question_form.save()
-            question.exam_model.add(exam_id)
+            if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
+                question.evaluation_type = True
+            else:
+                question.evaluation_type = False
 
+            question.exam_model.add(exam_id)
+            question.save()
             addOptionsAnswers(request, question)
+
+            if question.max_points == 0:
+                question.max_points = 1
+                question.save()
 
             if btn_action == 'add':
                 return redirect('exam_app:add-question', exam_id)
@@ -87,7 +100,7 @@ def viewAllExamsInstructors(request):
     if request.method == 'POST':
         delete_exam = request.POST['delete_exam']
         MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
-        MakeExam.objects.get(id = delete_exam).delete()
+        MakeExam.objects.get(id=delete_exam).delete()
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
@@ -100,13 +113,19 @@ def EditQuestion(request, exam_id, question_id):
         make_question_form = MakeQuestionForm(request.POST, instance=question_model)
         if make_question_form.is_valid():
             question = make_question_form.save()
+            if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
+                question.evaluation_type = True
+            else:
+                question.evaluation_type = False
             question.exam_model.add(exam_id)
+            question.save()
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
-            print("Passed ")
             addOptionsAnswers(request, question)
-            print("success")
-        print("Failed")
+            if question.max_points == 0:
+                question.max_points = 1
+                question.save()
+
     # End of post if exists
 
     question = MakeQuestion.objects.get(id=question_id)
