@@ -17,7 +17,9 @@
                 <li>{{ user_input.answer_text_input }}</li>
             {% endfor %}
             {% for user_upload in user_uploads %}
-                <li>{{ user_upload.answer_text_input }}</li>
+                <li><a href="{{user_upload.answer_text_input.url}}" download>
+                    download file</a>
+                </li>
             {% endfor %}
         </ul>
         <div class="text-end">

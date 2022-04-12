@@ -16,7 +16,7 @@ def createExam(request):
             exam_id = exam.id
             return redirect('exam_app:edit-exam', exam_id)
         else:
-            content = { 
+            content = {
                 'title': request.POST['title'],
                 'subject': request.POST['subject'],
                 'level': request.POST['level'],
@@ -126,7 +126,7 @@ def viewAllExamsInstructors(request):
 
 def editExamDetails(request,exam_id):
     examModel = MakeExam.objects.get(id=exam_id)
-    if request.method == 'POST':   
+    if request.method == 'POST':
         exam_form = MakeExamForm(request.POST,instance=examModel)
         if exam_form.is_valid():
             details = exam_form.save()
@@ -224,12 +224,14 @@ def takeExam(request, exam_id, question_index):
                 UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
                                                    index=count).save()
 
-            elif 'user-upload' in request.FILES:
+        for user_input in request.FILES:
+            if 'user-upload' in user_input:
+                print(request.FILES)
                 count += 1
-                file2 = request.FILES["user-upload"]
-                UserAnswerFileUpload.objects.create(question=question_details,answer_text_input=file2,
-                                                        index=count).save()
-                    
+                file2 = request.FILES[user_input]
+                UserAnswerFileUpload.objects.filter(question=question_details, index=count).delete()
+                UserAnswerFileUpload.objects.create(question=question_details, answer_text_input=file2,
+                                                    index=count).save()
 
         if btn_action == 'next':
             question_index += 1
