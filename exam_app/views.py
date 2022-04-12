@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
 from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
-    UserAnswerFileUpload, UserAnswerTextInput
-
+    UserAnswerFileUpload, UserAnswerTextInput, UserResults
+from .functions import checkUserAnswers
 # additional modules
 from datetime import date
 
@@ -149,10 +149,10 @@ def takeExam(request, exam_id, question_index):
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
 
-        UserQuestionDetails.objects.filter(question=question, exam=exam_details).delete()
-        question_details = UserQuestionDetails.objects.create(question=question, exam=exam_details)
+        UserQuestionDetails.objects.filter(question=question, exam_details=exam_details).delete()
+        question_details = UserQuestionDetails.objects.create(question=question, exam_details=exam_details)
 
-        count = 1
+        count = 0
         for user_input in request.POST:
             if 'answer' in user_input:
                 count += 1
@@ -160,7 +160,7 @@ def takeExam(request, exam_id, question_index):
                 print(user_answer)
                 UserAnswerTextInput.objects.filter(question=question_details, index=count).delete()
                 UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
-                                                   index=count)
+                                                   index=count).save()
 
         btn_action = request.POST['btn_action']
 
@@ -171,7 +171,10 @@ def takeExam(request, exam_id, question_index):
             question_index -= 1
             return redirect('exam_app:takeExam', exam_id, question_index)
         else:
-            return redirect('exam_app:exam-summary', exam_id)
+            exam_details.status = 'Completed'
+            exam_details.result_status = 'Pending'
+            exam_details.save()
+            return redirect('exam_app:exam-summary', exam_details.id)
 
     # Register user to the exams list
     username = request.user.username
@@ -194,7 +197,7 @@ def takeExam(request, exam_id, question_index):
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
 
-    return render(request, 'exam_app/takeExam.html', {
+    return render(request, 'exam_app/take-exam.html', {
         'exam': exam,
         'question': question,
         'question_text': question_text,
@@ -205,5 +208,21 @@ def takeExam(request, exam_id, question_index):
     })
 
 
-def examSummary(request, exam_id):
-    return render(request, 'exam_app/exam-summary.html')
+def examSummary(request, exam_details_id):
+    checkUserAnswers(exam_details_id)
+    user_exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    return render(request, 'exam_app/exam-summary.html', {
+        'user_exam_details': user_exam_details,
+    })
+
+
+def examResult(request, exam_details_id):
+    checkUserAnswers(exam_details_id)
+
+    username = request.user.username
+    exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
+    all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
+    return render(request, 'exam_app/exam-result.html', {
+        'exam_details': exam_details,
+        'all_exam_questions_results': all_exam_questions_results,
+    })

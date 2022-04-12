@@ -23,6 +23,7 @@ class MakeQuestion(models.Model):
     max_points = models.IntegerField(default=1, null=True)
     difficulty_level = models.CharField(max_length=64, default="None", null=True)
     exam_model = models.ManyToManyField('MakeExam')
+    evaluation_type = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return self.question_type
@@ -57,7 +58,7 @@ class UserExamDetails(models.Model):
 
 class UserQuestionDetails(models.Model):
     question = models.ForeignKey('MakeQuestion', on_delete=models.CASCADE)
-    exam = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
+    exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
     points = models.IntegerField(blank=True, null=True)
     evaluation_status = models.CharField(max_length=64, blank=True, null=True)
     time_elapsed = models.DurationField(null=True)
@@ -73,3 +74,14 @@ class UserAnswerFileUpload(models.Model):
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
     answer_text_input = models.TextField(blank=True, null=True)
     index = models.IntegerField(blank=True, null=True)
+
+
+class UserResults(models.Model):
+    username = models.CharField(max_length=64)
+    question_type = models.CharField(max_length=64, default="")
+    exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
+    question = models.ForeignKey('MakeQuestion', on_delete=models.CASCADE)
+    status = models.CharField(max_length=64)
+    result = models.CharField(max_length=64)
+    points = models.IntegerField(blank=True, null=True)
+    time_elapsed = models.DurationField(null=True)

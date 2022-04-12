@@ -11,6 +11,6 @@ urlpatterns = [
     path('tutee/all-exams/', views.viewAllExamsTutee, name="view-all-exams-tutee"),
     path('view-exam/<int:exam_id>/', views.viewExam, name="view-exam"),
     path('<int:exam_id>/<int:question_index>', views.takeExam, name="takeExam"),
-    path('<int:exam_id>/exam-summary', views.examSummary, name="exam-summary"),
-
+    path('exam-summary/<int:exam_details_id>', views.examSummary, name="exam-summary"),
+    path('exam-result/<int:exam_details_id>', views.examResult, name="exam-result"),
 ]
