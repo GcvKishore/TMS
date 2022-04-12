@@ -85,6 +85,7 @@ def addQuestion(request, exam_id):
 def viewAllExamsInstructors(request):
     if request.method == 'POST':
         delete_exam = request.POST['delete_exam']
+        MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
         MakeExam.objects.get(id = delete_exam).delete()
     exams = MakeExam.objects.all()
     return render(request, 'exam_app/view-all-exams-instructor.html', {
