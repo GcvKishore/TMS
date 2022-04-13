@@ -47,8 +47,8 @@
                         <button class = "btn btn-primary" type="submit" name="delete_exam" value="{{ exam.id }}">Delete</button>
                     </td>
                     <td>
-                        <a href="#">
-                            <button type="button" class="btn btn-primary" disabled>Details</button>
+                        <a href="{% url 'exam_app:instructor-details' exam.id %}">
+                            <button type="button" class="btn btn-primary">Details</button>
                         </a>
                     </td>
                 </tr>

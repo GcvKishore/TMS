@@ -1,0 +1,96 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="row p-5">
+        <div class="col">
+            <h3><strong>{{ exam.title}}</strong></h3>
+            <h6>{{ exam.subject }} | {{ exam.level }}</h6>
+        </div>
+        <div class="col text-end">
+            <a href="{% url 'exam_app:view-all-exams-instructors' %}">
+                <button type="button" class="btn btn-primary">View all Exams</button>
+            </a>
+        </div>
+
+        <hr>
+        <h5><strong>Overview</strong></h5>
+        <div class="col-md-4">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th scope="row">Tutee Name</th>
+                    <td>{{ user_details.first_name }} {{ user_details.last_name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>{{ exam_details.status }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Result</th>
+                    <td>{{ exam_details.result_status }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Points Achieved</th>
+                    <td>{{ exam_details.overall_points }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Elapsed Time</th>
+                    <td>{{ exam_details.time_elapsed }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="">
+            <table class="table align-middle text-center">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Question Type</th>
+                    <th scope="col">Time Elapsed</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Result</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question_result in all_exam_questions_results %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ question_result.question_type }}</td>
+                        <td>{{ question_result.time_elapsed }}</td>
+                        <td>{{ question_result.status }}</td>
+                        <td>{{ question_result.result }}</td>
+                        <td>{{ question_result.points }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:question-evaluation' exam_details.id question_result.question_details_id %}">
+                                <button class="btn btn-primary btn-sm"> Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col text-end">
+                <a href="{% url 'exam_app:instructor-details' exam.id %}">
+                    <button type="button" class="btn btn-primary">Back to exam results list</button>
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}
