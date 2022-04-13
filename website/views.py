@@ -9,3 +9,7 @@ def index(request):
     if request.user.is_active:
         return redirect('tutee:dashboard')
     return render(request, 'website/index.html')
+
+
+def permissionDenied(request):
+    return render(request, 'website/permission-denied.html')

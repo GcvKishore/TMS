@@ -9,24 +9,29 @@
 {% block body %}
     <div class="p-5">
         {{ question.question_type }}
+        <br>
         {{ question.question_text }}
         <hr>
-        <p>Your Answers</p>
+        <p>Student Answer</p>
         <ul>
             {% for user_input in user_inputs %}
                 <li>{{ user_input.answer_text_input }}</li>
             {% endfor %}
             {% for user_upload in user_uploads %}
-                <li><a href="{{user_upload.answer_text_input.url}}" download>
+                <li><a href="{{ user_upload.answer_text_input.url }}" download>
                     Download file</a>
                 </li>
             {% endfor %}
         </ul>
-        <div class="text-end">
-            <a href="{% url 'exam_app:exam-result' exam_details_id %}">
-                <button type="button" class="btn btn-primary">Back to results</button>
+        <hr>
+        <div class="row">
+            <a href="{% url 'exam_app:tutee-exam-results' exam_id exam_details_id %}">
+                <button type="button" class="btn btn-primary">
+                    Back to student results
+                </button>
             </a>
         </div>
+        <hr>
     </div>
 {% endblock %}
 

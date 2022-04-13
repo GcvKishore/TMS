@@ -16,5 +16,8 @@ urlpatterns = [
     path('exam-results-list/<int:exam_id>', views.examResultsList, name="tutee-exam-results-list"),
     path('<int:exam_details_id>/view_question_result/<int:question_details>', views.questionResult,
          name="question-result"),
-    path('edit-exam/edit-details/<int:exam_id>', views.editExamDetails, name="edit-details")
+    path('edit-exam/edit-details/<int:exam_id>', views.editExamDetails, name="edit-details"),
+    path('instructor/<int:exam_id>/results/', views.viewAllDetails, name="instructor-details"),
+    path('instructor/<int:exam_id>/results/<int:exam_details_id>', views.tuteeExamDetails, name="tutee-exam-results"),
+    path('exam/<int:exam_details_id>/evaluation/<int:question_details_id>', views.questionEvaluation, name='question-evaluation')
 ]

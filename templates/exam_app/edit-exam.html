@@ -58,70 +58,93 @@
                 </tr>
                 </tbody>
             </table>
-            <a href="{% url 'exam_app:edit-details' exam.id %}">
-            <button class="btn btn-primary" type="button">Edit details</button>
-        </a>
+            <form action="">
+                <a href="{% url 'exam_app:edit-details' exam.id %}">
+                    <button class="btn btn-primary" type="button">Edit details</button>
+                </a>
+                <button class="btn btn-danger mx-3" type="submit" name="delete_exam" value="{{ exam.id }}">
+                    Delete Exam
+                </button>
+
+            </form>
+
         </div>
         <hr>
         <h6 class="my-3"><strong>Questions</strong></h6>
         <div>
-            <form action="{% url 'exam_app:edit-exam' exam.id %}" method = "POST">
+            <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
                 {% csrf_token %}
-            <table class="table align-middle text-center">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Question Type</th>
-                    <th scope="col">Max Points</th>
-                    <th scope="col">Max Time</th>
-                    <th scope="col">Difficulty Level</th>
-                    <th scope="col">View/Edit</th>
-                    <th scope="col">Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for question in questions %}
+                <table class="table align-middle text-center">
+                    <thead class="thead-dark">
                     <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ question.question_type }}</td>
-                        <td>{{ question.max_points }}</td>
-                        <td>{{ question.max_time }}</td>
-                        <td>{{ question.difficulty_level }}</td>
-                        <td>
-                            <a href="{% url 'exam_app:edit-question' exam.id question.id %}">
-                                <button class="btn btn-primary" type="button">view/edit</button>
-                            </a>
-                        </td>
-                        <td>
-                            <button class = "btn btn-primary" type="submit" name="delete_question" value="{{ question.id }}">delete</button>
-                        </td>
+                        <th scope="col">#</th>
+                        <th scope="col">Question Type</th>
+                        <th scope="col">Max Points</th>
+                        <th scope="col">Max Time</th>
+                        <th scope="col">Difficulty Level</th>
+                        <th scope="col">View/Edit</th>
+                        <th scope="col">Delete</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <th scope="row">--</th>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </form>
+                    </thead>
+                    <tbody>
+                    {% for question in questions %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ question.question_type }}</td>
+                            <td>{{ question.max_points }}</td>
+                            <td>{{ question.max_time }}</td>
+                            <td>{{ question.difficulty_level }}</td>
+                            <td>
+                                <a href="{% url 'exam_app:edit-question' exam.id question.id %}">
+                                    <button class="btn btn-primary" type="button">view/edit</button>
+                                </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" type="submit" name="delete_question"
+                                        value="{{ question.id }}">delete
+                                </button>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <th scope="row">--</th>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'exam_app:add-question' exam.id %}">
+                        <button class="btn btn-success" type="button">+ Add Questions</button>
+                    </a>
+                </div>
+                <div class="col text-end">
 
-        </div>
-        <div class="row">
-            <div class="col">
-                <a href="{% url 'exam_app:add-question' exam.id %}">
-                    <button class="btn btn-success" type="button">+ Add Questions</button>
-                </a>
+                    {% if questions %}
+                        {% if exam.status == 'Published' %}
+                            <button class="btn btn-danger btn-sm" type="submit" name="un-publish-exam" value="{{ exam.id }}">
+                                Un Publish Exam
+                            </button>
+                        {% else %}
+                            <button class="btn btn-success btn-sm" type="submit" name="publish-exam" value="{{ exam.id }}">
+                                Publish Exam
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                    <a class="m-auto" href="{% url 'exam_app:view-all-exams-instructors' %}">
+                        <button class="btn btn-primary mx-3" type="button">View All Exams</button>
+                    </a>
+                </div>
             </div>
-            <div class="col text-end">
-                <a href="{% url 'exam_app:view-all-exams-instructors' %}">
-                    <button class="btn btn-primary" type="button">View All Exams</button>
-                </a>
-            </div>
-        </div>
+        </form>
     </div>
 {% endblock %}

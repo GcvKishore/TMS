@@ -1,9 +1,11 @@
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 
 class MakeExam(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=124)
     subject = models.CharField(max_length=64)
     level = models.CharField(max_length=64)
@@ -11,14 +13,14 @@ class MakeExam(models.Model):
     time = models.TimeField(null=True)
     duration = models.DurationField(null=True)
     min_pass_points = models.IntegerField(null=True)
-    status = models.CharField(max_length=64, blank=True, default='draft')
-    username = models.CharField(max_length=64, blank=True, default='')
+    status = models.CharField(max_length=64, blank=True, default='Draft')
 
     def __str__(self):
         return self.title
 
 
 class MakeQuestion(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     question_text = models.TextField()
     question_type = models.CharField(max_length=64)
     max_time = models.DurationField(null=True)
@@ -50,7 +52,7 @@ class Answer(models.Model):
 
 
 class UserExamDetails(models.Model):
-    username = models.CharField(max_length=64)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     exam = models.ForeignKey('MakeExam', on_delete=models.CASCADE)
     status = models.CharField(max_length=64, blank=True)
     result_status = models.CharField(max_length=64, blank=True, null=True)
@@ -62,6 +64,7 @@ class UserExamDetails(models.Model):
 
 
 class UserQuestionDetails(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey('MakeQuestion', on_delete=models.CASCADE)
     exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
     points = models.IntegerField(blank=True, null=True)
@@ -72,12 +75,14 @@ class UserQuestionDetails(models.Model):
 
 
 class UserAnswerTextInput(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
     answer_text_input = models.TextField(blank=True, null=True)
     index = models.IntegerField(blank=True, null=True)
 
 
 class UserAnswerFileUpload(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
     answer_text_input = models.FileField(null=True)
     index = models.IntegerField(blank=True, null=True)
@@ -93,7 +98,7 @@ def post_save_image(sender, instance, *args, **kwargs):
 
 
 class UserResults(models.Model):
-    username = models.CharField(max_length=64)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     question_type = models.CharField(max_length=64)
     exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
     question_details = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
