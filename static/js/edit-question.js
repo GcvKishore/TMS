@@ -81,7 +81,6 @@ function generateFormat() {
 }
 
 function addOption() {
-    document.getElementById("saveBtn").removeAttribute("disabled");
     count++
     let new_div = document.createElement("div");
     new_div.innerHTML = `
@@ -102,7 +101,6 @@ function addOption() {
 
 
 function addAnswer() {
-    document.getElementById("saveBtn").removeAttribute("disabled");
     count++
     let new_div = document.createElement("div");
     new_div.innerHTML = `

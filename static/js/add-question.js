@@ -56,6 +56,7 @@ function generateFormat() {
         // html_button = '<div id="answers_area"></div><button onclick="addAnswer()" type="button"> Add Answers</button>'
         html_button = '<div class="row" id="answers_area"></div><button onclick="addAnswer()" class="btn btn-primary" type="button" id="generateBtn"> Add Answer</button><hr>'
     } else if(selection === 3 || selection === 4){
+        document.getElementById("addBtn").removeAttribute("disabled");
         document.getElementById("saveBtn").removeAttribute("disabled");
     }
     count = 0
@@ -65,6 +66,7 @@ function generateFormat() {
 
 function addOption() {
     document.getElementById("saveBtn").removeAttribute("disabled");
+    document.getElementById("addBtn").removeAttribute("disabled");
     count++
     let new_div = document.createElement("div");
     new_div.innerHTML = `
@@ -86,6 +88,7 @@ function addOption() {
 
 function addAnswer() {
     document.getElementById("saveBtn").removeAttribute("disabled");
+    document.getElementById("addBtn").removeAttribute("disabled");
     count++
     let new_div = document.createElement("div");
     new_div.innerHTML = `
