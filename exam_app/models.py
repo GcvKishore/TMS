@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class MakeExam(models.Model):
@@ -77,8 +79,17 @@ class UserAnswerTextInput(models.Model):
 
 class UserAnswerFileUpload(models.Model):
     question = models.ForeignKey('UserQuestionDetails', on_delete=models.CASCADE)
-    answer_text_input = models.TextField(blank=True, null=True)
+    answer_text_input = models.FileField(null=True)
     index = models.IntegerField(blank=True, null=True)
+
+
+@receiver(post_delete, sender=UserAnswerFileUpload)
+def post_save_image(sender, instance, *args, **kwargs):
+    """ Clean Old Image file """
+    try:
+        instance.answer_text_input.delete(save=False)
+    finally:
+        pass
 
 
 class UserResults(models.Model):
