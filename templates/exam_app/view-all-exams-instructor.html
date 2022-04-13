@@ -8,28 +8,23 @@
 
 {% block body %}
     <div class="p-3">
-        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method = "POST">
+        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="POST">
             {% csrf_token %}
-        <h4><strong>List of all Exams</strong></h4>
-        <table class="table align-middle text-center">
-            <thead class="thead-dark">
-            <tr class="">
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Class/Level</th>
-                <th scope="col">Date</th>
-                <th scope="col">Time</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Status</th>
-                <th scope="col">Exam Link</th>
-                <th scope="col">Delete</th>
-                <th scope="col">Details</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for exam in exams %}
+            <h4><strong>List of all Exams</strong></h4>
+            <table class="table align-middle text-center">
+                <thead class="thead-dark">
                 <tr class="">
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Class/Level</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Exam Link</th>
+                    <th scope="col">Change Status</th>
+                    <th scope="col">Details</th>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ exam.title }}</td>
                     <td>{{ exam.subject }}</td>
@@ -52,11 +47,44 @@
                         </a>
                     </td>
                 </tr>
+                </thead>
+                <tbody>
+                {% for exam in exams %}
+                    <tr class="">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ exam.title }}</td>
+                        <td>{{ exam.subject }}</td>
+                        <td>{{ exam.level }}</td>
+                        <td>{{ exam.date }}</td>
+                        <td>{{ exam.time }}</td>
+                        <td>{{ exam.duration }}</td>
+                        <td>{{ exam.status }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:edit-exam' exam.id %}">
+                                <button type="button" class="btn btn-primary">Edit</button>
+                            </a>
+                        </td>
+                        <td>
+                            {% if exam.status == 'Published' %}
+                                <button class="btn btn-danger" type="submit" name="un-publish"
+                                        value="{{ exam.id }}">Un Publish Exam</button>
+                            {% else %}
+                                <button class="btn btn-success" type="submit" name="publish" value="{{ exam.id }}">
+                                    Publish Exam
+                                </button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#">
+                                <button type="button" class="btn btn-primary" disabled>Details</button>
+                            </a>
+                        </td>
+                    </tr>
 
-            {% endfor %}
-            </tbody>
-        </table>
-    </form>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
         <a href="{% url 'exam_app:create-exam' %}">
             <button type="button" class="btn btn-success btn-lg">+ Create Exam</button>
         </a>

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
 from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
@@ -9,7 +10,11 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
+@login_required
 def createExam(request):
+    if not request.user.is_staff:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
         make_exam_form = MakeExamForm(request.POST)
         if make_exam_form.is_valid():
@@ -43,20 +48,50 @@ def createExam(request):
         return render(request, 'exam_app/create-exam.html')
 
 
+@login_required
 def editExam(request, exam_id):
+    exam_model = MakeExam.objects.get(id=exam_id)
+    if not request.user.is_staff or exam_model.owner != request.user:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
-        delete_question_id = request.POST['delete_question']
-        MakeQuestion.objects.get(id=delete_question_id).delete()
+        if 'delete_question' in request.POST:
+            delete_question_id = request.POST['delete_question']
+            exam = MakeQuestion.objects.get(id=delete_question_id)
+            if exam.owner == request.user:
+                exam.delete()
+
+        if 'publish-exam' in request.POST:
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Published'
+            exam.save()
+
+        if 'un-publish-exam' in request.POST:
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Draft'
+            exam.save()
+
+        if 'delete_exam' in request.POST:
+            MakeQuestion.objects.filter(exam_model__id=exam_id).delete()
+            MakeExam.objects.get(id=exam_id).delete()
+            return redirect('exam_app:view-all-exams-instructors')
+
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
 
+    if exam_model.owner != request.user:
+        return redirect('website:permission-denied')
     return render(request, 'exam_app/edit-exam.html', {
         'exam': exam_model,
         'questions': questions_list
     })
 
 
+@login_required
 def addOptionsAnswers(request, question):
+    if not request.user.is_staff:
+        redirect('website:permission-denied')
+
     option_count = 0
     answer_count = 0
     for field in request.POST:
@@ -80,7 +115,11 @@ def addOptionsAnswers(request, question):
     return answer_count
 
 
+@login_required
 def addQuestion(request, exam_id):
+    if not request.user.is_staff:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
         btn_action = request.POST['btn_action']
         make_question_form = MakeQuestionForm(request.POST)
@@ -119,19 +158,40 @@ def addQuestion(request, exam_id):
         })
 
 
+@login_required
 def viewAllExamsInstructors(request):
+    if not request.user.is_staff:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
-        delete_exam = request.POST['delete_exam']
-        MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
-        MakeExam.objects.get(id=delete_exam).delete()
-    exams = MakeExam.objects.all()
+        print(request.POST)
+        if 'publish' in request.POST:
+            exam_id = request.POST['publish']
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Published'
+            exam.save()
+
+        if 'un-publish' in request.POST:
+            exam_id = request.POST['un-publish']
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Draft'
+            exam.save()
+
+        # delete_exam = request.POST['delete_exam']
+        # MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
+        # MakeExam.objects.get(id=delete_exam).delete()
+    exams = MakeExam.objects.filter(owner=request.user)
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
     })
 
 
+@login_required
 def editExamDetails(request, exam_id):
     exam_model = MakeExam.objects.get(id=exam_id)
+    if not request.user.is_staff or exam_model.owner != request.user:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
         exam_form = MakeExamForm(request.POST, instance=exam_model)
         if exam_form.is_valid():
@@ -146,9 +206,14 @@ def editExamDetails(request, exam_id):
     })
 
 
+@login_required
 def EditQuestion(request, exam_id, question_id):
+    question_model = MakeQuestion.objects.get(id=question_id)
+    if not request.user.is_staff or question_model.owner != request.user:
+        redirect('website:permission-denied')
+
     if request.method == 'POST':
-        question_model = MakeQuestion.objects.get(id=question_id)
+
         make_question_form = MakeQuestionForm(request.POST, instance=question_model)
         if make_question_form.is_valid():
             question = make_question_form.save(commit=False)
@@ -186,13 +251,15 @@ def EditQuestion(request, exam_id, question_id):
     })
 
 
+@login_required
 def viewAllExamsTutee(request):
-    exams = MakeExam.objects.all()
+    exams = MakeExam.objects.filter(status='Published')
     return render(request, 'exam_app/view-all-exams-tutee.html', {
         'exams': exams,
     })
 
 
+@login_required
 def viewExam(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     return render(request, 'exam_app/view-exam.html', {
@@ -217,6 +284,7 @@ def generateFITB(question_text, answers):
     return text
 
 
+@login_required
 def takeExam(request, exam_id, question_index):
     now = datetime.now()
     if request.method == 'POST':
@@ -305,6 +373,7 @@ def takeExam(request, exam_id, question_index):
     })
 
 
+@login_required
 def examSummary(request, exam_details_id):
     checkUserAnswers(exam_details_id)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=request.user)
@@ -313,6 +382,7 @@ def examSummary(request, exam_details_id):
     })
 
 
+@login_required
 def examResult(request, exam_details_id):
     username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
@@ -326,6 +396,7 @@ def examResult(request, exam_details_id):
     })
 
 
+@login_required
 def examResultsList(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user)
@@ -335,6 +406,7 @@ def examResultsList(request, exam_id):
     })
 
 
+@login_required
 def questionResult(request, exam_details_id, question_details):
     user_question_details = UserQuestionDetails.objects.get(id=question_details, username=request.user)
 
