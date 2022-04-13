@@ -199,6 +199,13 @@ def viewExam(request, exam_id):
         'exam': exam,
     })
 
+def viewAllDetails(request, exam_id):
+    exam = MakeExam.objects.get(id=exam_id)
+    student_exam_details=UserExamDetails.objects.filter(exam=exam)
+    return render(request, 'exam_app/instructor-exam-result-details.html', {
+        'student_exam_details' : student_exam_details,
+        'exam' : exam,
+    })
 
 def generateFITB(question_text, answers):
     text = question_text

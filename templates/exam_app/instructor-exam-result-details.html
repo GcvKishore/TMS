@@ -1,0 +1,43 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <h4><strong>List of all Exams</strong></h4>
+        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="post">
+        <table class="table align-middle">
+            <thead class="thead-dark">
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Date & Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Status</th>
+                <th scope="col">Points</th>
+                <th scope="col">Results</th>
+                <th scope="col">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exam in exams %}
+                <tr class="text-center">
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ student_exam_details.username }}</td>
+                    <td>{{ student_exam_details.date }}</td>
+                    <td>{{ student_exam_details.time_elapsed }}</td>
+                    <td>{{ student_exam_details.status }}</td>
+                    <td>{{ student_exam_details.overall_points}}</td>
+                    <td>{{ student_exam_details.result_status }}</td>
+                    <td>details</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </form>
+    </div>
+{% endblock %}
