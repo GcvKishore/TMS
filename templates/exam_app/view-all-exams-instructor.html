@@ -25,6 +25,27 @@
                     <th scope="col">Exam Link</th>
                     <th scope="col">Change Status</th>
                     <th scope="col">Details</th>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ exam.title }}</td>
+                    <td>{{ exam.subject }}</td>
+                    <td>{{ exam.level }}</td>
+                    <td>{{ exam.date }}</td>
+                    <td>{{ exam.time }}</td>
+                    <td>{{ exam.duration }}</td>
+                    <td>{{ exam.status }}</td>
+                    <td>
+                        <a href="{% url 'exam_app:edit-exam' exam.id %}">
+                            <button type="button" class="btn btn-primary">Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <button class = "btn btn-primary" type="submit" name="delete_exam" value="{{ exam.id }}">Delete</button>
+                    </td>
+                    <td>
+                        <a href="{% url 'exam_app:instructor-details' exam.id %}">
+                            <button type="button" class="btn btn-primary">Details</button>
+                        </a>
+                    </td>
                 </tr>
                 </thead>
                 <tbody>
