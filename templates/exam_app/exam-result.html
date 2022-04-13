@@ -8,8 +8,16 @@
 
 {% block body %}
     <div class="row p-5">
-        <h3><strong>Exam Title</strong></h3>
-        <h6>Subject | Class</h6>
+        <div class="col">
+            <h3><strong>Exam Title</strong></h3>
+            <h6>Subject | Class</h6>
+        </div>
+        <div class="col text-end">
+            <a href="{% url 'exam_app:view-all-exams-tutee' %}">
+                <button type="button" class="btn btn-primary">View all Exams</button>
+            </a>
+        </div>
+
         <hr>
         <h5><strong>Overview</strong></h5>
         <div class="col-md-4">
@@ -68,11 +76,22 @@
             </table>
         </div>
         <hr>
-        <div class="text-end">
-            <a href="{% url 'exam_app:tutee-exam-results-list' exam_id %}">
-                <button type="button" class="btn btn-primary">back to exam results list</button>
-            </a>
-
+        <div class="row">
+            <div class="col">
+                {% if exam_details.result_status != 'Passed' %}
+                    <a href="{% url 'exam_app:view-exam' exam_id %}">
+                        <button type="button" class="btn btn-primary" {% if exam_details.result_status == 'Pending' %}
+                                disabled
+                        {% endif %} >Retake exam
+                        </button>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col text-end">
+                <a href="{% url 'exam_app:tutee-exam-results-list' exam_id %}">
+                    <button type="button" class="btn btn-primary">back to exam results list</button>
+                </a>
+            </div>
         </div>
 
 

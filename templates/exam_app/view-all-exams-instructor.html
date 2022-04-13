@@ -11,9 +11,9 @@
         <form action="{% url 'exam_app:view-all-exams-instructors' %}" method = "POST">
             {% csrf_token %}
         <h4><strong>List of all Exams</strong></h4>
-        <table class="table">
+        <table class="table align-middle text-center">
             <thead class="thead-dark">
-            <tr class="text-center">
+            <tr class="">
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Subject</th>
@@ -24,12 +24,12 @@
                 <th scope="col">Status</th>
                 <th scope="col">Exam Link</th>
                 <th scope="col">Delete</th>
-                <th scope="col">Insights</th>
+                <th scope="col">Details</th>
             </tr>
             </thead>
             <tbody>
             {% for exam in exams %}
-                <tr class="text-center">
+                <tr class="">
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ exam.title }}</td>
                     <td>{{ exam.subject }}</td>
@@ -48,7 +48,7 @@
                     </td>
                     <td>
                         <a href="#">
-                            <button type="button" class="btn btn-primary" disabled>Insights</button>
+                            <button type="button" class="btn btn-primary" disabled>Details</button>
                         </a>
                     </td>
                 </tr>
