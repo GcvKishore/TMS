@@ -64,14 +64,16 @@ function generateFormat() {
     // show the selected index
     let btn = document.querySelector('#generateBtn');
     let sb = document.querySelector('#questionType')
-    let selection = sb.options[sb.selectedIndex].value;
+    let selection = sb.selectedIndex;
 
     let html_button = ""
-    if (selection === 'Multiple Choice - Multiple Answers') {
+    if (selection === 1) {
         html_button = '<div class="row" id="options_answers_area"></div><button class="btn btn-primary" type="button" id="generateBtn" onclick="addOption()"> Add Option</button><hr>'
-    } else if (selection === 'Fill In The Blanks') {
+    } else if (selection === 2) {
         // html_button = '<div id="answers_area"></div><button onclick="addAnswer()" type="button"> Add Answers</button>'
         html_button = '<div class="row" id="options_answers_area"></div><button onclick="addAnswer()" class="btn btn-primary" type="button" id="generateBtn"> Add Answer</button><hr>'
+    } else if (selection === 3 || selection === 4){
+        document.getElementById("saveBtn").removeAttribute("disabled");
     }
     count = 0
 

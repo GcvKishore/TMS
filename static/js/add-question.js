@@ -55,7 +55,7 @@ function generateFormat() {
     } else if (selection === 2) {
         // html_button = '<div id="answers_area"></div><button onclick="addAnswer()" type="button"> Add Answers</button>'
         html_button = '<div class="row" id="answers_area"></div><button onclick="addAnswer()" class="btn btn-primary" type="button" id="generateBtn"> Add Answer</button><hr>'
-    } else if(selection === 3 || selection == 4){
+    } else if(selection === 3 || selection === 4){
         document.getElementById("saveBtn").removeAttribute("disabled");
     }
     count = 0
