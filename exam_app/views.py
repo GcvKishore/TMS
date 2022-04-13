@@ -66,7 +66,6 @@ def editExam(request, exam_id):
             MakeExam.objects.get(id=exam_id).delete()
             return redirect('exam_app:view-all-exams-instructors')
 
-
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
 
@@ -143,9 +142,22 @@ def addQuestion(request, exam_id):
 
 def viewAllExamsInstructors(request):
     if request.method == 'POST':
-        delete_exam = request.POST['delete_exam']
-        MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
-        MakeExam.objects.get(id=delete_exam).delete()
+        print(request.POST)
+        if 'publish' in request.POST:
+            exam_id = request.POST['publish']
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Published'
+            exam.save()
+
+        if 'un-publish' in request.POST:
+            exam_id = request.POST['un-publish']
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Draft'
+            exam.save()
+
+        # delete_exam = request.POST['delete_exam']
+        # MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
+        # MakeExam.objects.get(id=delete_exam).delete()
     exams = MakeExam.objects.filter(owner=request.user)
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,

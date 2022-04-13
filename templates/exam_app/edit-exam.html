@@ -131,11 +131,11 @@
 
                     {% if questions %}
                         {% if exam.status == 'Published' %}
-                            <button class="btn btn-danger" type="submit" name="un-publish-exam" value="{{ exam.id }}">
+                            <button class="btn btn-danger btn-sm" type="submit" name="un-publish-exam" value="{{ exam.id }}">
                                 Un Publish Exam
                             </button>
                         {% else %}
-                            <button class="btn btn-success" type="submit" name="publish-exam" value="{{ exam.id }}">
+                            <button class="btn btn-success btn-sm" type="submit" name="publish-exam" value="{{ exam.id }}">
                                 Publish Exam
                             </button>
                         {% endif %}
