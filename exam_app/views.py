@@ -35,7 +35,6 @@ def createExam(request):
                 'duration_error': '',
                 'min_pass_points_error': '',
             }
-
             for error in make_exam_form.errors:
                 label = error + '_error'
                 content[label] = make_exam_form.errors[error]
