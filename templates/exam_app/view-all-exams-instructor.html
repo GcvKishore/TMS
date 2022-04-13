@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="p-3">
-        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method = "POST">
+        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="POST">
             {% csrf_token %}
         <h4><strong>List of all Exams</strong></h4>
         <table class="table align-middle text-center">
@@ -53,10 +53,10 @@
                     </td>
                 </tr>
 
-            {% endfor %}
-            </tbody>
-        </table>
-    </form>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
         <a href="{% url 'exam_app:create-exam' %}">
             <button type="button" class="btn btn-success btn-lg">+ Create Exam</button>
         </a>

@@ -45,11 +45,33 @@ def createExam(request):
 
 def editExam(request, exam_id):
     if request.method == 'POST':
-        delete_question_id = request.POST['delete_question']
-        MakeQuestion.objects.get(id=delete_question_id).delete()
+        if 'delete_question' in request.POST:
+            delete_question_id = request.POST['delete_question']
+            exam = MakeQuestion.objects.get(id=delete_question_id)
+            if exam.owner == request.user:
+                exam.delete()
+
+        if 'publish-exam' in request.POST:
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Published'
+            exam.save()
+
+        if 'un-publish-exam' in request.POST:
+            exam = MakeExam.objects.get(id=exam_id)
+            exam.status = 'Draft'
+            exam.save()
+
+        if 'delete_exam' in request.POST:
+            MakeQuestion.objects.filter(exam_model__id=exam_id).delete()
+            MakeExam.objects.get(id=exam_id).delete()
+            return redirect('exam_app:view-all-exams-instructors')
+
+
     questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
     exam_model = MakeExam.objects.get(id=exam_id)
 
+    if exam_model.owner != request.user:
+        return redirect('website:permission-denied')
     return render(request, 'exam_app/edit-exam.html', {
         'exam': exam_model,
         'questions': questions_list
@@ -124,7 +146,7 @@ def viewAllExamsInstructors(request):
         delete_exam = request.POST['delete_exam']
         MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
         MakeExam.objects.get(id=delete_exam).delete()
-    exams = MakeExam.objects.all()
+    exams = MakeExam.objects.filter(owner=request.user)
     return render(request, 'exam_app/view-all-exams-instructor.html', {
         'exams': exams,
     })

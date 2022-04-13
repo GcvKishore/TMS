@@ -13,7 +13,7 @@ class MakeExam(models.Model):
     time = models.TimeField(null=True)
     duration = models.DurationField(null=True)
     min_pass_points = models.IntegerField(null=True)
-    status = models.CharField(max_length=64, blank=True, default='draft')
+    status = models.CharField(max_length=64, blank=True, default='Draft')
 
     def __str__(self):
         return self.title
