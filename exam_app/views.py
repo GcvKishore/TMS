@@ -12,7 +12,9 @@ def createExam(request):
     if request.method == 'POST':
         make_exam_form = MakeExamForm(request.POST)
         if make_exam_form.is_valid():
-            exam = make_exam_form.save()
+            exam = make_exam_form.save(commit=False)
+            exam.owner = request.user
+            exam.save()
             exam_id = exam.id
             return redirect('exam_app:edit-exam', exam_id)
         else:
@@ -83,7 +85,10 @@ def addQuestion(request, exam_id):
         btn_action = request.POST['btn_action']
         make_question_form = MakeQuestionForm(request.POST)
         if make_question_form.is_valid():
-            question = make_question_form.save()
+            question = make_question_form.save(commit=False)
+            question.owner = request.user
+            question.save()
+
             if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
                 question.evaluation_type = True
             else:
@@ -126,16 +131,18 @@ def viewAllExamsInstructors(request):
 
 
 def editExamDetails(request, exam_id):
-    examModel = MakeExam.objects.get(id=exam_id)
+    exam_model = MakeExam.objects.get(id=exam_id)
     if request.method == 'POST':
-        exam_form = MakeExamForm(request.POST, instance=examModel)
+        exam_form = MakeExamForm(request.POST, instance=exam_model)
         if exam_form.is_valid():
-            details = exam_form.save()
+            details = exam_form.save(commit=False)
+            details.owner = request.user
+            details.save()
         return redirect("exam_app:edit-exam", exam_id=exam_id)
 
     return render(request, 'exam_app/edit-exam-details.html', {
         'exam_id': exam_id,
-        'exam': examModel
+        'exam': exam_model
     })
 
 
@@ -144,7 +151,9 @@ def EditQuestion(request, exam_id, question_id):
         question_model = MakeQuestion.objects.get(id=question_id)
         make_question_form = MakeQuestionForm(request.POST, instance=question_model)
         if make_question_form.is_valid():
-            question = make_question_form.save()
+            question = make_question_form.save(commit=False)
+            question.owner = request.user
+            question.save()
             if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
                 question.evaluation_type = True
             else:
@@ -202,7 +211,7 @@ def generateFITB(question_text, answers):
 def takeExam(request, exam_id, question_index):
     now = datetime.now()
     if request.method == 'POST':
-        username = request.user.username
+        username = request.user
         btn_action = request.POST['btn_action']
 
         questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
@@ -210,7 +219,8 @@ def takeExam(request, exam_id, question_index):
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
 
-        question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details)
+        question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
+                                                           username=request.user)
         question_details.end_time = now.strftime("%H:%M:%S")
         question_details.save()
 
@@ -220,18 +230,20 @@ def takeExam(request, exam_id, question_index):
                 count += 1
                 user_answer = request.POST[user_input]
                 print(user_answer)
-                UserAnswerTextInput.objects.filter(question=question_details, index=count).delete()
+                UserAnswerTextInput.objects.filter(question=question_details, index=count,
+                                                   username=request.user).delete()
                 UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
-                                                   index=count).save()
+                                                   index=count, username=request.user).save()
 
         for user_input in request.FILES:
             if 'user-upload' in user_input:
                 print(request.FILES)
                 count += 1
                 file2 = request.FILES[user_input]
-                UserAnswerFileUpload.objects.filter(question=question_details, index=count).delete()
+                UserAnswerFileUpload.objects.filter(question=question_details, index=count,
+                                                    username=request.user).delete()
                 UserAnswerFileUpload.objects.create(question=question_details, answer_text_input=file2,
-                                                    index=count).save()
+                                                    index=count, username=request.user).save()
 
         if btn_action == 'next':
             question_index += 1
@@ -247,7 +259,7 @@ def takeExam(request, exam_id, question_index):
             return redirect('exam_app:exam-summary', exam_details.id)
 
     # Register user to the exams list
-    username = request.user.username
+    username = request.user
     exam = MakeExam.objects.get(id=exam_id)
     status = "Ongoing"
 
@@ -269,8 +281,8 @@ def takeExam(request, exam_id, question_index):
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
 
-    UserQuestionDetails.objects.filter(question=question, exam_details=exam_details).delete()
-    UserQuestionDetails.objects.create(question=question, exam_details=exam_details,
+    UserQuestionDetails.objects.filter(question=question, exam_details=exam_details, username=request.user).delete()
+    UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=request.user,
                                        start_time=now.strftime("%H:%M:%S"))
 
     return render(request, 'exam_app/take-exam.html', {
@@ -286,14 +298,14 @@ def takeExam(request, exam_id, question_index):
 
 def examSummary(request, exam_details_id):
     checkUserAnswers(exam_details_id)
-    user_exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=request.user)
     return render(request, 'exam_app/exam-summary.html', {
         'user_exam_details': user_exam_details,
     })
 
 
 def examResult(request, exam_details_id):
-    username = request.user.username
+    username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
@@ -307,7 +319,7 @@ def examResult(request, exam_details_id):
 
 def examResultsList(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
-    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user.username)
+    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user)
     return render(request, 'exam_app/tutee-exam-results-list.html', {
         'all_exam_details': exam_details,
         'exam': exam,
@@ -315,14 +327,14 @@ def examResultsList(request, exam_id):
 
 
 def questionResult(request, exam_details_id, question_details):
-    user_question_details = UserQuestionDetails.objects.get(id=question_details)
+    user_question_details = UserQuestionDetails.objects.get(id=question_details, username=request.user)
 
     question_id = user_question_details.question_id
     question = MakeQuestion.objects.get(id=question_id)
 
-    user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
+    user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details, username=request.user)
 
-    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details)
+    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details, username=request.user)
 
     return render(request, 'exam_app/question-result-details.html', {
         'question': question,
