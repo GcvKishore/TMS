@@ -10,34 +10,40 @@
     <div class="p-3">
         <h4><strong>List of all Exams</strong></h4>
         <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="post">
-        <table class="table align-middle">
-            <thead class="thead-dark">
-            <tr class="text-center">
-                <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Date & Time</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Status</th>
-                <th scope="col">Points</th>
-                <th scope="col">Results</th>
-                <th scope="col">Details</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for exam in exams %}
+            <table class="table align-middle">
+                <thead class="thead-dark">
                 <tr class="text-center">
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ student_exam_details.username }}</td>
-                    <td>{{ student_exam_details.date }}</td>
-                    <td>{{ student_exam_details.time_elapsed }}</td>
-                    <td>{{ student_exam_details.status }}</td>
-                    <td>{{ student_exam_details.overall_points}}</td>
-                    <td>{{ student_exam_details.result_status }}</td>
-                    <td>details</td>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Results</th>
+                    <th scope="col">Details</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for student in student_exam_details %}
+                    <tr class="text-center">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.username }}</td>
+                        <td>{{ student.date }}</td>
+                        <td>{{ student.time_elapsed }}</td>
+                        <td>{{ student.status }}</td>
+                        <td>{{ student.overall_points }}</td>
+                        <td>{{ student.result_status }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:tutee-exam-results' exam.id student.id %}">
+                                <button type="button" class="btn btn-primary">
+                                    details
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </form>
     </div>
 {% endblock %}
