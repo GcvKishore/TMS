@@ -71,7 +71,7 @@
                         <td>{{ question_result.points }}</td>
                         <td>
                             <a href="{% url 'exam_app:question-evaluation' exam_details.id question_result.question_details_id %}">
-                                <button class="btn btn-primary btn-sm"> details</button>
+                                <button class="btn btn-primary btn-sm"> Details</button>
                             </a>
                         </td>
                     </tr>
@@ -83,7 +83,7 @@
         <div class="row">
             <div class="col text-end">
                 <a href="{% url 'exam_app:instructor-details' exam.id %}">
-                    <button type="button" class="btn btn-primary">back to exam results list</button>
+                    <button type="button" class="btn btn-primary">Back to exam results list</button>
                 </a>
             </div>
         </div>

@@ -19,7 +19,7 @@
             {% endfor %}
             {% for user_upload in user_uploads %}
                 <li><a href="{{ user_upload.answer_text_input.url }}" download>
-                    download file</a>
+                    Download file</a>
                 </li>
             {% endfor %}
         </ul>
@@ -27,7 +27,7 @@
         <div class="row">
             <a href="{% url 'exam_app:tutee-exam-results' exam_id exam_details_id %}">
                 <button type="button" class="btn btn-primary">
-                    back to student results
+                    Back to student results
                 </button>
             </a>
         </div>
