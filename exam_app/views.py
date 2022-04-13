@@ -24,19 +24,19 @@ def createExam(request):
                 'time': request.POST['time'],
                 'duration': request.POST['duration'],
                 'min_pass_points': request.POST['min_pass_points'],
-                'title_error':'',
-                'subject_error':'',
-                'level_error':'',
-                'date_error':'',
-                'time_error':'',
-                'duration_error':'',
-                'min_pass_points_error':'',
+                'title_error': '',
+                'subject_error': '',
+                'level_error': '',
+                'date_error': '',
+                'time_error': '',
+                'duration_error': '',
+                'min_pass_points_error': '',
             }
 
             for error in make_exam_form.errors:
                 label = error + '_error'
                 content[label] = make_exam_form.errors[error]
-            return render(request, 'exam_app/create-exam.html',content)
+            return render(request, 'exam_app/create-exam.html', content)
     else:
         return render(request, 'exam_app/create-exam.html')
 
@@ -113,6 +113,7 @@ def addQuestion(request, exam_id):
             'exam_id': exam_id,
         })
 
+
 def viewAllExamsInstructors(request):
     if request.method == 'POST':
         delete_exam = request.POST['delete_exam']
@@ -124,19 +125,18 @@ def viewAllExamsInstructors(request):
     })
 
 
-def editExamDetails(request,exam_id):
+def editExamDetails(request, exam_id):
     examModel = MakeExam.objects.get(id=exam_id)
     if request.method == 'POST':
-        exam_form = MakeExamForm(request.POST,instance=examModel)
+        exam_form = MakeExamForm(request.POST, instance=examModel)
         if exam_form.is_valid():
             details = exam_form.save()
-        return redirect("exam_app:edit-exam",exam_id=exam_id)
+        return redirect("exam_app:edit-exam", exam_id=exam_id)
 
-    return render(request, 'exam_app/edit-exam-details.html',{
-        'exam_id':exam_id,
-        'exam':examModel
+    return render(request, 'exam_app/edit-exam-details.html', {
+        'exam_id': exam_id,
+        'exam': examModel
     })
-
 
 
 def EditQuestion(request, exam_id, question_id):
@@ -293,8 +293,6 @@ def examSummary(request, exam_details_id):
 
 
 def examResult(request, exam_details_id):
-    checkUserAnswers(exam_details_id)
-
     username = request.user.username
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
