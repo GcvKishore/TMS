@@ -144,7 +144,6 @@ def addQuestion(request, exam_id):
             if btn_action == 'add':
                 return redirect('exam_app:add-question', exam_id)
             elif btn_action == 'save':
-                print(btn_action)
                 return redirect('exam_app:edit-exam', exam_id)
         else:
             print('error')
@@ -164,7 +163,6 @@ def viewAllExamsInstructors(request):
         redirect('website:permission-denied')
 
     if request.method == 'POST':
-        print(request.POST)
         if 'publish' in request.POST:
             exam_id = request.POST['publish']
             exam = MakeExam.objects.get(id=exam_id)
@@ -308,7 +306,6 @@ def takeExam(request, exam_id, question_index):
             if 'answer' in user_input:
                 count += 1
                 user_answer = request.POST[user_input]
-                print(user_answer)
                 UserAnswerTextInput.objects.filter(question=question_details, index=count,
                                                    username=request.user).delete()
                 UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
@@ -316,7 +313,6 @@ def takeExam(request, exam_id, question_index):
 
         for user_input in request.FILES:
             if 'user-upload' in user_input:
-                print(request.FILES)
                 count += 1
                 file2 = request.FILES[user_input]
                 UserAnswerFileUpload.objects.filter(question=question_details, index=count,
@@ -346,7 +342,12 @@ def takeExam(request, exam_id, question_index):
     if len(exam_details) == 0:
         UserExamDetails.objects.create(username=username, exam=exam, status=status,
                                        start_time=now.strftime("%H:%M:%S")).save()
+
     exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+
+    if question_index == 0:
+        exam_details.start_time = now.strftime("%H:%M:%S")
+        exam_details.save()
 
     # get exam object and linked questions(sorted)
     questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
