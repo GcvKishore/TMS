@@ -59,7 +59,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <form action="">
+                <form action="{% url 'exam_app:edit-exam' exam.id %}" method="post">
+                    {% csrf_token %}
                     <a href="{% url 'exam_app:edit-details' exam.id %}">
                         <button class="btn btn-primary" type="button">Edit details</button>
                     </a>
