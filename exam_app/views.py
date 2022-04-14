@@ -296,6 +296,7 @@ def takeExam(request, exam_id, question_index):
         question = questions[question_index]
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+        print(exam_details)
 
         question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
                                                            username=request.user)
@@ -327,6 +328,12 @@ def takeExam(request, exam_id, question_index):
         elif btn_action == 'previous':
             question_index -= 1
             return redirect('exam_app:takeExam', exam_id, question_index)
+        elif btn_action == 'quit':
+            exam_details.status = 'Completed'
+            exam_details.result_status = 'Pending'
+            exam_details.end_time = now.strftime("%H:%M:%S")
+            exam_details.save()
+            return redirect('exam_app:exam-summary', exam_details.id)
         else:
             exam_details.status = 'Completed'
             exam_details.result_status = 'Pending'
@@ -379,7 +386,8 @@ def takeExam(request, exam_id, question_index):
 
 @login_required
 def examSummary(request, exam_details_id):
-    checkUserAnswers(exam_details_id)
+    exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=request.user)
     return render(request, 'exam_app/tutee-exam-finish-summary.html', {
         'user_exam_details': user_exam_details,
