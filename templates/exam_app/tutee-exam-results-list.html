@@ -1,6 +1,7 @@
 {% extends 'exam_app/base.html' %}
 
 {% block title %}
+    Tutest - {{ exam.title }} Results
 {% endblock %}
 
 {% block styles %}
@@ -11,46 +12,59 @@
         <div class="row">
             <div class="col">
                 <h4><strong>{{ exam.title }}</strong></h4>
+                <h5>{{ exam.subject }} | {{ exam.level }}</h5>
             </div>
-            <div class="col text-end">
+            <div class="col text-end my-auto">
                 <a href="{% url 'exam_app:view-all-exams-tutee' %}">
                     <button type="button" class="btn btn-primary">View all Exams</button>
                 </a>
             </div>
         </div>
         <hr>
-        <table class="table align-middle">
-            <thead class="thead-dark">
-            <tr class="text-center">
-                <th scope="col">#</th>
-                <th scope="col">Date & Time</th>
-                <th scope="col">Status</th>
-                <th scope="col">Result</th>
-                <th scope="col">Points</th>
-                <th scope="col">Time Elapsed</th>
-                <th scope="col">View</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for exam_details in all_exam_details %}
+        {% if all_exam_details %}
+            <table class="table align-middle">
+                <thead class="thead-dark">
                 <tr class="text-center">
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ exam_details.date }}</td>
-                    <td>{{ exam_details.status }}</td>
-                    <td>{{ exam_details.result_status }}</td>
-                    <td>{{ exam_details.overall_points }}</td>
-                    <td>{{ exam_details.time_elapsed }}</td>
-                    <td>
-                        <a href="{% url 'exam_app:exam-result' exam_details.id %}">
-                            <button type="button" class="btn btn-primary">View</button>
-                        </a>
-                    </td>
+                    <th scope="col">#</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Result</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Time Elapsed</th>
+                    <th scope="col">View</th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for exam_details in all_exam_details %}
+                    <tr class="text-center">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ exam_details.date }}</td>
+                        <td>{{ exam_details.status }}</td>
+                        <td>{{ exam_details.result_status }}</td>
+                        <td>{{ exam_details.overall_points }}</td>
+                        <td>{{ exam_details.time_elapsed }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:exam-result' exam_details.id %}">
+                                <button type="button" class="btn btn-primary btn-sm">View</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <h6>Click below to retake the exam</h6>
+            <a href="{% url 'exam_app:view-exam' exam.id %}">
+                <button type="button" class="btn btn-primary">Retake Exam</button>
+            </a>
 
-            {% endfor %}
-            </tbody>
-        </table>
-
+        {% else %}
+            <h5>You haven't attempted this exam. Click below to view the exam</h5>
+            <hr>
+            <a href="{% url 'exam_app:view-exam' exam.id %}">
+                <button type="button" class="btn btn-success">Take Exam</button>
+            </a>
+        {% endif %}
 
     </div>
 {% endblock %}

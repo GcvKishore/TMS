@@ -270,7 +270,7 @@ def viewExam(request, exam_id):
 def viewAllDetails(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     student_exam_details = UserExamDetails.objects.filter(exam=exam)
-    return render(request, 'exam_app/instructor-exam-result-details.html', {
+    return render(request, 'exam_app/instructor-exam-details.html', {
         'student_exam_details': student_exam_details,
         'exam': exam,
     })
@@ -387,12 +387,14 @@ def examResult(request, exam_details_id):
     username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
+    exam = MakeExam.objects.get(id=exam_id)
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
     return render(request, 'exam_app/exam-result.html', {
         'exam_details': exam_details,
         'all_exam_questions_results': all_exam_questions_results,
         'exam_details_id': exam_details_id,
         'exam_id': exam_id,
+        'exam': exam,
     })
 
 
@@ -417,7 +419,7 @@ def questionResult(request, exam_details_id, question_details):
 
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details, username=request.user)
 
-    return render(request, 'exam_app/question-result-details.html', {
+    return render(request, 'exam_app/tutee-question-result.html', {
         'question': question,
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,

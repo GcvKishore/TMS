@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}
+    Tutest - edit - Question ID {{ question.id }}
 {% endblock %}
 
 {% block styles %}
@@ -114,13 +115,6 @@
                 {% endif %}
             </div>
             <div class="row">
-                <div class="col">
-                    <button class="btn btn-primary" type="button" id="generateBtn" name="btn_action"
-                            value="add"
-                            disabled>
-                        Preview
-                    </button>
-                </div>
                 <div class="col text-end" id="action-buttons-view">
                     <button class="btn btn-primary" type="button" id="editBtn" name="btn_action" onclick="editExam()"
                             value="edit">

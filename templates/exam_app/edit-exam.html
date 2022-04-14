@@ -1,6 +1,7 @@
 {% extends 'exam_app/base.html' %}
 
 {% block title %}
+    Tutest - Edit Exam - {{ exam.title }}
 {% endblock %}
 
 {% block styles %}
@@ -96,11 +97,11 @@
                             <td>{{ question.difficulty_level }}</td>
                             <td>
                                 <a href="{% url 'exam_app:edit-question' exam.id question.id %}">
-                                    <button class="btn btn-primary" type="button">view/edit</button>
+                                    <button class="btn btn-primary btn-sm" type="button">view/edit</button>
                                 </a>
                             </td>
                             <td>
-                                <button class="btn btn-primary" type="submit" name="delete_question"
+                                <button class="btn btn-primary btn-sm" type="submit" name="delete_question"
                                         value="{{ question.id }}">delete
                                 </button>
                             </td>
@@ -131,11 +132,11 @@
 
                     {% if questions %}
                         {% if exam.status == 'Published' %}
-                            <button class="btn btn-danger btn-sm" type="submit" name="un-publish-exam" value="{{ exam.id }}">
+                            <button class="btn btn-danger" type="submit" name="un-publish-exam" value="{{ exam.id }}">
                                 Un Publish Exam
                             </button>
                         {% else %}
-                            <button class="btn btn-success btn-sm" type="submit" name="publish-exam" value="{{ exam.id }}">
+                            <button class="btn btn-success" type="submit" name="publish-exam" value="{{ exam.id }}">
                                 Publish Exam
                             </button>
                         {% endif %}

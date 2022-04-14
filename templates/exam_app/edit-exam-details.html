@@ -1,7 +1,8 @@
 {% extends 'exam_app/base.html' %}
-
 {% load static %}
+
 {% block title %}
+    Tutest - Edit Details - {{ exam.title }}
 {% endblock %}
 
 {% block styles %}
@@ -74,7 +75,7 @@
                         <button class="btn btn-primary" type="button" name="btn_action" value="">View Exams</button>
                     </a>
                 </div>
-                <div class="col text-end" >
+                <div class="col text-end">
                     <button class="btn btn-primary" type="submit" id="saveBtn" name="btn_action" value="save">
                         Save & Exit
                     </button>
@@ -82,7 +83,7 @@
                         <button class="btn btn-primary ms-3" type="button" name="btn_action" value="exit">
                             Exit Without Saving
                         </button>
-                </a>
+                    </a>
                 </div>
             </div>
         </form>

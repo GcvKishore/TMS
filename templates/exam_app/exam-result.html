@@ -1,6 +1,7 @@
 {% extends 'exam_app/base.html' %}
 
 {% block title %}
+    Tutest - Results - {{ exam.title }}
 {% endblock %}
 
 {% block styles %}
@@ -9,15 +10,14 @@
 {% block body %}
     <div class="row p-5">
         <div class="col">
-            <h3><strong>Exam Title</strong></h3>
-            <h6>Subject | Class</h6>
+            <h3><strong>{{ exam.title }}</strong></h3>
+            <h6>{{ exam.subject }} | {{ exam.level }}</h6>
         </div>
-        <div class="col text-end">
+        <div class="col text-end my-auto">
             <a href="{% url 'exam_app:view-all-exams-tutee' %}">
                 <button type="button" class="btn btn-primary">View all Exams</button>
             </a>
         </div>
-
         <hr>
         <h5><strong>Overview</strong></h5>
         <div class="col-md-4">
@@ -67,7 +67,7 @@
                         <td>{{ question_result.points }}</td>
                         <td>
                             <a href="{% url 'exam_app:question-result' exam_details_id question_result.question_details_id %}">
-                                <button type="button" class="btn btn-primary">Details</button>
+                                <button type="button" class="btn btn-primary btn-sm">Details</button>
                             </a>
                         </td>
                     </tr>
@@ -76,7 +76,7 @@
             </table>
         </div>
         <hr>
-        <div class="row">
+        <div class="row m-0">
             <div class="col">
                 {% if exam_details.result_status != 'Passed' %}
                     <a href="{% url 'exam_app:view-exam' exam_id %}">
