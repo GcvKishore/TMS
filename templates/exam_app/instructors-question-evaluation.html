@@ -1,6 +1,7 @@
 {% extends 'exam_app/base.html' %}
 
 {% block title %}
+    Title - Student's Evaluation
 {% endblock %}
 
 {% block styles %}
@@ -8,11 +9,12 @@
 
 {% block body %}
     <div class="p-5">
-        {{ question.question_type }}
-        <br>
-        {{ question.question_text }}
+        <h3><strong>{{ question.question_type }}</strong></h3>
         <hr>
-        <p>Student Answer</p>
+        <h5><strong>Question</strong>:</h5>
+        <p>{{ question.question_text }}</p>
+        <hr>
+        <h5>Student Answer:</h5>
         <ul>
             {% for user_input in user_inputs %}
                 <li>{{ user_input.answer_text_input }}</li>
@@ -24,14 +26,13 @@
             {% endfor %}
         </ul>
         <hr>
-        <div class="row">
+        <div class="text-end">
             <a href="{% url 'exam_app:tutee-exam-results' exam_id exam_details_id %}">
                 <button type="button" class="btn btn-primary">
                     Back to student results
                 </button>
             </a>
         </div>
-        <hr>
     </div>
 {% endblock %}
 

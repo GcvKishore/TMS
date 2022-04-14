@@ -2,14 +2,20 @@
 {% load static %}
 
 {% block title %}
+    Tutest - Exam Summary
 {% endblock %}
 
 {% block styles %}
+    <style>
+        .summary-box {
+            min-height: 85vh;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-    <div class="row align-self-center justify-content-center">
-        <div class="text-center p-5 col-md-5">
+    <div class="row summary-box justify-content-center align-content-center">
+        <div class="col-md-5 text-center">
             <img src="{% static 'images/exam_app/exam-submission-tick.png' %}" alt="exam submission successful">
             <h3><strong>Congratulations</strong></h3>
             <h5>Your exam has been submitted successfully!!!</h5>

@@ -43,9 +43,9 @@ def createExam(request):
             for error in make_exam_form.errors:
                 label = error + '_error'
                 content[label] = make_exam_form.errors[error]
-            return render(request, 'exam_app/create-exam.html', content)
+            return render(request, 'exam_app/instructor-create-exam.html', content)
     else:
-        return render(request, 'exam_app/create-exam.html')
+        return render(request, 'exam_app/instructor-create-exam.html')
 
 
 @login_required
@@ -81,7 +81,7 @@ def editExam(request, exam_id):
 
     if exam_model.owner != request.user:
         return redirect('website:permission-denied')
-    return render(request, 'exam_app/edit-exam.html', {
+    return render(request, 'exam_app/instructor-edit-exam.html', {
         'exam': exam_model,
         'questions': questions_list
     })
@@ -146,12 +146,13 @@ def addQuestion(request, exam_id):
             elif btn_action == 'save':
                 return redirect('exam_app:edit-exam', exam_id)
         else:
-            return render(request, 'exam_app/add-question.html', {
+            print('error')
+            return render(request, 'exam_app/instructor-add-question.html', {
                 'exam_id': exam_id,
                 'make_question_form': make_question_form,
             })
     else:
-        return render(request, 'exam_app/add-question.html', {
+        return render(request, 'exam_app/instructor-add-question.html', {
             'exam_id': exam_id,
         })
 
@@ -178,7 +179,7 @@ def viewAllExamsInstructors(request):
         # MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
         # MakeExam.objects.get(id=delete_exam).delete()
     exams = MakeExam.objects.filter(owner=request.user)
-    return render(request, 'exam_app/view-all-exams-instructor.html', {
+    return render(request, 'exam_app/instructor-view-all-exams.html', {
         'exams': exams,
     })
 
@@ -197,7 +198,7 @@ def editExamDetails(request, exam_id):
             details.save()
         return redirect("exam_app:edit-exam", exam_id=exam_id)
 
-    return render(request, 'exam_app/edit-exam-details.html', {
+    return render(request, 'exam_app/instructor-edit-exam-details.html', {
         'exam_id': exam_id,
         'exam': exam_model
     })
@@ -240,7 +241,7 @@ def EditQuestion(request, exam_id, question_id):
         options.append(option.option)
     for answer in answer_objects:
         answers.append(answer.answer)
-    return render(request, 'exam_app/edit-question.html', {
+    return render(request, 'exam_app/instructor-edit-question.html', {
         'exam_id': exam_id,
         'question': question,
         'options': options,
@@ -250,8 +251,10 @@ def EditQuestion(request, exam_id, question_id):
 
 @login_required
 def viewAllExamsTutee(request):
+    if request.user.is_staff:
+        return redirect('exam_app:view-all-exams-instructors')
     exams = MakeExam.objects.filter(status='Published')
-    return render(request, 'exam_app/view-all-exams-tutee.html', {
+    return render(request, 'exam_app/tutee-view-all-exams.html', {
         'exams': exams,
     })
 
@@ -259,7 +262,7 @@ def viewAllExamsTutee(request):
 @login_required
 def viewExam(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
-    return render(request, 'exam_app/view-exam.html', {
+    return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
     })
 
@@ -267,7 +270,7 @@ def viewExam(request, exam_id):
 def viewAllDetails(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     student_exam_details = UserExamDetails.objects.filter(exam=exam)
-    return render(request, 'exam_app/instructor-exam-result-details.html', {
+    return render(request, 'exam_app/instructor-exam-results.html', {
         'student_exam_details': student_exam_details,
         'exam': exam,
     })
@@ -362,7 +365,7 @@ def takeExam(request, exam_id, question_index):
     UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=request.user,
                                        start_time=now.strftime("%H:%M:%S"))
 
-    return render(request, 'exam_app/take-exam.html', {
+    return render(request, 'exam_app/tutee-take-exam.html', {
         'exam': exam,
         'question': question,
         'question_text': question_text,
@@ -377,7 +380,7 @@ def takeExam(request, exam_id, question_index):
 def examSummary(request, exam_details_id):
     checkUserAnswers(exam_details_id)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=request.user)
-    return render(request, 'exam_app/exam-summary.html', {
+    return render(request, 'exam_app/tutee-exam-finish-summary.html', {
         'user_exam_details': user_exam_details,
     })
 
@@ -387,12 +390,14 @@ def examResult(request, exam_details_id):
     username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
+    exam = MakeExam.objects.get(id=exam_id)
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
-    return render(request, 'exam_app/exam-result.html', {
+    return render(request, 'exam_app/tutee-exam-result-details.html', {
         'exam_details': exam_details,
         'all_exam_questions_results': all_exam_questions_results,
         'exam_details_id': exam_details_id,
         'exam_id': exam_id,
+        'exam': exam,
     })
 
 
@@ -400,7 +405,7 @@ def examResult(request, exam_details_id):
 def examResultsList(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=request.user)
-    return render(request, 'exam_app/tutee-exam-results-list.html', {
+    return render(request, 'exam_app/tutee-exam-results.html', {
         'all_exam_details': exam_details,
         'exam': exam,
     })
@@ -417,7 +422,7 @@ def questionResult(request, exam_details_id, question_details):
 
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details, username=request.user)
 
-    return render(request, 'exam_app/question-result-details.html', {
+    return render(request, 'exam_app/tutee-question-result.html', {
         'question': question,
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,
@@ -430,7 +435,7 @@ def tuteeExamDetails(request, exam_id, exam_details_id):
     exam = MakeExam.objects.get(id=exam_id)
     username = exam_details.username
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
-    return render(request, 'exam_app/instructor-user-exam-results-details.html', {
+    return render(request, 'exam_app/instructor-user-exam-results.html', {
         'exam_details': exam_details,
         'all_exam_questions_results': all_exam_questions_results,
         'exam_details_id': exam_details,

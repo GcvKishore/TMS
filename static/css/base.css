@@ -66,14 +66,14 @@ footer {
 
 .btn-primary {
     color: #FFFAE0;
-    border-color: #FFFAE0;
+    border-color: #3B4D5E;
     background-color: #3B4D5E;
     font-weight: bold;
 }
 
 .btn-primary:hover {
     color: #3B4D5E;
-    border-color: #3B4D5E;
+    border-color: #FDC088;
     background-color: #FDC088;
     font-weight: bold;
 }
@@ -81,7 +81,7 @@ footer {
 
 .btn-primary:focus {
     color: #3B4D5E;
-    border-color: #3B4D5E;
+    border-color: #FDC088;
     background-color: #FDC088;
     font-weight: bold;
 }
