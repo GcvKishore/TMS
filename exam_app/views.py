@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import MakeExamForm, MakeQuestionForm
 from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
     UserAnswerFileUpload, UserAnswerTextInput, UserResults
-from .functions import checkUserAnswers
+from .functions import checkUserAnswers, checkEvaluationStatus
 # additional modules
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -387,6 +387,7 @@ def examSummary(request, exam_details_id):
 
 @login_required
 def examResult(request, exam_details_id):
+    checkEvaluationStatus(exam_details_id)
     username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
@@ -431,6 +432,7 @@ def questionResult(request, exam_details_id, question_details):
 
 
 def tuteeExamDetails(request, exam_id, exam_details_id):
+    checkEvaluationStatus(exam_details_id)
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
     exam = MakeExam.objects.get(id=exam_id)
     username = exam_details.username
@@ -450,16 +452,27 @@ def questionEvaluation(request, exam_details_id, question_details_id):
 
     exam = exam_details.exam
 
-    user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
+    if request.method == 'POST':
+        result = request.POST['result']
+        remark = request.POST['remark']
+        user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
+        user_question_details.remark = remark
 
+        user_result = UserResults.objects.get(username=username, exam_details=exam_details,
+                                              question_details=user_question_details, )
+        user_result.result = result
+        user_result.save()
+        user_question_details.save()
+        return redirect('exam_app:tutee-exam-results', exam.id, exam_details_id)
+
+    user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
     question_id = user_question_details.question_id
     question = MakeQuestion.objects.get(id=question_id)
-
     user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
-
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details)
 
     return render(request, 'exam_app/instructors-question-evaluation.html', {
+        'question_details_id': question_details_id,
         'question': question,
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,

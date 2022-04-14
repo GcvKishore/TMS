@@ -72,6 +72,7 @@ class UserQuestionDetails(models.Model):
     start_time = models.TimeField(null=True, default=None)
     end_time = models.TimeField(null=True, default=None)
     time_elapsed = models.DurationField(null=True)
+    remark = models.TextField(default='', blank=True)
 
 
 class UserAnswerTextInput(models.Model):

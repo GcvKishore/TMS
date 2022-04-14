@@ -26,13 +26,41 @@
             {% endfor %}
         </ul>
         <hr>
+        <form action="{% url 'exam_app:question-evaluation' exam_details_id question_details_id %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label" for="questionType">User Answer Result </label>
+                    <select name="result" id="questionType" class="form-select-sm edit-exam">
+                        <option value="Correct">Correct</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Incorrect">Incorrect</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="py-2" for="input-1">Remark</label>
+                    <textarea class="form-control edit-exam" name="remark" id="input-1" cols="" rows="3"
+                              placeholder="Type in your remark"></textarea>
+                </div>
+            </div>
+            <hr>
+            <div class="text-end">
+                <a href="{% url 'exam_app:tutee-exam-results' exam_id exam_details_id %}">
+                    <button type="submit" class="btn btn-primary">
+                        Save & Exit
+                    </button>
+                </a>
+            </div>
+        </form>
+        <hr>
         <div class="text-end">
             <a href="{% url 'exam_app:tutee-exam-results' exam_id exam_details_id %}">
                 <button type="button" class="btn btn-primary">
-                    Back to student results
+                    Exit
                 </button>
             </a>
         </div>
+
     </div>
 {% endblock %}
 
