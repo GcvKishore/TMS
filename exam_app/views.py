@@ -253,6 +253,8 @@ def EditQuestion(request, exam_id, question_id):
 
 @login_required
 def viewAllExamsTutee(request):
+    if request.user.is_staff:
+        return redirect('exam_app:view-all-exams-instructors')
     exams = MakeExam.objects.filter(status='Published')
     return render(request, 'exam_app/tutee-view-all-exams.html', {
         'exams': exams,
