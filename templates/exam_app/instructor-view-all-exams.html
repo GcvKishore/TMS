@@ -10,7 +10,7 @@
     <div class="p-5">
         <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="POST">
             {% csrf_token %}
-            <h4><strong>List Of Exams Created</strong></h4>
+            <h4><strong>List Of Exams Created By You</strong></h4>
             <hr>
             <table class="table align-middle text-center">
                 <thead class="thead-dark text-center">
@@ -23,9 +23,9 @@
                     <th scope="col">Time</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Exam Link</th>
+                    <th scope="col">Exam Page</th>
                     <th scope="col">Change Status</th>
-                    <th scope="col">Details</th>
+                    <th scope="col">Results</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                         <td>{{ exam.status }}</td>
                         <td>
                             <a href="{% url 'exam_app:edit-exam' exam.id %}">
-                                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                                <button type="button" class="btn btn-primary btn-sm">View/Edit</button>
                             </a>
                         </td>
                         <td>
@@ -58,7 +58,7 @@
                         </td>
                         <td>
                             <a href="{% url 'exam_app:instructor-details' exam.id %}">
-                                <button type="button" class="btn btn-primary btn-sm">Details</button>
+                                <button type="button" class="btn btn-primary btn-sm">Results</button>
                             </a>
                         </td>
                     </tr>
