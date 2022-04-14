@@ -70,6 +70,18 @@ def checkUserAnswers(exam_details_id):
                 time_elapsed=user_question_details.time_elapsed
             ).save()
 
+    checkEvaluationStatus(exam_details_id)
+    
+    return
+
+
+def checkEvaluationStatus(exam_details_id):
+    exam_details = UserExamDetails.objects.get(id=exam_details_id)
+
+    username = exam_details.username
+    exam = exam_details.exam
+    questions = MakeQuestion.objects.filter(exam_model__id=exam.id).order_by('pk')
+
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
 
     total_points = 0
