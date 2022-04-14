@@ -19,8 +19,10 @@
                     <h5><strong>{{ exam.title }}</strong></h5>
                 </div>
                 <div class="col text-end">
-                    <button type="submit" class="btn btn-outline-danger" name="btn_action" value="quit"><strong>Quit
-                        Exam</strong></button>
+                    <p><span class="mx-5">Exam will end in <span id="exam_countdown"></span></span>
+                        <button type="submit" class="btn btn-outline-danger" name="btn_action" id="quit-btn" value="quit"><strong>Quit
+                            Exam</strong></button>
+                    </p>
                 </div>
             </div>
             <hr>
@@ -80,5 +82,6 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
     <script src="{% static 'js/take-exam.js' %}"></script>
+{#    <script src="{% static 'js/exam-countdown.js' %}"></script>#}
 </body>
 </html>

@@ -22,21 +22,33 @@ def validate_answers(user_answers, correct_answers, points):
     return 'Correct', points
 
 
-def checkUserAnswers(exam_details_id):
-    exam_details = UserExamDetails.objects.get(id=exam_details_id)
+def checkUserAnswers(request, exam_details):
+    now = datetime.now()
+
+    exam_details = UserExamDetails.objects.get(id=exam_details.id)
 
     username = exam_details.username
     exam = exam_details.exam
     questions = MakeQuestion.objects.filter(exam_model__id=exam.id).order_by('pk')
 
     for question in questions:
-        user_question_details = UserQuestionDetails.objects.get(question=question.id, exam_details=exam_details)
+        if not UserQuestionDetails.objects.filter(question=question.id, exam_details=exam_details.id).exists():
+            UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=request.user,
+                                               start_time=now.strftime("%H:%M:%S"))
+            question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
+                                                               username=request.user)
+            question_details.end_time = now.strftime("%H:%M:%S")
+            question_details.save()
 
+        user_question_details = UserQuestionDetails.objects.get(question=question.id,
+                                                                exam_details=exam_details.id)
         start_time = user_question_details.start_time
         end_time = user_question_details.end_time
-        time_elapsed = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
-        user_question_details.time_elapsed = time_elapsed
-        user_question_details.save()
+
+        if start_time and end_time:
+            time_elapsed = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
+            user_question_details.time_elapsed = time_elapsed
+            user_question_details.save()
 
         if not question.evaluation_type or None:
             UserResults.objects.filter(username=username, exam_details=exam_details,
@@ -69,9 +81,8 @@ def checkUserAnswers(exam_details_id):
                 points=points,
                 time_elapsed=user_question_details.time_elapsed
             ).save()
+    checkEvaluationStatus(exam_details.id)
 
-    checkEvaluationStatus(exam_details_id)
-    
     return
 
 
