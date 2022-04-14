@@ -259,8 +259,9 @@ def viewAllExamsTutee(request):
     })
 
 
-@login_required
 def viewExam(request, exam_id):
+    if not request.user.is_authenticated:
+        return redirect('account:sign-in')
     exam = MakeExam.objects.get(id=exam_id)
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
