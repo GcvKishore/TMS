@@ -4,7 +4,8 @@ let count = 0
 let question_tag = `
     <div class="form-group">
         <label class="py-2" for="input-1">Question</label>
-        <textarea class="form-control" name="question_text" id="input-1" cols="" rows="3" placeholder="Type your question here"></textarea>
+        <textarea class="form-control" style="white-space: pre-wrap;" name="question_text" id="input-1" cols="" rows="3" 
+        placeholder="Type your question here"></textarea>
     </div>
 `
 // end of question_tag
@@ -55,7 +56,7 @@ function generateFormat() {
     } else if (selection === 2) {
         // html_button = '<div id="answers_area"></div><button onclick="addAnswer()" type="button"> Add Answers</button>'
         html_button = '<div class="row" id="answers_area"></div><button onclick="addAnswer()" class="btn btn-primary" type="button" id="generateBtn"> Add Answer</button><hr>'
-    } else if(selection === 3 || selection === 4){
+    } else if (selection === 3 || selection === 4) {
         document.getElementById("addBtn").removeAttribute("disabled");
         document.getElementById("saveBtn").removeAttribute("disabled");
     }
