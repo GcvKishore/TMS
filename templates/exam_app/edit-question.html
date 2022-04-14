@@ -18,7 +18,7 @@
             <div class="py-3">
                 <label class="form-label" for="questionType">Choose question type:</label>
                 <select name="question_type" id="questionType" class="form-select-sm edit-exam" disabled>
-                    <option value="{{ question.question_type }}" selected>{{ question.question_type }}</option>
+                    <option value="{{ question.question_type }}" selected disabled hidden>{{ question.question_type }}</option>
                     <option value="Multiple Choice - Multiple Answers">Multiple Choice - Multiple Answers</option>
                     <option value="Fill In The Blanks">Fill In The Blanks</option>
                     <option value="Short Answers">Short Answers</option>
