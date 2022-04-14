@@ -1,0 +1,91 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <div class="row">
+            <div class="col">
+                <h4 class="my-3"><strong>Exam Overview</strong></h4>
+            </div>
+            <div class="col text-end py-2">
+                <a class="m-auto" href="{% url 'exam_app:view-all-exams-tutee' %}">
+                    <button class="btn btn-primary" type="button">View All Exams</button>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-5">
+                <h4><strong>Details</strong></h4>
+
+                <table class="table table-striped align-middle">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Title</th>
+                        <td>{{ exam.title }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Subject</th>
+                        <td>{{ exam.subject }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Class/Level</th>
+                        <td>{{ exam.level }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date</th>
+                        <td>{{ exam.date }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Time</th>
+                        <td>{{ exam.time }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Duration</th>
+                        <td>{{ exam.duration }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Min Pass Percentage</th>
+                        <td>{{ exam.min_pass_points }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>On Going/Passed/Failed/Yet To Take)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7 exam-instructions">
+                <h4><strong> Exam Instructions</strong></h4>
+                <ul>
+                    <li>You must use a functioning webcam and microphone
+                    <li>No cell phones or other secondary devices in the room or test area</li>
+                    <li>Your desk/table must be clear or any materials except your test-taking device</li>
+                    <li>No one else can be in the room with you</li>
+                    <li>No talking</li>
+                    <li>The testing room must be well-lit, and you must be clearly visible</li>
+                    <li>No dual screens/monitors</li>
+                    <li>Do not leave the camera</li>
+                    <li>No use of additional applications or internet</li>
+                </ul>
+
+            </div>
+        </div>
+        <hr>
+        <div class="col py-2 text-center">
+            <a class="m-auto" href="{% url 'exam_app:takeExam' exam.id 0 %}">
+                <button class="btn btn-success" type="button">Start Exam</button>
+            </a>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

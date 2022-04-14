@@ -1,0 +1,56 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+    Tutest - All Exams List
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        <h4><strong>List Of All Available Exams</strong></h4>
+        <hr>
+        <table class="table align-middle">
+            <thead class="thead-dark">
+            <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Class/Level</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Status</th>
+                <th scope="col">Exam</th>
+                <th scope="col">Results</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exam in exams %}
+                <tr class="text-center">
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ exam.title }}</td>
+                    <td>{{ exam.subject }}</td>
+                    <td>{{ exam.level }}</td>
+                    <td>{{ exam.date }}</td>
+                    <td>{{ exam.time }}</td>
+                    <td>{{ exam.duration }}</td>
+                    <td>Status</td>
+                    <td>
+                        <a href="{% url 'exam_app:view-exam' exam.id %}">
+                            <button type="button" class="btn btn-success btn-sm">Start</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'exam_app:tutee-exam-results-list' exam.id %}">
+                            <button type="button" class="btn btn-primary btn-sm">Results</button>
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

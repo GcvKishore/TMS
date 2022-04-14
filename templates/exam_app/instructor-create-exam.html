@@ -1,0 +1,83 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+    Tutest - Create Exam
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        <h3 class="py-3"><strong>New Exam Details:</strong></h3>
+        <form action="{% url 'exam_app:create-exam' %}" method="post">
+            {% csrf_token %}
+            <small class="form-text custom-error-message">{{ error_message }}</small>
+            {{ error_message }}
+            <div class="row m-0 my-2">
+                <div class="form-group">
+                    <label class="py-2" for="input-1">Title</label>
+                    <input type="text" class="form-control" id="input-1" placeholder="Title" name="title"
+                           value="{{ title }}">
+                    <small class="form-text custom-error-message">{{ title_error }}</small>
+                </div>
+            </div>
+            <div class="row m-0 my-2">
+                <div class="form-group col-md-6">
+                    <label class="py-2" for="input-2">Subject</label>
+                    <input type="text" class="form-control" id="input-2" placeholder="Subject" name="subject"
+                           value="{{ subject }}">
+                    <small class="form-text custom-error-message">{{ subject_error }}</small>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="py-2" for="input-3">Class/Level</label>
+                    <input type="text" class="form-control" id="input-3" placeholder="Class/Level" name="level"
+                           value="{{ level }}">
+                    <small class="form-text custom-error-message">{{ level_error }}</small>
+                </div>
+            </div>
+            <div class="row m-0 my-2">
+                <div class="form-group col-md-3">
+                    <label class="py-2" for="input-4">Date</label>
+                    <input type="date" class="form-control" id="input-4" placeholder="Title" name="date"
+                           value="{{ date }}">
+                    <small class="form-text custom-error-message">{{ date_error }}</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="py-2" for="input-5">Time</label>
+                    <input type="time" class="form-control" id="input-5" placeholder="HH:MM" name="time"
+                           value="{{ time }}">
+                    <small class="form-text custom-error-message">{{ time_error }}</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="py-2" for="input-6">Duration</label>
+                    <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS" name="duration"
+                           value="{{ duration }}" aria-describedby="durationDescription">
+                    <small id="durationDescription" class="form-text text-muted">
+                        HH:MM:SS
+                    </small>
+                    <small class="form-text custom-error-message">{{ duration_error }}</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="py-2" for="input-7">Min pass points</label>
+                    <input type="number" class="form-control" id="input-7" placeholder="%" name="min_pass_points"
+                           value="{{ min_pass_points }}"
+                           min="0" max="100">
+                    <small class="form-text custom-error-message">{{ min_pass_points_error }}</small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'exam_app:view-all-exams-instructors' %}">
+                        <button class="btn btn-primary" type="button" name="btn_action" value="">View Exams</button>
+                    </a>
+                </div>
+                <div class="col text-end">
+                    <button class="btn btn-primary" type="submit" name="btn_action" value="">Create Exam</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
