@@ -29,15 +29,12 @@ def checkUserAnswers(exam_details_id):
     exam = exam_details.exam
     questions = MakeQuestion.objects.filter(exam_model__id=exam.id).order_by('pk')
 
-    total_time_elapsed = datetime.strptime('00:00:00.000000', '%H:%M:%S.%f')
-
     for question in questions:
         user_question_details = UserQuestionDetails.objects.get(question=question.id, exam_details=exam_details)
 
         start_time = user_question_details.start_time
         end_time = user_question_details.end_time
         time_elapsed = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
-        total_time_elapsed += time_elapsed
         user_question_details.time_elapsed = time_elapsed
         user_question_details.save()
 
@@ -75,7 +72,6 @@ def checkUserAnswers(exam_details_id):
 
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
 
-    print(total_time_elapsed)
     total_points = 0
 
     exam_details.result_status = 'Passed'
