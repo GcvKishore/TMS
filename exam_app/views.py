@@ -450,12 +450,12 @@ def tuteeExamDetails(request, exam_id, exam_details_id):
 def questionEvaluation(request, exam_details_id, question_details_id):
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
     username = exam_details.username
-
     exam = exam_details.exam
 
     if request.method == 'POST':
         result = request.POST['result']
         remark = request.POST['remark']
+
         user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
         user_question_details.remark = remark
 
@@ -478,5 +478,6 @@ def questionEvaluation(request, exam_details_id, question_details_id):
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
-        'exam_id': exam.id,
+        'exam': exam,
+        'user_question_details': user_question_details
     })
