@@ -35,8 +35,8 @@ function startCountDown(max_time) {
             document.getElementById("quit-btn").click();
         } else {
             hrs = Math.floor(timing / 3600).toString();
-            mins = Math.floor(timing / 60).toString();
-            secs = Math.floor(timing % 60).toString();
+            mins = Math.floor((timing % 3600) / 60).toString();
+            secs = Math.floor(((timing % 3600) % 60) % 60).toString();
 
             if (hrs.length === 1) {
                 hrs = `0${hrs}`
