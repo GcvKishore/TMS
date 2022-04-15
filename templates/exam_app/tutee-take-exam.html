@@ -15,13 +15,16 @@
             font-size: 1rem;
             border-radius: 0.2rem;
         }
+        .exam_nav{
+            background-color: #FFFAE0;
+        }
     </style>
 </head>
 <body>
     <main class="container-xxl p-3">
         <form action="{% url 'exam_app:takeExam' exam.id question_index %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row align-items-center sticky-top">
+            <div class="row align-items-center sticky-top exam_nav">
                 <div class="col text-muted">
                     <h5 class="m-0"><strong>{{ exam.title }}</strong></h5>
                 </div>
