@@ -1,10 +1,13 @@
-exam_duration = document.getElementById('totalExamDuration')
+total_exam_duration = document.getElementById('totalExamDuration')
 
-if (exam_duration) {
-    const hms = exam_duration.innerText;
+if (total_exam_duration) {
+    const hms = total_exam_duration.innerText;
     const [hours, minutes, seconds] = hms.split(':');
     const totalSeconds = (+hours) * 60 * 60 + (+minutes) * 60 + (+seconds);
-    localStorage.setItem("time_left", totalSeconds.toString());
+    if (totalSeconds !== 0) {
+        localStorage.setItem("time_left", totalSeconds.toString());
+        localStorage.setItem("total_time", totalSeconds.toString());
+    }
 }
 
 
@@ -12,7 +15,10 @@ exam_duration = document.getElementById('exam_countdown')
 
 if (exam_duration) {
     time_left = localStorage.getItem("time_left");
-    startCountDown(parseInt(time_left))
+    total_time = localStorage.getItem("total_time");
+    if (time_left !== 'NaN') {
+        startCountDown(parseInt(time_left))
+    }
     console.log(time_left)
 }
 
@@ -29,8 +35,8 @@ function startCountDown(max_time) {
             document.getElementById("quit-btn").click();
         } else {
             hrs = Math.floor(timing / 3600).toString();
-            mins = Math.floor(timing / 60).toString();
-            secs = Math.floor(timing % 60).toString();
+            mins = Math.floor((timing % 3600) / 60).toString();
+            secs = Math.floor(((timing % 3600) % 60) % 60).toString();
 
             if (hrs.length === 1) {
                 hrs = `0${hrs}`
@@ -42,7 +48,19 @@ function startCountDown(max_time) {
                 secs = `0${secs}`
             }
 
-            document.getElementById("exam_countdown").innerHTML = `${hrs}:${mins}:${secs}`;
+            let countdown_element = document.getElementById("exam_countdown")
+
+            countdown_element.classList.add('bg-success', 'text-white')
+            if ((timing / total_time) < .50) {
+                countdown_element.classList.remove('bg-success', 'text-white')
+                countdown_element.classList.add('bg-warning', 'text-dark')
+            }
+            if ((timing / total_time) < .25) {
+                countdown_element.classList.remove('bg-warning', 'text-dark')
+                countdown_element.classList.add('bg-danger', 'text-white')
+            }
+
+            countdown_element.innerHTML = `Time left: ${hrs}:${mins}:${secs}`;
             localStorage.setItem("time_left", timing.toString());
         }
         timing--;
