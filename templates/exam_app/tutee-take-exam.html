@@ -12,7 +12,7 @@
     <style>
         #exam_countdown {
             padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
+            font-size: 1rem;
             border-radius: 0.2rem;
         }
     </style>
@@ -21,7 +21,7 @@
     <main class="container-xxl p-3">
         <form action="{% url 'exam_app:takeExam' exam.id question_index %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row align-items-center">
+            <div class="row align-items-center sticky-top">
                 <div class="col text-muted">
                     <h5 class="m-0"><strong>{{ exam.title }}</strong></h5>
                 </div>
