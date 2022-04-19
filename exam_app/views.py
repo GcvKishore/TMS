@@ -433,11 +433,17 @@ def questionResult(request, exam_details_id, question_details):
 
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details, username=username)
 
+    exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    user_result = UserResults.objects.get(username=username, exam_details=exam_details,
+                                          question_details=user_question_details, )
+
     return render(request, 'exam_app/tutee-question-result.html', {
         'question': question,
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
+        'user_question_details': user_question_details,
+        'user_result': user_result,
     })
 
 
@@ -464,15 +470,27 @@ def questionEvaluation(request, exam_details_id, question_details_id):
     exam = exam_details.exam
 
     if request.method == 'POST':
+        print(request.POST['result'])
         result = request.POST['result']
         remark = request.POST['remark']
+        points = request.POST['points']
 
         user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
         user_question_details.remark = remark
+        user_question_details.evaluation_status = 'Evaluated'
+        user_question_details.points = points
 
         user_result = UserResults.objects.get(username=username, exam_details=exam_details,
                                               question_details=user_question_details, )
         user_result.result = result
+        user_question_details.evaluation_status = 'Evaluated'
+        user_result.status = 'Evaluated'
+
+        if result == 'Pending':
+            user_question_details.evaluation_status = 'Pending'
+            user_result.status = 'Pending'
+
+        user_result.points = points
         user_result.save()
         user_question_details.save()
         return redirect('exam_app:tutee-exam-results', exam.id, exam_details_id)
@@ -482,6 +500,8 @@ def questionEvaluation(request, exam_details_id, question_details_id):
     question = MakeQuestion.objects.get(id=question_id)
     user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details)
+    user_result = UserResults.objects.get(username=username, exam_details=exam_details,
+                                          question_details=user_question_details, )
 
     return render(request, 'exam_app/instructors-question-evaluation.html', {
         'question_details_id': question_details_id,
@@ -490,5 +510,6 @@ def questionEvaluation(request, exam_details_id, question_details_id):
         'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
         'exam': exam,
-        'user_question_details': user_question_details
+        'user_question_details': user_question_details,
+        'user_result': user_result,
     })
