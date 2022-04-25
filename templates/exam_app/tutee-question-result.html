@@ -26,6 +26,28 @@
             {% endfor %}
         </ul>
         <hr>
+        <h5>Result Details:</h5>
+        <div class="col-3">
+            <table class="table table-striped align-middle">
+                <tbody>
+                <tr>
+                    <th scope="row">Status:</th>
+                    <td>{{ user_question_details.evaluation_status }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Result:</th>
+                    <td>{{ user_result.result }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Points Achieved:</th>
+                    <td>{{ user_question_details.points }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <h6><strong>Remark:</strong></h6>
+        <p>{{ user_question_details.remark }}</p>
+        <hr>
         <div class="text-end">
             <a href="{% url 'exam_app:exam-result' exam_details_id %}">
                 <button type="button" class="btn btn-primary">Back to results</button>
