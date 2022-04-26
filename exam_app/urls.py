@@ -19,5 +19,13 @@ urlpatterns = [
     path('edit-exam/edit-details/<int:exam_id>', views.editExamDetails, name="edit-details"),
     path('instructor/<int:exam_id>/results/', views.viewAllDetails, name="instructor-details"),
     path('instructor/<int:exam_id>/results/<int:exam_details_id>', views.tuteeExamDetails, name="tutee-exam-results"),
-    path('exam/<int:exam_details_id>/evaluation/<int:question_details_id>', views.questionEvaluation, name='question-evaluation')
+    path('exam/<int:exam_details_id>/evaluation/<int:question_details_id>', views.questionEvaluation,
+         name='question-evaluation'),
+    path('edit-exam/<int:exam_id>/add-section/', views.addSection, name="add-section"),
+    path('edit-exam/<int:exam_id>/edit-section/<int:section_id>', views.editSection, name="edit-section"),
+    path('edit-exam/<int:exam_id>/section/<int:section_id>/add-question', views.sectionAddQuestion,
+         name="section-add-question"),
+    path('edit-exam/<int:exam_id>/section/<int:section_id>/edit-question/<int:question_id>', views.sectionEditQuestion,
+         name="section-edit-question"),
+    path('<int:exam_id>/<int:section_index>/<int:question_index>', views.takeExamSection, name="take-exam-section"),
 ]
