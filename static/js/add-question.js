@@ -1,40 +1,40 @@
 let count = 0
 
 
-let question_tag = `
-    <div class="form-group">
-        <label class="py-2" for="input-1">Question</label>
-        <textarea class="form-control" style="white-space: pre-wrap;" name="question_text" id="input-1" cols="" rows="3" 
-        placeholder="Type your question here"></textarea>
-    </div>
-`
+// let question_tag = `
+//     <div class="form-group">
+//         <label class="py-2" for="input-1">Question</label>
+//         <textarea class="form-control" style="white-space: pre-wrap;" name="question_text" id="input-1" cols="" rows="3"
+//         placeholder="Type your question here"></textarea>
+//     </div>
+// `
 // end of question_tag
 
-let question_info = `
-    <div class="row">
-        <div class="form-group col-md-3">
-            <label class="py-2" for="input-6">Max Time</label>
-            <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS" name="max_time"
-                   value=""
-                   aria-describedby="durationDescription">
-            <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
-        </div>
-        <div class="form-row col-md-3">
-            <label class="py-2" for="input-7">Max Points</label>
-            <input type="number" class="form-control" id="input-7" placeholder="Points" name="max_points" value="" min="0"
-                   max="100">
-        </div>
-        <div class="form-row col-md-3">
-            <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
-            <select name="difficulty_level" id="questionDifficultyLevel" class="form-select">
-                <option value="None">---</option>
-                <option value="Hard">Hard</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Easy">Easy</option>
-            </select>
-        </div>
-    </div>
-`
+// let question_info = `
+//     <div class="row">
+//         <div class="form-group col-md-3">
+//             <label class="py-2" for="input-6">Max Time</label>
+//             <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS" name="max_time"
+//                    value=""
+//                    aria-describedby="durationDescription">
+//             <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
+//         </div>
+//         <div class="form-row col-md-3">
+//             <label class="py-2" for="input-7">Max Points</label>
+//             <input type="number" class="form-control" id="input-7" placeholder="Points" name="max_points" value="" min="0"
+//                    max="100">
+//         </div>
+//         <div class="form-row col-md-3">
+//             <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
+//             <select name="difficulty_level" id="questionDifficultyLevel" class="form-select">
+//                 <option value="None">---</option>
+//                 <option value="Hard">Hard</option>
+//                 <option value="Moderate">Moderate</option>
+//                 <option value="Easy">Easy</option>
+//             </select>
+//         </div>
+//     </div>
+// `
 
 // end of question_info
 
@@ -61,8 +61,9 @@ function generateFormat() {
         document.getElementById("saveBtn").removeAttribute("disabled");
     }
     count = 0
+    document.getElementById('questionTextArea').removeAttribute("hidden");
 
-    document.getElementById("questionArea").innerHTML = question_tag + question_info + '<hr>' + html_button;
+    document.getElementById("questionArea").innerHTML = '<hr>' + html_button;
 }
 
 function addOption() {

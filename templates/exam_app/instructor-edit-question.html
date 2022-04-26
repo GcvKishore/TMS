@@ -7,6 +7,12 @@
 
 {% block styles %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .django-ckeditor-widget {
+            width: 100% !important;
+        }
+
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -16,6 +22,7 @@
         <hr>
         <form action="{% url 'exam_app:edit-question' exam_id question.id %}" method="post">
             {% csrf_token %}
+            {{ question_form.media }}
             <div class="py-3">
                 <label class="form-label" for="questionType">Choose question type:</label>
                 <select name="question_type" id="questionType" class="form-select-sm edit-exam" disabled>
@@ -31,31 +38,26 @@
                 fields
             </button>
             <hr>
-            <div class="" id="questionArea">
-                <div class="form-group">
-                    <label class="py-2" for="input-1">Question</label>
-                    <textarea class="form-control edit-exam" name="question_text" id="input-1" cols="" rows="3" disabled
-                              placeholder="Type your question here"> {{ question.question_text }}</textarea>
-                </div>
+            <div id="questionTextArea" class="edit-exam">
+                {{ question_form.question_text | safe }}
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label class="py-2" for="input-6">Max Time</label>
                         <input type="time" step="1" class="form-control edit-exam" id="input-6" disabled
                                placeholder="HH:MM:SS"
-                               name="max_time" value="{{ question.max_time }}" aria-describedby="durationDescription">
+                               name="max_time" value="{{ question_duration }}" aria-describedby="durationDescription">
                         <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
                     </div>
                     <div class="form-row col-md-3">
                         <label class="py-2" for="input-7">Max Points</label>
                         <input type="number" class="form-control edit-exam" id="input-7" disabled placeholder="Points"
-                               name="max_points"
-                               value="{{ question.max_points }}" min="0" max="100">
+                               name="max_points" value="{{ question.max_points }}" min="0" max="100">
                     </div>
                     <div class="form-row col-md-3">
                         <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
                         <select name="difficulty_level" id="questionDifficultyLevel" class="form-select edit-exam"
                                 disabled>
-                            <option value="{{ question.difficulty_level }}" selected
+                            <option value="{{ question.difficulty_level }}" hidden selected
                             >{{ question.difficulty_level }}</option>
                             <option value="Hard">Hard</option>
                             <option value="Moderate">Moderate</option>
@@ -63,6 +65,8 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="" id="questionArea">
                 <hr>
                 {% if options %}
                     <div class="row" id="options_answers_area">
@@ -116,7 +120,8 @@
             </div>
             <div class="row">
                 <div class="col text-end" id="action-buttons-view">
-                    <button class="btn btn-primary" type="button" id="editBtn" name="btn_action" onclick="editExam()"
+                    <button class="btn btn-primary" type="button" id="editBtn" name="btn_action"
+                            onclick="toggleReadOnly( false ); editExam()"
                             value="edit">
                         Edit
                     </button>
@@ -143,4 +148,15 @@
 
 {% block script %}
     <script src="{% static 'js/edit-question.js' %}"></script>
+    <script data-sample="1">
+        var editor;
+        CKEDITOR.on('instanceReady', function (ev) {
+            editor = ev.editor;
+            editor.setReadOnly(true);
+        });
+        toggleReadOnly('')
+        function toggleReadOnly(isReadOnly) {
+            editor.setReadOnly(isReadOnly);
+        }
+    </script>
 {% endblock %}
