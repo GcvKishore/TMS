@@ -192,6 +192,6 @@ LOGGING = {
 db_from_env = dj_database_url.config(conn_max_age=0, ssl_require=False)
 django_on_heroku.settings(locals(), staticfiles=False)
 
-LOGIN_URL = 'account:sign-in'
+LOGIN_URL = 'accounts:sign-in'
 LOGIN_REDIRECT_URL = 'website:index'
 LOGOUT_REDIRECT_URL = 'website:index'
