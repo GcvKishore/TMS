@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import *
-from .models import *
-from .functions import *
+from .forms import MakeExamForm, MakeQuestionForm
+from .models import MakeExam, MakeQuestion, Option, Answer, UserExamDetails, UserQuestionDetails, \
+    UserAnswerFileUpload, UserAnswerTextInput, UserResults
+from .functions import checkUserAnswers, checkEvaluationStatus
+# additional modules
 from datetime import datetime
 from django.contrib.auth.models import User
 
@@ -173,6 +175,9 @@ def viewAllExamsInstructors(request):
             exam.status = 'Draft'
             exam.save()
 
+        # delete_exam = request.POST['delete_exam']
+        # MakeQuestion.objects.filter(exam_model__id=delete_exam).delete()
+        # MakeExam.objects.get(id=delete_exam).delete()
     exams = MakeExam.objects.filter(owner=request.user)
     return render(request, 'exam_app/instructor-view-all-exams.html', {
         'exams': exams,
@@ -244,7 +249,7 @@ def EditQuestion(request, exam_id, question_id):
     })
 
 
-@login_required
+# @login_required
 def viewAllExamsTutee(request):
     if request.user.is_staff:
         return redirect('exam_app:view-all-exams-instructors')
@@ -254,7 +259,7 @@ def viewAllExamsTutee(request):
     })
 
 
-@login_required
+# @login_required
 def viewExam(request, exam_id):
     # if not request.user.is_authenticated:
     #     return redirect('account:sign-in')
@@ -264,7 +269,7 @@ def viewExam(request, exam_id):
     })
 
 
-@login_required
+# @login_required
 def viewAllDetails(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     student_exam_details = UserExamDetails.objects.filter(exam=exam)
@@ -282,17 +287,19 @@ def generateFITB(question_text, answers):
     return text
 
 
-@login_required
+# @login_required
 def takeExam(request, exam_id, question_index):
     now = datetime.now()
     if request.method == 'POST':
-        username = request.user
+        # username = request.user
+        username = User.objects.get(username='guestuser1')
         btn_action = request.POST['btn_action']
 
         questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
         question = questions[question_index]
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
+        print(exam_details)
 
         question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
                                                            username=username)
@@ -338,7 +345,8 @@ def takeExam(request, exam_id, question_index):
             return redirect('exam_app:exam-summary', exam_details.id)
 
     # Register user to the exams list
-    username = request.user
+    # username = request.user
+    username = User.objects.get(username='guestuser1')
 
     exam = MakeExam.objects.get(id=exam_id)
     status = "Ongoing"
@@ -381,9 +389,11 @@ def takeExam(request, exam_id, question_index):
     })
 
 
-@login_required
+# @login_required
 def examSummary(request, exam_details_id):
-    username = request.user
+    # username = request.user
+
+    username = User.objects.get(username='guestuser1')
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
     checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
@@ -392,10 +402,11 @@ def examSummary(request, exam_details_id):
     })
 
 
-@login_required
+# @login_required
 def examResult(request, exam_details_id):
     checkEvaluationStatus(exam_details_id)
-    username = request.user
+    # username = request.user
+    username = User.objects.get(username='guestuser1')
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
     exam = MakeExam.objects.get(id=exam_id)
@@ -409,9 +420,10 @@ def examResult(request, exam_details_id):
     })
 
 
-@login_required
+# @login_required
 def examResultsList(request, exam_id):
-    username = request.user
+    # username = request.user
+    username = User.objects.get(username='guestuser1')
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
     return render(request, 'exam_app/tutee-exam-results.html', {
@@ -420,9 +432,10 @@ def examResultsList(request, exam_id):
     })
 
 
-@login_required
+# @login_required
 def questionResult(request, exam_details_id, question_details):
-    username = request.user
+    # username = request.user
+    username = User.objects.get(username='guestuser1')
 
     user_question_details = UserQuestionDetails.objects.get(id=question_details, username=username)
 
@@ -433,17 +446,11 @@ def questionResult(request, exam_details_id, question_details):
 
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details, username=username)
 
-    exam_details = UserExamDetails.objects.get(id=exam_details_id)
-    user_result = UserResults.objects.get(username=username, exam_details=exam_details,
-                                          question_details=user_question_details, )
-
     return render(request, 'exam_app/tutee-question-result.html', {
         'question': question,
         'user_inputs': user_inputs,
         'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
-        'user_question_details': user_question_details,
-        'user_result': user_result,
     })
 
 
@@ -470,27 +477,15 @@ def questionEvaluation(request, exam_details_id, question_details_id):
     exam = exam_details.exam
 
     if request.method == 'POST':
-        print(request.POST['result'])
         result = request.POST['result']
         remark = request.POST['remark']
-        points = request.POST['points']
 
         user_question_details = UserQuestionDetails.objects.get(id=question_details_id)
         user_question_details.remark = remark
-        user_question_details.evaluation_status = 'Evaluated'
-        user_question_details.points = points
 
         user_result = UserResults.objects.get(username=username, exam_details=exam_details,
                                               question_details=user_question_details, )
         user_result.result = result
-        user_question_details.evaluation_status = 'Evaluated'
-        user_result.status = 'Evaluated'
-
-        if result == 'Pending':
-            user_question_details.evaluation_status = 'Pending'
-            user_result.status = 'Pending'
-
-        user_result.points = points
         user_result.save()
         user_question_details.save()
         return redirect('exam_app:tutee-exam-results', exam.id, exam_details_id)
@@ -500,8 +495,6 @@ def questionEvaluation(request, exam_details_id, question_details_id):
     question = MakeQuestion.objects.get(id=question_id)
     user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details)
     user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details)
-    user_result = UserResults.objects.get(username=username, exam_details=exam_details,
-                                          question_details=user_question_details, )
 
     return render(request, 'exam_app/instructors-question-evaluation.html', {
         'question_details_id': question_details_id,
@@ -510,6 +503,5 @@ def questionEvaluation(request, exam_details_id, question_details_id):
         'user_uploads': user_uploads,
         'exam_details_id': exam_details_id,
         'exam': exam,
-        'user_question_details': user_question_details,
-        'user_result': user_result,
+        'user_question_details': user_question_details
     })
