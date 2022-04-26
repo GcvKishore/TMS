@@ -1,0 +1,221 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .django-ckeditor-widget {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <h1><strong>Section Details</strong></h1>
+        <hr>
+        <form action="{% url 'exam_app:edit-section' exam.id section.id %}" method="post">
+            {% csrf_token %}
+            {{ form.media }}
+            <div class="row m-0 p-0">
+                <div class="view_section col-md-5">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Title</th>
+                            <td>{{ section.title }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Sub-Title</th>
+                            <td>{{ section.sub_title }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6 form-group">
+                    <div class="edit_section" hidden disabled>
+                        <label class="py-2" for="input-1"><strong>Title: *</strong></label>
+                        <input type="text" class="form-control" id="input-1" placeholder="Enter Section Title" required
+                               name="title"
+                               value="{{ section.title }}">
+                        <small class="form-text custom-error-message">{{ title_error }}</small>
+                    </div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <div class="edit_section" hidden disabled>
+                        <label class="py-2" for="input-1"><strong>Sub-Title:</strong></label>
+                        <input type="text" class="form-control" id="input-1" placeholder="Enter Section Sub-Title"
+                               name="sub_title" value="{{ section.sub_title }}">
+                        <small class="form-text custom-error-message">{{ sub_title_error }}</small>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3" id="ckEditInstructionsArea">
+                <h4><label for="ckEditorTextArea1" class="mb-3"><strong>Section Instructions:</strong></label></h4>
+                <div id="ckEditorTextArea1">
+                    <div class="view_section">
+                        {% if section.instructions %}
+                            {{ section.instructions | safe }}
+                        {% else %}
+                            Section Instructions Unavailable
+                        {% endif %}
+                    </div>
+                    <div class="edit_section" hidden disabled>
+                        {% if section.instructions %}
+                            <div id="addSectionInstructions">
+                                {{ form.instructions }}
+                            </div>
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-sm" id="addInstructionsBtn"
+                                        hidden onclick="addInstructions()">Add Instructions
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" id="removeInstructionsBtn"
+                                        onclick="removeInstructions()">Remove Instructions
+                                </button>
+                            </div>
+                        {% else %}
+                            <div id="addSectionInstructions" hidden disabled="">
+                                {{ form.instructions }}
+                            </div>
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-sm" id="addInstructionsBtn"
+                                        onclick="addInstructions()">Add Instructions
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" id="removeInstructionsBtn"
+                                        hidden onclick="removeInstructions()">Remove Instructions
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3" id="ckEditSupportiveTextArea">
+                <h4><label for="ckEditorTextArea2" class="mb-3"><strong>Section Passage:</strong></label>
+                </h4>
+
+                <div id="ckEditorTextArea2">
+                    <div class="view_section">
+                        {% if section.description %}
+                            {{ section.description | safe }}
+                        {% else %}
+                            Section Passage/Text Unavailable
+                        {% endif %}
+                    </div>
+                    <div class="edit_section" hidden disabled>
+                        {% if section.description %}
+                            <div id="addSectionDescription">
+                                {{ form.description }}
+                            </div>
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-sm" id="addDescriptionBtn"
+                                        hidden onclick="addDescription()">Add Description
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" id="removeDescriptionBtn"
+                                        onclick="removeDescription()">Remove Description
+                                </button>
+                            </div>
+
+                        {% else %}
+                            <div id="addSectionDescription" hidden disabled="">
+                                {{ form.description }}
+                            </div>
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-sm" id="addDescriptionBtn"
+                                        onclick="addDescription()">Add Description
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" id="removeDescriptionBtn"
+                                        hidden onclick="removeDescription()">Remove Description
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-end mb-3">
+                <button class="btn btn-primary view_section" type="button" onclick="enableSectionEdit()">Edit
+                    Section Details
+                </button>
+                <button class="btn btn-primary edit_section" type="submit" name="btn-action"
+                        value="save_section" disabled hidden>Save Changes
+                </button>
+                <button class="btn btn-primary edit_section" type="submit" name="btn-action"
+                        value="save_and_exit_section" disabled hidden>Save & exit
+                </button>
+            </div>
+            <hr>
+        </form>
+        <div>
+            <h3 class="my-3"><strong>Section Questions:</strong></h3>
+            <div>
+                <form action="{% url 'exam_app:edit-section' exam.id section.id %}" method="post">
+                    {% csrf_token %}
+                    <table class="table align-middle text-center">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Question Type</th>
+                            <th scope="col">Max Points</th>
+                            <th scope="col">Max Time</th>
+                            <th scope="col">Difficulty Level</th>
+                            <th scope="col">View/Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for question in questions %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ question.question_type }}</td>
+                                <td>{{ question.max_points }}</td>
+                                <td>{{ question.max_time }}</td>
+                                <td>{{ question.difficulty_level }}</td>
+                                <td>
+                                    <a href="{% url 'exam_app:section-edit-question' exam.id section.id question.id %}">
+                                        <button class="btn btn-primary btn-sm" type="button">view/edit
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" type="submit"
+                                            name="delete_question" value="{{ question.id }}">delete
+                                    </button>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <th scope="row">--</th>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                                <td>--</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'exam_app:section-add-question' exam.id section.id %}">
+                        <button class="btn btn-success" type="button">+ Add Questions</button>
+                    </a>
+                </div>
+                <div class="col text-end">
+                    <a href="{% url 'exam_app:edit-exam' exam.id %}">
+                        <button class="btn btn-primary" type="button">Back To Exam Details Page</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/edit-section.js' %}"></script>
+{% endblock %}
+
