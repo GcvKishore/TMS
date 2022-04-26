@@ -114,3 +114,23 @@ def checkEvaluationStatus(exam_details_id):
     exam_details.overall_points = total_points
     exam_details.save()
     return
+
+
+def convertTimeString(hhmmss):
+    if hhmmss != 'None':
+        print(hhmmss)
+        hms = hhmmss.split(':')
+        for i in range(len(hms)):
+            if len(hms[i]) == 1:
+                hms[i] = '0' + str(hms[i])
+        return f"{hms[0]}:{hms[1]}:{hms[2]}"
+
+
+def generateFITB(question_text, answers):
+    text = question_text
+    count = 1
+    for answer in answers:
+        blank = f"<span><input type='text' id='fitb-{count}' name='answer-{count}' style='width: 10vw;'/></span>"
+        text = text.replace(answer.answer, blank, 1)
+        count += 1
+    return text
