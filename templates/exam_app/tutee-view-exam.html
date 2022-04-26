@@ -55,8 +55,12 @@
                         <td>{{ exam.min_pass_points }}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Status</th>
-                        <td>On Going/Passed/Failed/Yet To Take)</td>
+                        <th scope="row">Has Sections</th>
+                        <td>{{ exam.has_sections }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Exam Status</th>
+                        <td>{{ user_exam_details.status }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -78,11 +82,20 @@
             </div>
         </div>
         <hr>
-        <div class="col py-2 text-center">
-            <a class="m-auto" href="{% url 'exam_app:takeExam' exam.id 0 %}">
-                <button class="btn btn-success" type="button">Start Exam</button>
-            </a>
-        </div>
+
+        {% if exam.has_sections %}
+            <div class="col py-2 text-center">
+                <a class="m-auto" href="{% url 'exam_app:take-exam-section' exam.id 0 0 %}">
+                    <button class="btn btn-success" type="button">Start Exam</button>
+                </a>
+            </div>
+        {% else %}
+            <div class="col py-2 text-center">
+                <a class="m-auto" href="{% url 'exam_app:takeExam' exam.id 0 %}">
+                    <button class="btn btn-success" type="button">Start Exam</button>
+                </a>
+            </div>
+        {% endif %}
 
 
     </div>

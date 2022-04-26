@@ -17,7 +17,7 @@
             <div class="row m-0 my-2">
                 <div class="form-group">
                     <label class="py-2" for="input-1">Title</label>
-                    <input type="text" class="form-control" id="input-1" placeholder="Title" name="title"
+                    <input type="text" class="form-control" id="input-1" placeholder="Title" required name="title"
                            value="{{ title }}">
                     <small class="form-text custom-error-message">{{ title_error }}</small>
                 </div>
@@ -25,14 +25,14 @@
             <div class="row m-0 my-2">
                 <div class="form-group col-md-6">
                     <label class="py-2" for="input-2">Subject</label>
-                    <input type="text" class="form-control" id="input-2" placeholder="Subject" name="subject"
+                    <input type="text" class="form-control" id="input-2" placeholder="Subject" required name="subject"
                            value="{{ subject }}">
                     <small class="form-text custom-error-message">{{ subject_error }}</small>
 
                 </div>
                 <div class="form-group col-md-6">
                     <label class="py-2" for="input-3">Class/Level</label>
-                    <input type="text" class="form-control" id="input-3" placeholder="Class/Level" name="level"
+                    <input type="text" class="form-control" id="input-3" placeholder="Class/Level" required name="level"
                            value="{{ level }}">
                     <small class="form-text custom-error-message">{{ level_error }}</small>
                 </div>
@@ -67,7 +67,23 @@
                     <small class="form-text custom-error-message">{{ min_pass_points_error }}</small>
                 </div>
             </div>
+            <div class="row m-0 my-2">
+                <label for="id_has_sections">Does exam has sections</label>
+                <div id="id_has_sections">
+                    <div>
+                        <label for="id_has_sections_0"><input type="radio" name="has_sections" value="True" required=""
+                                                              id="id_has_sections_0">
+                            Yes</label>
+                    </div>
+                    <div>
+                        <label for="id_has_sections_1"><input type="radio" name="has_sections" value="False" required=""
+                                                              id="id_has_sections_1">
+                            No</label>
+                    </div>
+                    <small class="form-text custom-error-message">{{ has_sections_error }}</small>
+                </div>
 
+            </div>
             <div class="row">
                 <div class="col">
                     <a href="{% url 'exam_app:view-all-exams-instructors' %}">
