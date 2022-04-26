@@ -34,22 +34,10 @@
                     <div class="col-md-4">
                         <label class="form-label" for="questionType">User Answer Result </label>
                         <select name="result" id="questionType" class="form-select">
-                            <option value="Pending" selected>Select from list</option>
+                            <option value="Pending" disabled hidden selected>Select from list</option>
                             <option value="Correct">Correct</option>
                             <option value="Pending">Pending</option>
                             <option value="Incorrect">Incorrect</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" for="questionPoints">Points </label>
-                        <select name="points" id="questionPoints" class="form-select">
-                            <option value="0" selected>Select from list</option>
-                            <option value=0>0</option>
-                            {% with ''|center:question.max_points as range %}
-                                {% for _ in range %}
-                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                                {% endfor %}
-                            {% endwith %}
                         </select>
                     </div>
                     <div class="form-group">
@@ -60,9 +48,11 @@
                 </div>
                 <hr>
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary mx-3">
-                        Save & Exit
-                    </button>
+                    <a href="{% url 'exam_app:tutee-exam-results' exam.id exam_details_id %}">
+                        <button type="submit" class="btn btn-primary mx-3">
+                            Save & Exit
+                        </button>
+                    </a>
                     <a href="{% url 'exam_app:tutee-exam-results' exam.id exam_details_id %}">
                         <button type="button" class="btn btn-primary">
                             Exit without saving
@@ -71,56 +61,19 @@
                 </div>
             </form>
         {% else %}
-            <form action="{% url 'exam_app:question-evaluation' exam_details_id question_details_id %}" method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="form-label" for="userQuestionResult">User Answer Result </label>
-                        <select name="result" id="userQuestionResult" class="form-select" disabled>
-                            <option value="{{ user_result.result }}" hidden
-                                    selected>{{ user_result.result }}</option>
-                            <option value="Correct">Correct</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Incorrect">Incorrect</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" for="questionPoints">Points</label>
-                        <select name="points" id="questionPoints" disabled class="form-select">
-                            <option value="{{ user_question_details.points }}"
-                                    selected>{{ user_question_details.points }}</option>
-                            <option value=0>0</option>
-                            {% with ''|center:question.max_points as range %}
-                                {% for _ in range %}
-                                    <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                                {% endfor %}
-                            {% endwith %}
-                        </select>
-                    </div>
+            <div class="text-end">
+                <a href="{% url 'exam_app:tutee-exam-results' exam.id exam_details_id %}">
+                    <button type="submit" class="btn btn-primary mx-3">
+                        Save & Exit
+                    </button>
+                </a>
+                <a href="{% url 'exam_app:tutee-exam-results' exam.id exam_details_id %}">
+                    <button type="button" class="btn btn-primary">
+                        Exit without saving
+                    </button>
+                </a>
+            </div>
 
-                    <div class="form-group">
-                        <label class="py-2" for="input-1">Remark</label>
-                        <textarea class="form-control edit-exam" name="remark" id="input-1" cols="" rows="3"
-                                  placeholder="Type in your remark"
-                                  disabled>{{ user_question_details.remark }}</textarea>
-                    </div>
-                </div>
-                <hr>
-                <div class="text-end">
-                    <button id="edit-btn" type="button" class="btn btn-primary mx-3" onclick="editResults()">
-                        Edit Result
-                    </button>
-                    <button id="save-btn" type="submit" class="btn btn-primary mx-3" name="save_evaluation"
-                            value="save" hidden>
-                        save & exit
-                    </button>
-                    <a href="{% url 'exam_app:tutee-exam-results' exam.id exam_details_id %}">
-                        <button type="button" class="btn btn-primary">
-                            Student Result Page
-                        </button>
-                    </a>
-                </div>
-            </form>
         {% endif %}
         <hr>
 
@@ -128,14 +81,4 @@
 {% endblock %}
 
 {% block script %}
-    <script>
-        function editResults() {
-            let edit_btn = document.getElementById('edit-btn')
-            edit_btn.style.visibility = "hidden"
-            document.getElementById('save-btn').removeAttribute("hidden");
-            document.getElementById('input-1').removeAttribute("disabled");
-            document.getElementById('userQuestionResult').removeAttribute("disabled");
-            document.getElementById('questionPoints').removeAttribute("disabled");
-        }
-    </script>
 {% endblock %}

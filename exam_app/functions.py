@@ -38,7 +38,6 @@ def checkUserAnswers(request, exam_details):
             question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
                                                                username=request.user)
             question_details.end_time = now.strftime("%H:%M:%S")
-            question_details.remark = "Didn't attend the question"
             question_details.save()
 
         user_question_details = UserQuestionDetails.objects.get(question=question.id,
@@ -65,8 +64,6 @@ def checkUserAnswers(request, exam_details):
                 points=0,
                 time_elapsed=user_question_details.time_elapsed
             ).save()
-            user_question_details.evaluation_status = 'Pending'
-            user_question_details.points = 0
         else:
             user_answers = UserAnswerTextInput.objects.filter(question=user_question_details.id)
             correct_answers = Answer.objects.filter(question=question.id)
@@ -84,10 +81,8 @@ def checkUserAnswers(request, exam_details):
                 points=points,
                 time_elapsed=user_question_details.time_elapsed
             ).save()
-            user_question_details.evaluation_status = 'Evaluated'
-            user_question_details.points = points
-        user_question_details.save()
     checkEvaluationStatus(exam_details.id)
+
     return
 
 
@@ -101,7 +96,7 @@ def checkEvaluationStatus(exam_details_id):
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
 
     total_points = 0
-    exam_details.status = 'Evaluated'
+
     exam_details.result_status = 'Passed'
     for exam_question_result in all_exam_questions_results:
         if exam_question_result.status == 'Pending':
