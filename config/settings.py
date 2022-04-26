@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'website',
     'accounts',
     'instructor',
@@ -74,6 +76,55 @@ TEMPLATES = [
         },
     },
 ]
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_THUMBNAIL_SIZE = (500, 500)
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_BROWSE_SHOW_DIRS = True
+CKEDITOR_RESTRICT_BY_DATE = True
+CKEDITOR_FORCE_JPEG_COMPRESSION = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar_Full': [
+            ['Bold', 'Italic', 'Underline', 'Strike'],
+            ['NumberedList', 'BulletedList'],
+            ['Image', 'Html5audio', 'CodeSnippet', 'Youtube'],
+            ['Maximize'],
+        ],
+        'width': '100%',
+        'height': '150',
+        "removePlugins": "exportpdf",
+        'extraPlugins': ','.join([
+            'html5audio',
+            'codesnippet',
+            'youtube',
+        ]),
+        'external_plugin_resources': [(
+            'html5audio',
+            '/static/ckeditor/ckeditor/plugins/html5audio/',
+            'plugin.js'
+        ), (
+            'youtube',
+            '/static/ckeditor/ckeditor/plugins/youtube/youtube/',
+            'plugin.js'
+        )],
+    },
+    'option': {
+        'toolbar_Full': [
+            ['Image', 'CodeSnippet'],
+        ],
+        'width': '700px',
+        'height': '150px',
+        "removePlugins": "exportpdf",
+        'extraPlugins': ','.join([
+            'codesnippet',
+        ]),
+
+    },
+}
+CKEDITOR_IMAGE_MAX_WIDTH = 500
+CKEDITOR_IMAGE_MAX_HEIGHT = 500
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
