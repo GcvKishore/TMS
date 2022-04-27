@@ -21,13 +21,15 @@
         <h6><em>{{ section.sub_title }}</em></h6>
         <hr>
         <div class="row">
-            <div class="col-lg-5">
-                <h5><strong>Passage (Supportive Text)</strong></h5>
-                <hr>
-                <p>{{ section.description | safe }}</p>
-                <hr>
-            </div>
-            <div class="col-lg-7">
+            {% if section.description %}
+                <div class="col-lg">
+                    <h5><strong>Passage (Supportive Text)</strong></h5>
+                    <hr>
+                    <p>{{ section.description | safe }}</p>
+                    <hr>
+                </div>
+            {% endif %}
+            <div class="col-lg">
                 <h5><strong>Edit Question:</strong></h5>
                 <hr>
                 <form action="{% url 'exam_app:section-edit-question' exam.id section.id question.id %}" method="post">
@@ -43,6 +45,7 @@
                             <option value="Fill In The Blanks">Fill In The Blanks</option>
                             <option value="Short Answers">Short Answers</option>
                             <option value="File Upload">File Upload</option>
+                            <option value="Speaking">Speaking</option>
                         </select>
                     </div>
                     <button class="btn btn-primary edit-exam-btn" type="button" id="generateBtn" hidden

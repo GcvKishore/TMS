@@ -39,19 +39,21 @@
                 <div class="col p-2 text-end my-auto">
                     <label class="form-label" for="sectionNavigation">Section Navigate:</label>
                     <select name="section_nav_index" id="sectionNavigation" class="form-select-sm">
-                                <option value="{{ section_index }}" selected hidden>Chose Section</option>
-                            {% for section in sections %}
-                                <option value="{{ forloop.counter0 }}">{{ section.title }} {{ section.sub_title }} </option>
-                            {% endfor %}
+                        <option value="{{ section_index }}" selected hidden>Chose Section</option>
+                        {% for section in sections %}
+                            <option value="{{ forloop.counter0 }}">{{ section.title }} {{ section.sub_title }} </option>
+                        {% endfor %}
                     </select>
                     <button class="btn btn-primary btn-sm" name="btn_action" value="section_navigation"> Go</button>
                 </div>
             </div>
             <div class="row Section-display-box my-2">
-                <div class="col-6 p-2 section-description-box">
-                    {{ section.description | safe }}
-                </div>
-                <div class="col-6 p-3 exam-question-box">
+                {% if section.description %}
+                    <div class="col p-2 section-description-box">
+                        {{ section.description | safe }}
+                    </div>
+                {% endif %}
+                <div class="col p-3 exam-question-box">
                     <h6>Question {{ question_index|add:"+1" }}</h6>
                     <h6><strong id="question_type">{{ question.question_type }}</strong></h6>
                     <hr class="w-100 my-1">
@@ -75,6 +77,20 @@
                     {% elif question.question_type == 'File Upload' %}
                         <div>
                             <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
+                        </div>
+                    {% elif question.question_type == 'Speaking' %}
+                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
+                        <br>
+                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording
+                        </button>
+                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button">Stop Recording
+                        </button>
+                        <br>
+                        <div>
+                            <p>Your Recording:</p>
+                            <div class="audio-player" id="recordings">
+                                <audio controls></audio>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
@@ -130,5 +146,6 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
     <script src="{% static 'js/exam-countdown.js' %}"></script>
+    <script src="{% static 'js/audio-recording.js' %}"></script>
 </body>
 </html>

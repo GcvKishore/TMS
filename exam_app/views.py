@@ -131,6 +131,7 @@ def addQuestion(request, exam_id):
         if make_question_form.is_valid():
             question = make_question_form.save(commit=False)
             question.owner = request.user
+            question.max_points = 0
             question.save()
 
             if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
@@ -266,7 +267,7 @@ def viewExam(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     username = request.user
 
-    user_exam_details = UserExamDetails.objects.filter(username=username).exists()
+    user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
     if user_exam_details:
         user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
     else:

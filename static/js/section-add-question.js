@@ -12,6 +12,10 @@ function deleteObject(id_name) {
 
 
 function generateFormat() {
+    document.getElementById("saveCreateBtn").disabled = true
+    document.getElementById("addBtn").disabled = true
+    document.getElementById("saveExitBtn").disabled = true
+
     // show the selected index
     let btn = document.querySelector('#generateBtn');
     let sb = document.querySelector('#questionType')
@@ -23,9 +27,10 @@ function generateFormat() {
     } else if (selection === 2) {
         // html_button = '<div id="answers_area"></div><button onclick="addAnswer()" type="button"> Add Answers</button>'
         html_button = '<div class="row" id="answers_area"></div><button onclick="addAnswer()" class="btn btn-primary btn-sm" type="button" id="generateBtn"> Add Answer</button><hr>'
-    } else if (selection === 3 || selection === 4) {
-        document.getElementById("addBtn").removeAttribute("disabled");
-        document.getElementById("saveCreateBtn").removeAttribute("disabled");
+    } else {
+        document.getElementById("saveCreateBtn").disabled = false
+        document.getElementById("addBtn").disabled = false
+        document.getElementById("saveExitBtn").disabled = false
     }
     count = 0
     document.getElementById('questionTextArea').removeAttribute("hidden");
