@@ -35,8 +35,19 @@
                 <form action="{% url 'exam_app:section-edit-question' exam.id section.id question.id %}" method="post">
                     {% csrf_token %}
                     {{ form.media }}
-                    <div class="py-3">
-                        <label class="form-label" for="questionType">Choose question type:</label>
+                    <div class="py-1">
+                        <label class="form-label" for="changeSectionIndex">Section:</label>
+                        <select name="section_index" id="changeSectionIndex" class="form-select-sm edit-exam"
+                                disabled>
+                            <option value="{{ section.id }}" selected
+                                    hidden>{{ section.title }} {{ section.sub_title }}</option>
+                            {% for sec in sections %}
+                                <option value="{{ sec.id }}">{{ sec.title }} {{ sec.sub_title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="py-1">
+                        <label class="form-label" for="questionType">Question Type:</label>
                         <select name="question_type" id="questionType" class="form-select-sm edit-exam" disabled>
                             <option value="{{ question.question_type }}" selected
                                     hidden>{{ question.question_type }}</option>

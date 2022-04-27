@@ -758,6 +758,8 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
     section = MakeSection.objects.get(id=section_id)
     question = MakeQuestion.objects.get(id=question_id)
 
+    sections = MakeSection.objects.filter(exam=exam).order_by('id')
+
     if not request.user.is_staff or question.owner != request.user:
         redirect('website:permission-denied')
 
@@ -772,6 +774,10 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
             else:
                 question.evaluation_type = False
             question.exam_model.add(exam_id)
+            section_index = request.POST['section_index']
+            question.section.remove(section.id)
+            question.section.add(section_index)
+            section = MakeSection.objects.get(id=section_index)
 
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
@@ -792,4 +798,5 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
         'options': options,
         'answers': answers,
         'question_duration': convertTimeString(str(question.max_time)),
+        'sections': sections,
     })
