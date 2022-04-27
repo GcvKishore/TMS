@@ -6,6 +6,11 @@
 
 {% block styles %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .django-ckeditor-widget {
+            width: 100%;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -14,7 +19,7 @@
         <hr>
         <form action="{% url 'exam_app:add-question' exam_id %}" method="post">
             {% csrf_token %}
-
+            {{ question_form.media }}
             <div class="py-3">
                 <label class="form-label" for="questionType">Choose question type:</label>
                 <select name="question_type" id="questionType" class="form-select-sm">
@@ -28,8 +33,36 @@
             <button class="btn btn-primary" type="button" id="generateBtn" onclick="generateFormat()">Generate fields
             </button>
             <hr>
-            <div class="
-            " id="questionArea">
+            <div id="questionTextArea" hidden>
+                {{ question_form.question_text }}
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label class="py-2" for="input-6">Max Time</label>
+                        <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS"
+                               name="max_time"
+                               value=""
+                               aria-describedby="durationDescription">
+                        <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
+                    </div>
+                    <div class="form-row col-md-3">
+                        <label class="py-2" for="input-7">Max Points</label>
+                        <input type="number" class="form-control" id="input-7" placeholder="Points" name="max_points"
+                               value="" min="0"
+                               max="100">
+                    </div>
+                    <div class="form-row col-md-3">
+                        <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
+                        <select name="difficulty_level" id="questionDifficultyLevel" class="form-select">
+                            <option value="None">---</option>
+                            <option value="Hard">Hard</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Easy">Easy</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="" id="questionArea">
             </div>
             <div>
 
