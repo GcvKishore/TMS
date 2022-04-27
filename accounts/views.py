@@ -52,7 +52,7 @@ def instructorSignUp(request):
             password = form.cleaned_data.get('password1')
 
             current_user = User.objects.get(username=username)
-            current_user.is_staff = True
+            # current_user.is_staff = True
             current_user.save()
 
             user = authenticate(username=username, password=password)

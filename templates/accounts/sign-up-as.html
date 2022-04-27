@@ -40,15 +40,15 @@
                 <h1>I am ...</h1>
             </div>
             <div class="row justify-content-center align-content-center text-center">
-                <div class="col-5 mx-2 text-end">
-                    <a href="{% url 'account:sign-up-as-instructor' %}">
-                        <button class="i-am-card p-3">
-                            <img src="{% static 'images/accounts/instructor-icon.png' %}" alt="instructors icon">
-                            <strong>Instructor</strong>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-5 mx-2 text-start">
+{#                <div class="col mx-2">#}
+{#                    <a href="{% url 'account:sign-up-as-instructor' %}">#}
+{#                        <button class="i-am-card p-3">#}
+{#                            <img src="{% static 'images/accounts/instructor-icon.png' %}" alt="instructors icon">#}
+{#                            <strong>Instructor</strong>#}
+{#                        </button>#}
+{#                    </a>#}
+{#                </div>#}
+                <div class="col mx-2">
                     <a href="{% url 'account:sign-up-as-tutee' %}">
                         <button class="i-am-card p-3">
                             <img src="{% static 'images/accounts/tutee-icon.png' %}" alt="tutee icon">
