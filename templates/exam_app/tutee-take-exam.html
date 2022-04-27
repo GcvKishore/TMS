@@ -62,6 +62,18 @@
                         <div class="">
                             <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
                         </div>
+                    {% elif question.question_type == 'Speaking' %}
+                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
+                        <br>
+                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording</button>
+                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button">Stop Recording</button>
+                        <br>
+                        <div>
+                            <p>Your Recording:</p>
+                            <div class="audio-player" id="recordings">
+                                <audio controls></audio>
+                            </div>
+                        </div>
                     {% endif %}
                     <hr>
                     <div class="row">
@@ -95,5 +107,6 @@
             crossorigin="anonymous"></script>
     <script src="{% static 'js/take-exam.js' %}"></script>
     <script src="{% static 'js/exam-countdown.js' %}"></script>
+    <script src="{% static 'js/audio-recording.js' %}"></script>
 </body>
 </html>

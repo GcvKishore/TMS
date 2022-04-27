@@ -131,6 +131,7 @@ def addQuestion(request, exam_id):
         if make_question_form.is_valid():
             question = make_question_form.save(commit=False)
             question.owner = request.user
+            question.max_points = 0
             question.save()
 
             if question.question_type == 'Multiple Choice - Multiple Answers' or question.question_type == 'Fill In The Blanks':
@@ -266,7 +267,7 @@ def viewExam(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
     username = request.user
 
-    user_exam_details = UserExamDetails.objects.filter(username=username).exists()
+    user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
     if user_exam_details:
         user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
     else:
@@ -757,6 +758,8 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
     section = MakeSection.objects.get(id=section_id)
     question = MakeQuestion.objects.get(id=question_id)
 
+    sections = MakeSection.objects.filter(exam=exam).order_by('id')
+
     if not request.user.is_staff or question.owner != request.user:
         redirect('website:permission-denied')
 
@@ -771,6 +774,10 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
             else:
                 question.evaluation_type = False
             question.exam_model.add(exam_id)
+            section_index = request.POST['section_index']
+            question.section.remove(section.id)
+            question.section.add(section_index)
+            section = MakeSection.objects.get(id=section_index)
 
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
@@ -791,4 +798,5 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
         'options': options,
         'answers': answers,
         'question_duration': convertTimeString(str(question.max_time)),
+        'sections': sections,
     })
