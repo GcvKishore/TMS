@@ -54,7 +54,7 @@
                     </div>
                 {% endif %}
                 <div class="col p-3 exam-question-box">
-                    <h6>Question {{ question_index|add:"+1" }}</h6>
+                    <h6><strong>Question {{ question_index|add:"+1" }}</strong></h6>
                     <h6><strong id="question_type">{{ question.question_type }}</strong></h6>
                     <hr class="w-100 my-1">
                     <p id="question_text">{{ question_text | safe }}</p>

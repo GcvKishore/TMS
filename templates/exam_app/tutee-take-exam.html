@@ -40,7 +40,7 @@
             <hr>
             <div class="row justify-content-center py-3">
                 <div class="col-md-9">
-                    <h6>Question {{ question_number }}</h6>
+                    <h6><strong>Question {{ question_number }}</strong></h6>
                     <h4><strong id="question_type">{{ question.question_type }}</strong></h4>
                     <hr class="w-100 my-3">
                     <p style="white-space: pre-wrap" id="question_text">{{ question_text | safe }}</p>
@@ -65,8 +65,10 @@
                     {% elif question.question_type == 'Speaking' %}
                         <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
                         <br>
-                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording</button>
-                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button">Stop Recording</button>
+                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording
+                        </button>
+                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button">Stop Recording
+                        </button>
                         <br>
                         <div>
                             <p>Your Recording:</p>
