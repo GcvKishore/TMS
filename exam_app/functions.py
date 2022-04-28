@@ -136,6 +136,6 @@ def generateFITB(question_text, answers):
     count = 1
     for answer in answers:
         blank = f"<span><input type='text' id='fitb-{count}' name='answer-{count}' style='width: 10vw;'/></span>"
-        text = text.replace(answer.answer, blank, 1)
+        text = text.replace(answer, blank, 1)
         count += 1
     return text
