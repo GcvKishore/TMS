@@ -33,10 +33,10 @@ def checkUserAnswers(request, exam_details):
 
     for question in questions:
         if not UserQuestionDetails.objects.filter(question=question.id, exam_details=exam_details.id).exists():
-            UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=request.user,
+            UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=username,
                                                start_time=now.strftime("%H:%M:%S"))
             question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
-                                                               username=request.user)
+                                                               username=username)
             question_details.end_time = now.strftime("%H:%M:%S")
             question_details.remark = "Didn't attend the question"
             question_details.save()
