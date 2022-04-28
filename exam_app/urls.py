@@ -10,7 +10,6 @@ urlpatterns = [
     path('edit-exam/<int:exam_id>/edit-question/<int:question_id>/', views.EditQuestion, name="edit-question"),
     path('tutee/all-exams/', views.viewAllExamsTutee, name="view-all-exams-tutee"),
     path('view-exam/<int:exam_id>/', views.viewExam, name="view-exam"),
-    path('<int:exam_id>/<int:question_index>', views.takeExam, name="takeExam"),
     path('exam-summary/<int:exam_details_id>', views.examSummary, name="exam-summary"),
     path('exam-result/<int:exam_details_id>', views.examResult, name="exam-result"),
     path('exam-results-list/<int:exam_id>', views.examResultsList, name="tutee-exam-results-list"),
