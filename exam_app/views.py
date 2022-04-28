@@ -64,7 +64,7 @@ def editExam(request, exam_id):
             delete_section_id = request.POST['delete_section']
             section = MakeSection.objects.get(id=delete_section_id)
             if section.owner == request.user:
-                MakeQuestion.objects.filter(section__id=section.id).delete()
+                MakeQuestion.objects.filter(section=section).delete()
                 section.delete()
 
         if 'publish-exam' in request.POST:
@@ -78,11 +78,11 @@ def editExam(request, exam_id):
             exam.save()
 
         if 'delete_exam' in request.POST:
-            MakeQuestion.objects.filter(exam_model__id=exam_id).delete()
+            MakeQuestion.objects.filter(exam__id=exam_id).delete()
             MakeExam.objects.get(id=exam_id).delete()
             return redirect('exam_app:view-all-exams-instructors')
 
-    questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
+    questions_list = MakeQuestion.objects.filter(exam__id=exam_id)
     sections_list = MakeSection.objects.filter(exam=exam)
     return render(request, 'exam_app/instructor-edit-exam.html', {
         'exam': exam,
@@ -295,7 +295,7 @@ def takeExam(request, exam_id, question_index):
         username = request.user
         btn_action = request.POST['btn_action']
 
-        questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+        questions = MakeQuestion.objects.filter(exam__id=exam_id).order_by('pk')
         question = questions[question_index]
 
         exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
@@ -361,7 +361,7 @@ def takeExam(request, exam_id, question_index):
         exam_details.save()
 
     # get exam object and linked questions(sorted)
-    questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
+    questions = MakeQuestion.objects.filter(exam__id=exam_id).order_by('pk')
     question = questions[question_index]
 
     # extract question details
@@ -392,9 +392,17 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     # get exam, section, question details
     exam = MakeExam.objects.get(id=exam_id)
-    sections = MakeSection.objects.filter(exam=exam).order_by('id')
-    section = sections[section_index]
-    questions = MakeQuestion.objects.filter(section=section).order_by('id')
+
+    if exam.has_sections:
+        sections = MakeSection.objects.filter(exam=exam).order_by('id')
+        section = sections[section_index]
+        questions = MakeQuestion.objects.filter(section=section).order_by('id')
+    else:
+        section_index = 0
+        sections = []
+        section = ''
+        questions = MakeQuestion.objects.filter(exam=exam).order_by('id')
+
     question = questions[question_index]
 
     # get user exam details

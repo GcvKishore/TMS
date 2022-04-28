@@ -30,23 +30,25 @@
                 </div>
             </nav>
         </header>
-        <main class="m-2 px-3 test-container">
-            <div class="row section-title">
-                <div class="col p-2 my-auto">
-                    <h5 class="m-0">{{ section.title }}</h5>
-                    <p class="m-0"><em>{{ section.sub_title }}</em></p>
+        <main class="m-2 px-3">
+            {% if exam.has_sections %}
+                <div class="row section-title" id="section-title-box">
+                    <div class="col p-2 my-auto">
+                        <h5 class="m-0">{{ section.title }}</h5>
+                        <p class="m-0"><em>{{ section.sub_title }}</em></p>
+                    </div>
+                    <div class="col p-2 text-end my-auto">
+                        <label class="form-label" for="sectionNavigation">Section Navigate:</label>
+                        <select name="section_nav_index" id="sectionNavigation" class="form-select-sm">
+                            <option value="{{ section_index }}" selected hidden>Chose Section</option>
+                            {% for section in sections %}
+                                <option value="{{ forloop.counter0 }}">{{ section.title }} {{ section.sub_title }} </option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-primary btn-sm" name="btn_action" value="section_navigation"> Go</button>
+                    </div>
                 </div>
-                <div class="col p-2 text-end my-auto">
-                    <label class="form-label" for="sectionNavigation">Section Navigate:</label>
-                    <select name="section_nav_index" id="sectionNavigation" class="form-select-sm">
-                        <option value="{{ section_index }}" selected hidden>Chose Section</option>
-                        {% for section in sections %}
-                            <option value="{{ forloop.counter0 }}">{{ section.title }} {{ section.sub_title }} </option>
-                        {% endfor %}
-                    </select>
-                    <button class="btn btn-primary btn-sm" name="btn_action" value="section_navigation"> Go</button>
-                </div>
-            </div>
+            {% endif %}
             <div class="row Section-display-box my-2">
                 {% if section.description %}
                     <div class="col p-2 section-description-box">
@@ -76,10 +78,10 @@
                         </div>
                     {% elif question.question_type == 'File Upload' %}
                         <div>
-                            <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
+                            <input class="form-control form-control-sm w-25" id="formFileSm" type="file" name="user-upload">
                         </div>
                     {% elif question.question_type == 'Speaking' %}
-                        <input class="form-control form-control-sm" id="formFileSm" type="file" name="user-upload">
+                        <input class="form-control form-control-sm w-25" id="formFileSm" type="file" name="user-upload" hidden>
                         <br>
                         <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording
                         </button>
@@ -105,35 +107,70 @@
                 </div>
                 <div class="col-6 col-md-8 text-center">
                     <ul class="p-0 m-0">
-                        <li>
-                            {% with ''|center:section.makequestion_set.count as range %}
-                                {% for _ in range %}
-                                    {% if question_index == forloop.counter0 %}
-                                        <button class="btn btn-primary btn-sm" type="submit" name="question_nav"
-                                                value="{{ forloop.counter0 }}">
-                                            {{ forloop.counter }}
-                                        </button>
-                                    {% else %}
-                                        <button class="btn btn-outline-primary btn-sm" type="submit" name="question_nav"
-                                                value="{{ forloop.counter0 }}">
-                                            {{ forloop.counter }}
-                                        </button>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endwith %}
-                        </li>
+                        {% if exam.has_sections %}
+                            <li>
+                                {% with ''|center:section.makequestion_set.count as range %}
+                                    {% for _ in range %}
+                                        {% if question_index == forloop.counter0 %}
+                                            <button class="btn btn-primary btn-sm" type="submit" name="question_nav"
+                                                    value="{{ forloop.counter0 }}">
+                                                {{ forloop.counter }}
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-outline-primary btn-sm" type="submit"
+                                                    name="question_nav"
+                                                    value="{{ forloop.counter0 }}">
+                                                {{ forloop.counter }}
+                                            </button>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </li>
+                        {% else %}
+                            <li>
+                                {% with ''|center:exam.makequestion_set.count as range %}
+                                    {% for _ in range %}
+                                        {% if question_index == forloop.counter0 %}
+                                            <button class="btn btn-primary btn-sm" type="submit" name="question_nav"
+                                                    value="{{ forloop.counter0 }}">
+                                                {{ forloop.counter }}
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-outline-primary btn-sm" type="submit"
+                                                    name="question_nav"
+                                                    value="{{ forloop.counter0 }}">
+                                                {{ forloop.counter }}
+                                            </button>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-3 col-md-2 text-end">
-                    {% if question_index == section.makequestion_set.count|add:"-1" and section_index == exam.makesection_set.count|add:"-1" %}
-                        <button class="btn btn-success btn-sm" type="submit" name="btn_action"
-                                value="finish">
-                            Finish
-                        </button>
+                    {% if exam.has_sections %}
+                        {% if question_index == section.makequestion_set.count|add:"-1" and section_index == exam.makesection_set.count|add:"-1" %}
+                            <button class="btn btn-success btn-sm" type="submit" name="btn_action"
+                                    value="finish">
+                                Finish
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary btn-sm" type="submit" name="btn_action" value="next">
+                                Next
+                            </button>
+                        {% endif %}
                     {% else %}
-                        <button class="btn btn-primary btn-sm" type="submit" name="btn_action" value="next">
-                            Next
-                        </button>
+                        {% if question_index == exam.makequestion_set.count|add:"-1" %}
+                            <button class="btn btn-success btn-sm" type="submit" name="btn_action"
+                                    value="finish">
+                                Finish
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary btn-sm" type="submit" name="btn_action" value="next">
+                                Next
+                            </button>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -147,5 +184,6 @@
             crossorigin="anonymous"></script>
     <script src="{% static 'js/exam-countdown.js' %}"></script>
     <script src="{% static 'js/audio-recording.js' %}"></script>
+    <script src="{% static 'js/take-exam-sections.js' %}"></script>
 </body>
 </html>
