@@ -64,7 +64,7 @@ def editExam(request, exam_id):
             delete_section_id = request.POST['delete_section']
             section = MakeSection.objects.get(id=delete_section_id)
             if section.owner == request.user:
-                MakeQuestion.objects.filter(section__id=section.id).delete()
+                MakeQuestion.objects.filter(section=section).delete()
                 section.delete()
 
         if 'publish-exam' in request.POST:
@@ -78,11 +78,11 @@ def editExam(request, exam_id):
             exam.save()
 
         if 'delete_exam' in request.POST:
-            MakeQuestion.objects.filter(exam_model__id=exam_id).delete()
+            MakeQuestion.objects.filter(exam__id=exam_id).delete()
             MakeExam.objects.get(id=exam_id).delete()
             return redirect('exam_app:view-all-exams-instructors')
 
-    questions_list = MakeQuestion.objects.filter(exam_model__id=exam_id)
+    questions_list = MakeQuestion.objects.filter(exam__id=exam_id)
     sections_list = MakeSection.objects.filter(exam=exam)
     return render(request, 'exam_app/instructor-edit-exam.html', {
         'exam': exam,
@@ -289,116 +289,22 @@ def viewAllDetails(request, exam_id):
     })
 
 
-# @login_required
-def takeExam(request, exam_id, question_index):
-    now = datetime.now()
-    if request.method == 'POST':
-        username = User.objects.get(username='guest')
-        # username = request.user
-
-        btn_action = request.POST['btn_action']
-
-        questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
-        question = questions[question_index]
-
-        exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
-
-        question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
-                                                           username=username)
-        question_details.end_time = now.strftime("%H:%M:%S")
-        question_details.save()
-
-        count = 0
-        for user_input in request.POST:
-            if 'answer' in user_input:
-                count += 1
-                user_answer = request.POST[user_input]
-                UserAnswerTextInput.objects.filter(question=question_details, index=count,
-                                                   username=username).delete()
-                UserAnswerTextInput.objects.create(question=question_details, answer_text_input=user_answer,
-                                                   index=count, username=username).save()
-
-        for user_input in request.FILES:
-            if 'user-upload' in user_input:
-                count += 1
-                file2 = request.FILES[user_input]
-                UserAnswerFileUpload.objects.filter(question=question_details, index=count,
-                                                    username=username).delete()
-                UserAnswerFileUpload.objects.create(question=question_details, answer_text_input=file2,
-                                                    index=count, username=username).save()
-
-        if btn_action == 'next':
-            question_index += 1
-            return redirect('exam_app:takeExam', exam_id, question_index)
-        elif btn_action == 'previous':
-            question_index -= 1
-            return redirect('exam_app:takeExam', exam_id, question_index)
-        elif btn_action == 'quit':
-            exam_details.status = 'Completed'
-            exam_details.result_status = 'Pending'
-            exam_details.end_time = now.strftime("%H:%M:%S")
-            exam_details.save()
-            return redirect('exam_app:exam-summary', exam_details.id)
-        else:
-            exam_details.status = 'Completed'
-            exam_details.result_status = 'Pending'
-            exam_details.end_time = now.strftime("%H:%M:%S")
-            exam_details.save()
-            return redirect('exam_app:exam-summary', exam_details.id)
-
-    # Register user to the exams list
-    username = User.objects.get(username='guest')
-    # username = request.user
-
-    exam = MakeExam.objects.get(id=exam_id)
-    status = "Ongoing"
-
-    exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
-    if len(exam_details) == 0:
-        UserExamDetails.objects.create(username=username, exam=exam, status=status,
-                                       start_time=now.strftime("%H:%M:%S")).save()
-
-    exam_details = UserExamDetails.objects.get(exam=exam_id, username=username)
-
-    if question_index == 0:
-        exam_details.start_time = now.strftime("%H:%M:%S")
-        exam_details.save()
-
-    # get exam object and linked questions(sorted)
-    questions = MakeQuestion.objects.filter(exam_model__id=exam_id).order_by('pk')
-    question = questions[question_index]
-
-    # extract question details
-    question_text = question.question_text
-    options = Option.objects.filter(question=question.id)
-    answers = Answer.objects.filter(question=question.id)
-
-    if question.question_type == "Fill In The Blanks":
-        question_text = generateFITB(question.question_text, answers)
-
-    UserQuestionDetails.objects.filter(question=question, exam_details=exam_details, username=username).delete()
-    UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=username,
-                                       start_time=now.strftime("%H:%M:%S"))
-
-    return render(request, 'exam_app/tutee-take-exam.html', {
-        'exam': exam,
-        'question': question,
-        'question_text': question_text,
-        'num_questions': len(questions) - 1,
-        'options': options,
-        'question_index': question_index,
-        'question_number': question_index + 1,
-    })
-
-
 def takeExamSection(request, exam_id, section_index, question_index):
     now = datetime.now()
 
     # get exam, section, question details
     exam = MakeExam.objects.get(id=exam_id)
-    sections = MakeSection.objects.filter(exam=exam).order_by('id')
-    section = sections[section_index]
-    questions = MakeQuestion.objects.filter(section=section).order_by('id')
+
+    if exam.has_sections:
+        sections = MakeSection.objects.filter(exam=exam).order_by('id')
+        section = sections[section_index]
+        questions = MakeQuestion.objects.filter(section=section).order_by('id')
+    else:
+        section_index = 0
+        sections = []
+        section = ''
+        questions = MakeQuestion.objects.filter(exam=exam).order_by('id')
+
     question = questions[question_index]
 
     # get user exam details
@@ -698,7 +604,7 @@ def sectionAddQuestion(request, exam_id, section_id):
             if question.max_points == 0 or question.max_points is None:
                 question.max_points = 1
             question.save()
-            question.exam_model.add(exam.id)
+            question.exam.add(exam.id)
             question.section.add(section.id)
             question.save()
 

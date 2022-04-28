@@ -51,16 +51,16 @@
                         <td id="totalExamDuration">{{ exam.duration }}</td>
                     </tr>
                     <tr>
+                        <th scope="row">No Of Sections</th>
+                        <td>{{ exam.makesection_set.count }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">No Of Questions</th>
+                        <td>{{ exam.makequestion_set.count }}</td>
+                    </tr>
+                    <tr>
                         <th scope="row">Min Pass Percentage</th>
                         <td>{{ exam.min_pass_points }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Has Sections</th>
-                        <td>{{ exam.has_sections }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Exam Status</th>
-                        <td>{{ user_exam_details.status }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -82,22 +82,11 @@
             </div>
         </div>
         <hr>
-
-        {% if exam.has_sections %}
-            <div class="col py-2 text-center">
-                <a class="m-auto" href="{% url 'exam_app:take-exam-section' exam.id 0 0 %}">
-                    <button class="btn btn-success" type="button">Start Exam</button>
-                </a>
-            </div>
-        {% else %}
-            <div class="col py-2 text-center">
-                <a class="m-auto" href="{% url 'exam_app:takeExam' exam.id 0 %}">
-                    <button class="btn btn-success" type="button">Start Exam</button>
-                </a>
-            </div>
-        {% endif %}
-
-
+        <div class="col py-2 text-center">
+            <a class="m-auto" href="{% url 'exam_app:take-exam-section' exam.id 0 0 %}">
+                <button class="btn btn-success" type="button">Start Exam</button>
+            </a>
+        </div>
     </div>
 {% endblock %}
 

@@ -21,7 +21,6 @@
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
                 <th scope="col">Duration</th>
-                <th scope="col">Status</th>
                 <th scope="col">Exam</th>
                 <th scope="col">Results</th>
             </tr>
@@ -36,7 +35,6 @@
                     <td>{{ exam.date }}</td>
                     <td>{{ exam.time }}</td>
                     <td>{{ exam.duration }}</td>
-                    <td>Status</td>
                     <td>
                         <a href="{% url 'exam_app:view-exam' exam.id %}">
                             <button type="button" class="btn btn-success btn-sm">Take Exam</button>

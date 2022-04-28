@@ -13,10 +13,13 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
         start.addEventListener('click', () => {
             audio_recorder.start();
+            document.getElementById("text").innerHTML='Started Recording..';
             console.log(audio_recorder.state);
         })
         stop.addEventListener('click', () => {
             audio_recorder.stop();
+            document.getElementById("text").innerHTML='';
+            document.getElementById("stop").innerHTML='Recording Stopped..';
             console.log(audio_recorder.state)
         })
 

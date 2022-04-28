@@ -29,7 +29,7 @@ def checkUserAnswers(request, exam_details):
 
     username = exam_details.username
     exam = exam_details.exam
-    questions = MakeQuestion.objects.filter(exam_model__id=exam.id).order_by('pk')
+    questions = MakeQuestion.objects.filter(exam=exam).order_by('pk')
 
     for question in questions:
         if not UserQuestionDetails.objects.filter(question=question.id, exam_details=exam_details.id).exists():
@@ -96,7 +96,7 @@ def checkEvaluationStatus(exam_details_id):
 
     username = exam_details.username
     exam = exam_details.exam
-    questions = MakeQuestion.objects.filter(exam_model__id=exam.id).order_by('pk')
+    questions = MakeQuestion.objects.filter(exam=exam).order_by('pk')
 
     all_exam_questions_results = UserResults.objects.filter(exam_details=exam_details.id, username=username)
 
@@ -136,6 +136,6 @@ def generateFITB(question_text, answers):
     count = 1
     for answer in answers:
         blank = f"<span><input type='text' id='fitb-{count}' name='answer-{count}' style='width: 10vw;'/></span>"
-        text = text.replace(answer.answer, blank, 1)
+        text = text.replace(answer, blank, 1)
         count += 1
     return text
