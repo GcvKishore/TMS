@@ -261,11 +261,12 @@ def viewAllExamsTutee(request):
     })
 
 
-@login_required
+# @login_required
 def viewExam(request, exam_id):
     now = datetime.now()
     exam = MakeExam.objects.get(id=exam_id)
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
 
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
     if user_exam_details:
@@ -307,7 +308,8 @@ def takeExamSection(request, exam_id, section_index, question_index):
     question = questions[question_index]
 
     # get user exam details
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
     user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
 
     # Condition to check if the request method is post and if the thing can post
@@ -419,9 +421,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
     })
 
 
-@login_required
+# @login_required
 def examSummary(request, exam_details_id):
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
     checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
@@ -430,10 +433,11 @@ def examSummary(request, exam_details_id):
     })
 
 
-@login_required
+# @login_required
 def examResult(request, exam_details_id):
     checkEvaluationStatus(exam_details_id)
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
     exam = MakeExam.objects.get(id=exam_id)
