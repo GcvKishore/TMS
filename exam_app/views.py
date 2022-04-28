@@ -425,7 +425,7 @@ def takeExamSection(request, exam_id, section_index, question_index):
 def examSummary(request, exam_details_id):
     username = User.objects.get(username='guest')
     # username = request.user
-    exam_details = UserExamDetails.objects.get(id=exam_details_id)
+    exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
     checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
     return render(request, 'exam_app/tutee-exam-finish-summary.html', {
