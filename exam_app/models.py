@@ -38,7 +38,7 @@ class MakeQuestion(models.Model):
     max_time = models.DurationField(null=True)
     max_points = models.IntegerField(default=1)
     difficulty_level = models.CharField(max_length=64, default="None", null=True)
-    exam_model = models.ManyToManyField('MakeExam')
+    exam = models.ManyToManyField('MakeExam')
     evaluation_type = models.BooleanField(default=False)
     section = models.ManyToManyField('MakeSection', default="", blank=True)
 
