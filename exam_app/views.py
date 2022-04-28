@@ -451,9 +451,10 @@ def examResult(request, exam_details_id):
     })
 
 
-@login_required
+# @login_required
 def examResultsList(request, exam_id):
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
     return render(request, 'exam_app/tutee-exam-results.html', {
@@ -462,9 +463,10 @@ def examResultsList(request, exam_id):
     })
 
 
-@login_required
+# @login_required
 def questionResult(request, exam_details_id, question_details):
-    username = request.user
+    username = User.objects.get(username='guest')
+    # username = request.user
 
     user_question_details = UserQuestionDetails.objects.get(id=question_details, username=username)
 
@@ -489,7 +491,7 @@ def questionResult(request, exam_details_id, question_details):
     })
 
 
-@login_required
+# @login_required
 def tuteeExamDetails(request, exam_id, exam_details_id):
     checkEvaluationStatus(exam_details_id)
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
