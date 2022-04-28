@@ -598,7 +598,7 @@ def sectionAddQuestion(request, exam_id, section_id):
             if question.max_points == 0 or question.max_points is None:
                 question.max_points = 1
             question.save()
-            question.exam_model.add(exam.id)
+            question.exam.add(exam.id)
             question.section.add(section.id)
             question.save()
 
