@@ -37,7 +37,8 @@ def createExam(request):
                 'time_error': '',
                 'duration_error': '',
                 'min_pass_points_error': '',
-                'has_sections_error': ''
+                'has_sections_error': '',
+                'multiple_attempts_error': ''
             }
             for error in make_exam_form.errors:
                 label = error + '_error'
@@ -551,6 +552,7 @@ def questionEvaluation(request, exam_details_id, question_details_id):
         'user_question_details': user_question_details,
         'user_result': user_result,
     })
+
 
 @login_required
 def addSection(request, exam_id):

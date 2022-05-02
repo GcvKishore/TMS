@@ -38,19 +38,19 @@
                 </div>
             </div>
             <div class="row m-0 my-2">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 ">
                     <label class="py-2" for="input-4">Date</label>
                     <input type="date" class="form-control" id="input-4" placeholder="Title" name="date"
                            value="{{ date }}">
                     <small class="form-text custom-error-message">{{ date_error }}</small>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 ">
                     <label class="py-2" for="input-5">Time</label>
                     <input type="time" class="form-control" id="input-5" placeholder="HH:MM" name="time"
                            value="{{ time }}">
                     <small class="form-text custom-error-message">{{ time_error }}</small>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 ">
                     <label class="py-2" for="input-6">Duration</label>
                     <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS" name="duration"
                            value="{{ duration }}" aria-describedby="durationDescription">
@@ -59,7 +59,7 @@
                     </small>
                     <small class="form-text custom-error-message">{{ duration_error }}</small>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 ">
                     <label class="py-2" for="input-7">Min pass points</label>
                     <input type="number" class="form-control" id="input-7" placeholder="%" name="min_pass_points"
                            value="{{ min_pass_points }}"
@@ -68,21 +68,42 @@
                 </div>
             </div>
             <div class="row m-0 my-2">
-                <label for="id_has_sections">Does exam has sections</label>
-                <div id="id_has_sections">
-                    <div>
-                        <label for="id_has_sections_0"><input type="radio" name="has_sections" value="True" required=""
-                                                              id="id_has_sections_0">
-                            Yes</label>
+                <div class="col-md-6 mb-3">
+                    <label for="id_has_sections">Does exam has sections?</label>
+                    <div id="id_has_sections">
+                        <div>
+                            <label for="id_has_sections_0"><input type="radio" name="has_sections" value="True"
+                                                                  required=""
+                                                                  id="id_has_sections_0">
+                                Yes</label>
+                        </div>
+                        <div>
+                            <label for="id_has_sections_1"><input type="radio" name="has_sections" value="False"
+                                                                  required=""
+                                                                  id="id_has_sections_1">
+                                No</label>
+                        </div>
+                        <small class="form-text custom-error-message">{{ has_sections_error }}</small>
                     </div>
-                    <div>
-                        <label for="id_has_sections_1"><input type="radio" name="has_sections" value="False" required=""
-                                                              id="id_has_sections_1">
-                            No</label>
-                    </div>
-                    <small class="form-text custom-error-message">{{ has_sections_error }}</small>
                 </div>
-
+                <div class="col-md-6 mb-3">
+                    <label for="id_multiple_attempts">Can exam be taken multiple times?</label>
+                    <div id="id_multiple_attempts">
+                        <div>
+                            <label for="id_multiple_attempts_0"><input type="radio" name="multiple_attempts"
+                                                                       value="True"
+                                                                       required="" id="id_multiple_attempts_0">
+                                Yes</label>
+                        </div>
+                        <div>
+                            <label for="id_multiple_attempts_1"><input type="radio" name="multiple_attempts"
+                                                                       value="False"
+                                                                       required="" id="id_multiple_attempts_1">
+                                No</label>
+                        </div>
+                        <small class="form-text custom-error-message">{{ multiple_attempts_error }}</small>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col">
