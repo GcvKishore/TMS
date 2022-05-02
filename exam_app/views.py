@@ -140,7 +140,7 @@ def addQuestion(request, exam_id):
             else:
                 question.evaluation_type = False
 
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             question.save()
             addOptionsAnswers(request, question)
 
@@ -225,7 +225,7 @@ def EditQuestion(request, exam_id, question_id):
                 question.evaluation_type = True
             else:
                 question.evaluation_type = False
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             question.save()
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
@@ -688,7 +688,7 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
                 question.evaluation_type = True
             else:
                 question.evaluation_type = False
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             section_index = request.POST['section_index']
             question.section.remove(section.id)
             question.section.add(section_index)
