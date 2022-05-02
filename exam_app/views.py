@@ -269,13 +269,22 @@ def viewExam(request, exam_id):
     username = request.user
 
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
-    if user_exam_details:
-        user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
+    if not user_exam_details:
+        UserExamDetails.objects.create(username=username, exam=exam, status='Yet To Take').save()
+    user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
+
+    if user_exam_details.status == "Yet To Take":
+        user_exam_status = 'start'
+    elif user_exam_details.status == "Ongoing":
+        user_exam_status = 'continue'
+    elif exam.multiple_attempts:
+        user_exam_status = 'retake'
     else:
-        user_exam_details = UserExamDetails.objects.create(username=username, exam=exam, status='Yet To Take').save()
+        user_exam_status = 'view'
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
         'user_exam_details': user_exam_details,
+        'user_exam_status':user_exam_status
     })
 
 
