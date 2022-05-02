@@ -267,24 +267,36 @@ def viewExam(request, exam_id):
     now = datetime.now()
     exam = MakeExam.objects.get(id=exam_id)
     username = request.user
-
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
-    if not user_exam_details:
-        UserExamDetails.objects.create(username=username, exam=exam, status='Yet To Take').save()
-    user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
 
-    if user_exam_details.status == "Yet To Take":
+    if request.method == 'POST':
+        btn_action = request.POST['btn_action']
+        if btn_action == 'start' or btn_action == 'retake':
+            UserExamDetails.objects.create(username=username, exam=exam, status='Ongoing',
+                                           start_time=now.strftime("%H:%M:%S")).save()
+            print('start/retake')
+            return redirect('exam_app:take-exam-section', exam.id, 0, 0)
+        elif btn_action == 'view':
+            print('view')
+            return redirect('exam_app:tutee-exam-results-list', exam.id)
+        else:
+            print('continue')
+            return redirect('exam_app:take-exam-section', exam.id, 0, 0)
+
+    if not user_exam_details:
         user_exam_status = 'start'
-    elif user_exam_details.status == "Ongoing":
-        user_exam_status = 'continue'
-    elif exam.multiple_attempts:
-        user_exam_status = 'retake'
     else:
-        user_exam_status = 'view'
+        user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).order_by('-id').first()
+        if user_exam_details.status == "Ongoing":
+            user_exam_status = 'continue'
+        elif exam.multiple_attempts:
+            user_exam_status = 'retake'
+        else:
+            user_exam_status = 'view'
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
         'user_exam_details': user_exam_details,
-        'user_exam_status':user_exam_status
+        'user_exam_status': user_exam_status
     })
 
 
@@ -319,12 +331,11 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     # get user exam details
     username = request.user
-    user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
+    user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).order_by('-id').first()
+    if user_exam_details.status != 'Ongoing':
+        return redirect('exam_app:view-exam', exam.id)
 
-    # Condition to check if the request method is post and if the thing can post
-    # if request.method == 'POST' and user_exam_details.status == 'Ongoing':
     if request.method == 'POST':
-        user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
         user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                                 exam_details=user_exam_details)
 
@@ -362,10 +373,7 @@ def takeExamSection(request, exam_id, section_index, question_index):
             return redirect('exam_app:take-exam-section', exam.id, section_index, question_index)
 
         if btn_action == 'next':
-            print(question_index)
             question_index += 1
-            print(len(questions))
-            print(question_index)
 
             if question_index >= len(questions):
                 question_index = 0
@@ -402,13 +410,6 @@ def takeExamSection(request, exam_id, section_index, question_index):
     # Check if question type is Fill in the blanks and change the answers to input tags
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
-
-    # change user exam status and register start time
-    # if user_exam_details.status == 'Yet To Take':
-    if question_index == 0 and section_index == 0:
-        user_exam_details.status = 'Ongoing'
-        user_exam_details.start_time = now.strftime("%H:%M:%S")
-        user_exam_details.save()
 
     # get user question details
     user_question_details = UserQuestionDetails.objects.filter(username=username, question=question,
