@@ -261,12 +261,11 @@ def viewAllExamsTutee(request):
     })
 
 
-# @login_required
+@login_required
 def viewExam(request, exam_id):
     now = datetime.now()
     exam = MakeExam.objects.get(id=exam_id)
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
 
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
     if user_exam_details:
@@ -289,6 +288,7 @@ def viewAllDetails(request, exam_id):
     })
 
 
+@login_required
 def takeExamSection(request, exam_id, section_index, question_index):
     now = datetime.now()
 
@@ -308,8 +308,7 @@ def takeExamSection(request, exam_id, section_index, question_index):
     question = questions[question_index]
 
     # get user exam details
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
 
     # Condition to check if the request method is post and if the thing can post
@@ -421,10 +420,9 @@ def takeExamSection(request, exam_id, section_index, question_index):
     })
 
 
-# @login_required
+@login_required
 def examSummary(request, exam_details_id):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
     checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
@@ -433,11 +431,10 @@ def examSummary(request, exam_details_id):
     })
 
 
-# @login_required
+@login_required
 def examResult(request, exam_details_id):
     checkEvaluationStatus(exam_details_id)
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
     exam = MakeExam.objects.get(id=exam_id)
@@ -451,10 +448,9 @@ def examResult(request, exam_details_id):
     })
 
 
-# @login_required
+@login_required
 def examResultsList(request, exam_id):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
     return render(request, 'exam_app/tutee-exam-results.html', {
@@ -463,10 +459,9 @@ def examResultsList(request, exam_id):
     })
 
 
-# @login_required
+@login_required
 def questionResult(request, exam_details_id, question_details):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
 
     user_question_details = UserQuestionDetails.objects.get(id=question_details, username=username)
 
@@ -491,7 +486,7 @@ def questionResult(request, exam_details_id, question_details):
     })
 
 
-# @login_required
+@login_required
 def tuteeExamDetails(request, exam_id, exam_details_id):
     checkEvaluationStatus(exam_details_id)
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
@@ -557,7 +552,7 @@ def questionEvaluation(request, exam_details_id, question_details_id):
         'user_result': user_result,
     })
 
-
+@login_required
 def addSection(request, exam_id):
     if not request.user.is_staff:
         redirect('website:permission-denied')
@@ -585,6 +580,7 @@ def addSection(request, exam_id):
     })
 
 
+@login_required
 def sectionAddQuestion(request, exam_id, section_id):
     if not request.user.is_staff:
         redirect('website:permission-denied')
@@ -636,6 +632,7 @@ def sectionAddQuestion(request, exam_id, section_id):
     })
 
 
+@login_required
 def editSection(request, exam_id, section_id):
     exam = MakeExam.objects.get(id=exam_id)
     section = MakeSection.objects.get(id=section_id)
@@ -668,6 +665,7 @@ def editSection(request, exam_id, section_id):
     })
 
 
+@login_required
 def sectionEditQuestion(request, exam_id, section_id, question_id):
     exam = MakeExam.objects.get(id=exam_id)
     section = MakeSection.objects.get(id=section_id)
