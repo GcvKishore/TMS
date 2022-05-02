@@ -353,11 +353,15 @@ def takeExamSection(request, exam_id, section_index, question_index):
             return redirect('exam_app:take-exam-section', exam.id, section_index, question_index)
 
         if btn_action == 'next':
+            print(question_index)
             question_index += 1
+            print(len(questions))
+            print(question_index)
+
             if question_index >= len(questions):
                 question_index = 0
                 section_index += 1
-            if section_index >= len(sections):
+            if section_index >= len(sections) and exam.has_sections:
                 user_exam_details.status = 'Completed'
                 user_exam_details.result_status = 'Pending'
                 user_exam_details.end_time = now.strftime("%H:%M:%S")
