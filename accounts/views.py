@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from .forms import SignUpForm
+from .models import *
+import uuid
 
 
 # Create your views here.
@@ -82,4 +84,23 @@ def instructorSignUp(request):
 
 
 def forgotPassword(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        username_exists = User.objects.filter(username=username).exists()
+        if username_exists:
+            token = str(uuid.uuid4())
+            user = User.objects.get(username=username)
+            ResetPassword.objects.create(owner=user, forgot_password_token=token).save()
+            # create token and send email
+            return render(request, 'accounts/forgot-password.html', {
+                'success_message': "Password resent link sent to your mail. Check your email for further steps...",
+                'link_status': 'sent'
+            })
+        else:
+            return render(request, 'accounts/forgot-password.html', {
+                'error_message': "Username doesn't exists"
+            })
+
+            # return error message
+
     return render(request, 'accounts/forgot-password.html')
