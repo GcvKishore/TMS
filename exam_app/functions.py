@@ -123,7 +123,6 @@ def checkEvaluationStatus(exam_details_id):
 
 def convertTimeString(hhmmss):
     if hhmmss != 'None':
-        print(hhmmss)
         hms = hhmmss.split(':')
         for i in range(len(hms)):
             if len(hms[i]) == 1:
