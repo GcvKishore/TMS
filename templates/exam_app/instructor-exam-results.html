@@ -23,7 +23,7 @@
         <hr>
         <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="post">
             {% if student_exam_details %}
-                <table class="table align-middle">
+                <table class="table align-middle" id="resultsTable">
                     <thead class="thead-dark">
                     <tr class="text-center">
                         <th scope="col">#</th>
@@ -57,9 +57,26 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <button type="button" class="btn btn-primary" id="downloadtable">
+                    Click to Download
+                </button>
             {% else %}
                 <h5><em>No user has attempted this exam</em></h5>
             {% endif %}
         </form>
     </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+         $('#downloadtable').on('click', function(e){
+        e.preventDefault();
+        ResultsTable();
+    });
+        function ResultsTable(){
+           $("#resultsTable").table2excel({
+               filename: "Students.xls",
+        });
+        }
+    });
+       </script>
 {% endblock %}
