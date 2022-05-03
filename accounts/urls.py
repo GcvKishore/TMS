@@ -10,5 +10,6 @@ urlpatterns = [
     path('sign-in/', LoginView.as_view(template_name='accounts/sign-in.html'), name="sign-in"),
     path('sign-out/', LogoutView.as_view(), name="sign-out"),
     path('forgot-password/', views.forgotPassword, name="forgot-password"),
+    path('change-password/<token>', views.changePassword, name="change-password"),
 
 ]
