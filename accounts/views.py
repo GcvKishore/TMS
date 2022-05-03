@@ -79,3 +79,7 @@ def instructorSignUp(request):
     else:
         form = SignUpForm()
         return render(request, 'accounts/instructor-sign-up.html')
+
+
+def forgotPassword(request):
+    return render(request, 'accounts/forgot-password.html')

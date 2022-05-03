@@ -8,7 +8,8 @@
 {% block styles %}
     <style>
         .sign-in-area {
-            height: 80vh;
+            display: flow;
+            height: calc(100vh - 70px);
         }
 
         .sign-in-box {
@@ -53,18 +54,20 @@
                            placeholder="name@example.com" autocomplete="username" required>
                     <label for="floatingInput">username</label>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating mb-3">
                     <input type="password" name="password" class="form-control" id="floatingPassword"
                            placeholder="Password" required autocomplete="password">
                     <label for="floatingPassword">Password</label>
                 </div>
-
-                <div class="checkbox mt-3 mb-3">
+                <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Sign in</button>
+                <div class="mb-3">
+                    Did you forget your password? <a href="{% url 'account:forgot-password' %}">Click Here</a>
+                </div>
                 <p class="mt-5 mb-3 text-muted">&copy; tutest 2022</p>
             </div>
         </div>
