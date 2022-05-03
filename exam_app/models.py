@@ -17,6 +17,7 @@ class MakeExam(models.Model):
     min_pass_points = models.IntegerField(null=True)
     status = models.CharField(max_length=64, blank=True, default='Draft')
     has_sections = models.BooleanField(default=False)
+    multiple_attempts = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

@@ -78,7 +78,7 @@
         <hr>
         <div class="row m-0">
             <div class="col">
-                {% if exam_details.result_status != 'Passed' %}
+                {% if exam.multiple_attempts %}
                     <a href="{% url 'exam_app:view-exam' exam_id %}">
                         <button type="button" class="btn btn-primary" {% if exam_details.result_status == 'Pending' %}
                                 disabled
