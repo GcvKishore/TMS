@@ -38,18 +38,24 @@
                         <th scope="row">Class/Level</th>
                         <td>{{ exam.level }}</td>
                     </tr>
-                    <tr>
-                        <th scope="row">Date</th>
-                        <td>{{ exam.date }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Time</th>
-                        <td>{{ exam.time }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Duration</th>
-                        <td id="totalExamDuration">{{ exam.duration }}</td>
-                    </tr>
+                    {% if exam.date %}
+                        <tr>
+                            <th scope="row">Date</th>
+                            <td>{{ exam.date }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if exam.time %}
+                        <tr>
+                            <th scope="row">Time</th>
+                            <td>{{ exam.time }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if exam.duration %}
+                        <tr>
+                            <th scope="row">Duration</th>
+                            <td id="totalExamDuration">{{ exam.duration }}</td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <th scope="row">No Of Sections</th>
                         <td>{{ exam.makesection_set.count }}</td>
@@ -58,9 +64,25 @@
                         <th scope="row">No Of Questions</th>
                         <td>{{ exam.makequestion_set.count }}</td>
                     </tr>
+                    {% if exam.min_pass_points %}
+                        <tr>
+                            <th scope="row">Min Pass Percentage</th>
+                            <td>{{ exam.min_pass_points }}</td>
+                        </tr>
+                    {% endif %}
                     <tr>
-                        <th scope="row">Min Pass Percentage</th>
-                        <td>{{ exam.min_pass_points }}</td>
+                        <th scope="row">Your Exam Status</th>
+                        <td>
+                            {% if user_exam_details.status %}
+                                {{ user_exam_details.status }}
+                            {% else %}
+                                Yet to take
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Multiple Attempts</th>
+                        <td>{{ exam.multiple_attempts }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -82,11 +104,37 @@
             </div>
         </div>
         <hr>
-        <div class="col py-2 text-center">
-            <a class="m-auto" href="{% url 'exam_app:take-exam-section' exam.id 0 0 %}">
-                <button class="btn btn-success" type="button">Start Exam</button>
-            </a>
-        </div>
+        <form action="{% url 'exam_app:view-exam' exam.id %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                {% if user_exam_status == 'start' %}
+
+                    <div class="col py-2 text-center">
+                        <button class="btn btn-success" type="submit" name="btn_action" value="start">Start Exam
+                        </button>
+                    </div>
+                {% elif user_exam_status == 'continue' %}
+                    <div class="col py-2 text-center">
+                        <button class="btn btn-success" type="submit" name="btn_action" value="continue">Continue Exam
+                        </button>
+                    </div>
+                {% elif user_exam_status == 'retake' %}
+                    <div class="col py-2 text-end">
+                        <button class="btn btn-warning" type="submit" name="btn_action" value="retake">Retake Exam
+                        </button>
+                    </div>
+                    <div class="col py-2 text-start">
+                        <button class="btn btn-primary" type="submit" name="btn_action" value="view">View Results
+                        </button>
+                    </div>
+                {% elif user_exam_status == 'view' %}
+                    <div class="col py-2 text-center">
+                        <button class="btn btn-primary" type="submit" name="btn_action" value="view">View Results
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
     </div>
 {% endblock %}
 

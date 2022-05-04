@@ -37,7 +37,8 @@ def createExam(request):
                 'time_error': '',
                 'duration_error': '',
                 'min_pass_points_error': '',
-                'has_sections_error': ''
+                'has_sections_error': '',
+                'multiple_attempts_error': ''
             }
             for error in make_exam_form.errors:
                 label = error + '_error'
@@ -79,7 +80,7 @@ def editExam(request, exam_id):
 
         if 'delete_exam' in request.POST:
             MakeQuestion.objects.filter(exam__id=exam_id).delete()
-            MakeExam.objects.get(id=exam_id).delete()
+            MakeExam.objects.get(id=exam.id).delete()
             return redirect('exam_app:view-all-exams-instructors')
 
     questions_list = MakeQuestion.objects.filter(exam__id=exam_id)
@@ -139,7 +140,7 @@ def addQuestion(request, exam_id):
             else:
                 question.evaluation_type = False
 
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             question.save()
             addOptionsAnswers(request, question)
 
@@ -191,12 +192,26 @@ def viewAllExamsInstructors(request):
 @login_required
 def editExamDetails(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
+    previous_section_details = exam.has_sections
     if not request.user.is_staff or exam.owner != request.user:
         redirect('website:permission-denied')
 
     if request.method == 'POST':
         exam_form = MakeExamForm(request.POST, instance=exam)
         if exam_form.is_valid():
+            current_section_details = request.POST['has_sections']
+
+            if str(previous_section_details) != str(current_section_details):
+                if str(previous_section_details) == 'True':
+                    MakeSection.objects.filter(exam=exam, owner=request.user).delete()
+                else:
+                    questions = MakeQuestion.objects.filter(exam=exam)
+                    if len(questions) != 0:
+                        MakeSection.objects.create(owner=request.user, exam=exam, title='All Questions').save()
+                        section = MakeSection.objects.get(owner=request.user, exam=exam, title='All Questions')
+                        for question in questions:
+                            question.section.add(section.id)
+                            question.save()
             details = exam_form.save(commit=False)
             details.owner = request.user
             details.save()
@@ -224,7 +239,7 @@ def EditQuestion(request, exam_id, question_id):
                 question.evaluation_type = True
             else:
                 question.evaluation_type = False
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             question.save()
             Option.objects.filter(question=question).delete()
             Answer.objects.filter(question=question).delete()
@@ -261,21 +276,38 @@ def viewAllExamsTutee(request):
     })
 
 
-# @login_required
+@login_required
 def viewExam(request, exam_id):
     now = datetime.now()
     exam = MakeExam.objects.get(id=exam_id)
-    username = User.objects.get(username='guest')
-    # username = request.user
-
+    username = request.user
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
-    if user_exam_details:
-        user_exam_details = UserExamDetails.objects.get(exam=exam.id, username=username)
+
+    if request.method == 'POST':
+        btn_action = request.POST['btn_action']
+        if btn_action == 'start' or btn_action == 'retake':
+            UserExamDetails.objects.create(username=username, exam=exam, status='Ongoing',
+                                           start_time=now.strftime("%H:%M:%S")).save()
+            return redirect('exam_app:take-exam-section', exam.id, 0, 0)
+        elif btn_action == 'view':
+            return redirect('exam_app:tutee-exam-results-list', exam.id)
+        else:
+            return redirect('exam_app:take-exam-section', exam.id, 0, 0)
+
+    if not user_exam_details:
+        user_exam_status = 'start'
     else:
-        user_exam_details = UserExamDetails.objects.create(username=username, exam=exam, status='Yet To Take').save()
+        user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).order_by('-id').first()
+        if user_exam_details.status == "Ongoing":
+            user_exam_status = 'continue'
+        elif exam.multiple_attempts:
+            user_exam_status = 'retake'
+        else:
+            user_exam_status = 'view'
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
         'user_exam_details': user_exam_details,
+        'user_exam_status': user_exam_status
     })
 
 
@@ -289,6 +321,7 @@ def viewAllDetails(request, exam_id):
     })
 
 
+@login_required
 def takeExamSection(request, exam_id, section_index, question_index):
     now = datetime.now()
 
@@ -308,14 +341,12 @@ def takeExamSection(request, exam_id, section_index, question_index):
     question = questions[question_index]
 
     # get user exam details
-    username = User.objects.get(username='guest')
-    # username = request.user
-    user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
+    username = request.user
+    user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).order_by('-id').first()
+    if user_exam_details.status != 'Ongoing':
+        return redirect('exam_app:view-exam', exam.id)
 
-    # Condition to check if the request method is post and if the thing can post
-    # if request.method == 'POST' and user_exam_details.status == 'Ongoing':
     if request.method == 'POST':
-        user_exam_details = UserExamDetails.objects.get(exam=exam, username=username)
         user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                                 exam_details=user_exam_details)
 
@@ -354,10 +385,11 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
         if btn_action == 'next':
             question_index += 1
+
             if question_index >= len(questions):
                 question_index = 0
                 section_index += 1
-            if section_index >= len(sections):
+            if section_index >= len(sections) and exam.has_sections:
                 user_exam_details.status = 'Completed'
                 user_exam_details.result_status = 'Pending'
                 user_exam_details.end_time = now.strftime("%H:%M:%S")
@@ -390,13 +422,6 @@ def takeExamSection(request, exam_id, section_index, question_index):
     if question.question_type == "Fill In The Blanks":
         question_text = generateFITB(question.question_text, answers)
 
-    # change user exam status and register start time
-    # if user_exam_details.status == 'Yet To Take':
-    if question_index == 0 and section_index == 0:
-        user_exam_details.status = 'Ongoing'
-        user_exam_details.start_time = now.strftime("%H:%M:%S")
-        user_exam_details.save()
-
     # get user question details
     user_question_details = UserQuestionDetails.objects.filter(username=username, question=question,
                                                                exam_details=user_exam_details).exists()
@@ -421,10 +446,9 @@ def takeExamSection(request, exam_id, section_index, question_index):
     })
 
 
-# @login_required
+@login_required
 def examSummary(request, exam_details_id):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
     checkUserAnswers(request, exam_details)
     user_exam_details = UserExamDetails.objects.get(id=exam_details_id, username=username)
@@ -433,11 +457,10 @@ def examSummary(request, exam_details_id):
     })
 
 
-# @login_required
+@login_required
 def examResult(request, exam_details_id):
     checkEvaluationStatus(exam_details_id)
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam_details = UserExamDetails.objects.get(username=username, id=exam_details_id)
     exam_id = exam_details.exam_id
     exam = MakeExam.objects.get(id=exam_id)
@@ -451,10 +474,9 @@ def examResult(request, exam_details_id):
     })
 
 
-# @login_required
+@login_required
 def examResultsList(request, exam_id):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
     exam = MakeExam.objects.get(id=exam_id)
     exam_details = UserExamDetails.objects.filter(exam=exam_id, username=username)
     return render(request, 'exam_app/tutee-exam-results.html', {
@@ -463,10 +485,9 @@ def examResultsList(request, exam_id):
     })
 
 
-# @login_required
+@login_required
 def questionResult(request, exam_details_id, question_details):
-    username = User.objects.get(username='guest')
-    # username = request.user
+    username = request.user
 
     user_question_details = UserQuestionDetails.objects.get(id=question_details, username=username)
 
@@ -491,7 +512,7 @@ def questionResult(request, exam_details_id, question_details):
     })
 
 
-# @login_required
+@login_required
 def tuteeExamDetails(request, exam_id, exam_details_id):
     checkEvaluationStatus(exam_details_id)
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
@@ -558,6 +579,7 @@ def questionEvaluation(request, exam_details_id, question_details_id):
     })
 
 
+@login_required
 def addSection(request, exam_id):
     if not request.user.is_staff:
         redirect('website:permission-denied')
@@ -585,6 +607,7 @@ def addSection(request, exam_id):
     })
 
 
+@login_required
 def sectionAddQuestion(request, exam_id, section_id):
     if not request.user.is_staff:
         redirect('website:permission-denied')
@@ -636,6 +659,7 @@ def sectionAddQuestion(request, exam_id, section_id):
     })
 
 
+@login_required
 def editSection(request, exam_id, section_id):
     exam = MakeExam.objects.get(id=exam_id)
     section = MakeSection.objects.get(id=section_id)
@@ -668,6 +692,7 @@ def editSection(request, exam_id, section_id):
     })
 
 
+@login_required
 def sectionEditQuestion(request, exam_id, section_id, question_id):
     exam = MakeExam.objects.get(id=exam_id)
     section = MakeSection.objects.get(id=section_id)
@@ -688,7 +713,7 @@ def sectionEditQuestion(request, exam_id, section_id, question_id):
                 question.evaluation_type = True
             else:
                 question.evaluation_type = False
-            question.exam_model.add(exam_id)
+            question.exam.add(exam_id)
             section_index = request.POST['section_index']
             question.section.remove(section.id)
             question.section.add(section_index)

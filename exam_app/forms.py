@@ -14,10 +14,11 @@ class MakeExamForm(ModelForm):
     status = forms.CharField(required=False)
     username = forms.CharField(required=False)
     has_sections = forms.CharField()
+    multiple_attempts = forms.CharField()
 
     class Meta:
         model = MakeExam
-        fields = ('title', 'subject', 'level', 'date', 'time', 'duration', 'min_pass_points', 'has_sections')
+        fields = ('title', 'subject', 'level', 'date', 'time', 'duration', 'min_pass_points', 'has_sections', 'multiple_attempts')
         exclude = ['owner']
 
 

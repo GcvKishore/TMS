@@ -6,7 +6,8 @@ body {
 }
 
 main {
-    min-height: 100vh;
+    display: block;
+    min-height: calc(100vh - 70px);
     width: 100vw;
 }
 
@@ -16,6 +17,10 @@ nav {
 
 footer {
     background-color: #3B4D5E;
+}
+
+.navbar {
+    height: 70px;
 }
 
 .nav-link {
