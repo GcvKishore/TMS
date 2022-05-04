@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -97,8 +98,9 @@ def forgotPassword(request):
                                          creates_on=datetime.datetime.now()).save()
             if emailPasswordResetLink(token, user.email, request.get_host()):
                 # create token and send email
+                messages.success(request,
+                                 'Password resent link sent to your mail. Check your email for further steps...')
                 return render(request, 'accounts/forgot-password.html', {
-                    'success_message': "Password resent link sent to your mail. Check your email for further steps...",
                     'link_status': 'sent'
                 })
         else:
@@ -115,9 +117,8 @@ def changePassword(request, token):
     reset_password = ResetPassword.objects.get(forgot_password_token=token)
 
     if datetime.datetime.now() - reset_password.creates_on > datetime.timedelta(minutes=5):
-        return render(request, 'accounts/change-password.html', {
-            'timeout_error': "Time out error: Link is no longer valid"
-        })
+        messages.error(request, 'Time out error: Link is no longer valid. Please request a new link.')
+        return redirect('account:forgot-password')
 
     if request.method == 'POST':
         password1 = request.POST['password1']
@@ -136,5 +137,6 @@ def changePassword(request, token):
         user = reset_password.owner
         user.set_password(password1)
         user.save()
+        messages.success(request, 'Password reset was successful. Log in using new password ')
         return redirect('account:sign-in')
     return render(request, 'accounts/change-password.html')

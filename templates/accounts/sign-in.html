@@ -45,6 +45,13 @@
                      width="75px" class="mb-4">
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
                 <hr>
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                    <hr>
+                {% endfor %}
+
                 {% for error in form.non_field_errors %}
                     <small class="errors-message">{{ error }}</small>
                     <hr>
