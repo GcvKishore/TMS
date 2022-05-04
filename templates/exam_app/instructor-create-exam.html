@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="p-5">
+    <div class="p-md-5 px-1 py-3">
         <h3 class="py-3"><strong>New Exam Details:</strong></h3>
         <form action="{% url 'exam_app:create-exam' %}" method="post">
             {% csrf_token %}
