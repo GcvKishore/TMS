@@ -163,11 +163,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
+
+USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -246,3 +248,11 @@ django_on_heroku.settings(locals(), staticfiles=False)
 LOGIN_URL = 'account:sign-in'
 LOGIN_REDIRECT_URL = 'website:index'
 LOGOUT_REDIRECT_URL = 'website:index'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='abc')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='abc')

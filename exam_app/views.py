@@ -80,7 +80,7 @@ def editExam(request, exam_id):
 
         if 'delete_exam' in request.POST:
             MakeQuestion.objects.filter(exam__id=exam_id).delete()
-            MakeExam.objects.get(id=exam_id).delete()
+            MakeExam.objects.get(id=exam.id).delete()
             return redirect('exam_app:view-all-exams-instructors')
 
     questions_list = MakeQuestion.objects.filter(exam__id=exam_id)
@@ -192,12 +192,26 @@ def viewAllExamsInstructors(request):
 @login_required
 def editExamDetails(request, exam_id):
     exam = MakeExam.objects.get(id=exam_id)
+    previous_section_details = exam.has_sections
     if not request.user.is_staff or exam.owner != request.user:
         redirect('website:permission-denied')
 
     if request.method == 'POST':
         exam_form = MakeExamForm(request.POST, instance=exam)
         if exam_form.is_valid():
+            current_section_details = request.POST['has_sections']
+
+            if str(previous_section_details) != str(current_section_details):
+                if str(previous_section_details) == 'True':
+                    MakeSection.objects.filter(exam=exam, owner=request.user).delete()
+                else:
+                    questions = MakeQuestion.objects.filter(exam=exam)
+                    if len(questions) != 0:
+                        MakeSection.objects.create(owner=request.user, exam=exam, title='All Questions').save()
+                        section = MakeSection.objects.get(owner=request.user, exam=exam, title='All Questions')
+                        for question in questions:
+                            question.section.add(section.id)
+                            question.save()
             details = exam_form.save(commit=False)
             details.owner = request.user
             details.save()
@@ -274,13 +288,10 @@ def viewExam(request, exam_id):
         if btn_action == 'start' or btn_action == 'retake':
             UserExamDetails.objects.create(username=username, exam=exam, status='Ongoing',
                                            start_time=now.strftime("%H:%M:%S")).save()
-            print('start/retake')
             return redirect('exam_app:take-exam-section', exam.id, 0, 0)
         elif btn_action == 'view':
-            print('view')
             return redirect('exam_app:tutee-exam-results-list', exam.id)
         else:
-            print('continue')
             return redirect('exam_app:take-exam-section', exam.id, 0, 0)
 
     if not user_exam_details:
