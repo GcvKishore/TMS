@@ -55,7 +55,7 @@
             <hr>
             {% if exam.multiple_attempts %}
                 <h6>Click below to retake the exam</h6>
-                <a href="{% url 'exam_app:view-exam' exam_id %}">
+                <a href="{% url 'exam_app:view-exam' exam.id %}">
                     <button type="button" class="btn btn-primary">Retake Exam</button>
                 </a>
             {% endif %}

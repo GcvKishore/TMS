@@ -79,7 +79,7 @@
         <div class="row m-0">
             <div class="col">
                 {% if exam.multiple_attempts %}
-                    <a href="{% url 'exam_app:view-exam' exam_id %}">
+                    <a href="{% url 'exam_app:view-exam' exam.id %}">
                         <button type="button" class="btn btn-primary" {% if exam_details.result_status == 'Pending' %}
                                 disabled
                         {% endif %} >Retake exam
@@ -88,7 +88,7 @@
                 {% endif %}
             </div>
             <div class="col text-end">
-                <a href="{% url 'exam_app:tutee-exam-results-list' exam_id %}">
+                <a href="{% url 'exam_app:tutee-exam-results-list' exam.id %}">
                     <button type="button" class="btn btn-primary">back to exam results list</button>
                 </a>
             </div>
