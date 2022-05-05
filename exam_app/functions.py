@@ -1,6 +1,7 @@
 from .models import *
 from datetime import datetime, date
 import time
+from datetime import timedelta
 
 
 def validate_answers(user_answers, correct_answers, points):
@@ -34,7 +35,7 @@ def checkUserAnswers(request, exam_details):
     for question in questions:
         if not UserQuestionDetails.objects.filter(question=question.id, exam_details=exam_details.id).exists():
             UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=username,
-                                               start_time=now)
+                                               start_time=now, time_elapsed=timedelta(seconds=0))
             question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
                                                                username=username)
             question_details.end_time = now
@@ -43,6 +44,7 @@ def checkUserAnswers(request, exam_details):
 
         user_question_details = UserQuestionDetails.objects.get(question=question.id,
                                                                 exam_details=exam_details.id)
+        print(user_question_details.time_elapsed)
         if not question.evaluation_type or None:
             UserResults.objects.filter(username=username, exam_details=exam_details,
                                        question=question).delete()
