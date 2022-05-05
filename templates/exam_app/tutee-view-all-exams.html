@@ -9,46 +9,88 @@
 
 {% block body %}
     <div class="p-5">
-        <h4><strong>List Of All Available Exams</strong></h4>
+        <h2>List of all exams</h2>
         <hr>
-        <table class="table align-middle">
-            <thead class="thead-dark">
-            <tr class="text-center">
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Class/Level</th>
-                <th scope="col">Date</th>
-                <th scope="col">Time</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Exam</th>
-                <th scope="col">Results</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for exam in exams %}
+        <section>
+            <h5><strong>List of Open/Ongoing Exams</strong></h5>
+            <table class="table align-middle">
+                <thead class="thead-dark">
                 <tr class="text-center">
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ exam.title }}</td>
-                    <td>{{ exam.subject }}</td>
-                    <td>{{ exam.level }}</td>
-                    <td>{{ exam.date }}</td>
-                    <td>{{ exam.time }}</td>
-                    <td>{{ exam.duration }}</td>
-                    <td>
-                        <a href="{% url 'exam_app:view-exam' exam.id %}">
-                            <button type="button" class="btn btn-success btn-sm">View Exam</button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'exam_app:tutee-exam-results-list' exam.id %}">
-                            <button type="button" class="btn btn-primary btn-sm">Results</button>
-                        </a>
-                    </td>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Class/Level</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Results</th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for exam in exams %}
+                    <tr class="text-center">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ exam.title }}</td>
+                        <td>{{ exam.subject }}</td>
+                        <td>{{ exam.level }}</td>
+                        <td>{{ exam.date_time }}</td>
+                        <td>{{ exam.duration }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:view-exam' exam.id %}">
+                                <button type="button" class="btn btn-success btn-sm">View</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'exam_app:tutee-exam-results-list' exam.id %}">
+                                <button type="button" class="btn btn-primary btn-sm">Results</button>
+                            </a>
+                        </td>
+                    </tr>
 
-            {% endfor %}
-            </tbody>
-        </table>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <br>
+        <br>
+        <br>
+        <section>
+            <h5><strong>List of Mock/Practice Exams</strong></h5>
+            <table class="table align-middle">
+                <thead class="thead-dark">
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Class/Level</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Results</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for mock_exam in mock_exams %}
+                    <tr class="text-center">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ mock_exam.title }}</td>
+                        <td>{{ mock_exam.subject }}</td>
+                        <td>{{ mock_exam.level }}</td>
+                        <td>{{ mock_exam.duration }}</td>
+                        <td>
+                            <a href="{% url 'exam_app:view-exam' mock_exam.id %}">
+                                <button type="button" class="btn btn-success btn-sm">Practice</button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'exam_app:tutee-exam-results-list' mock_exam.id %}">
+                                <button type="button" class="btn btn-primary btn-sm">Results</button>
+                            </a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
     </div>
 {% endblock %}
