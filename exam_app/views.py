@@ -472,14 +472,15 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     total_exam_time_left = ""
     if exam.duration is not None:
-        if exam.date_time is not None:
+        if exam.date_time is not None and exam.multiple_attempts is False:
             total_exam_time_left = str(exam.duration - (now - exam.date_time)).split('.')[0]
         else:
             current_time = datetime.now().time()
 
             total_exam_time_left = str(exam.duration - (
                     datetime.combine(date.today(), current_time) - datetime.combine(date.today(),
-                                                                                    user_exam_details.start_time))).split('.')[0]
+                                                                                    user_exam_details.start_time))).split(
+                '.')[0]
 
     return render(request, 'exam_app/tutee-take-exam-sections.html', {
         'exam': exam,

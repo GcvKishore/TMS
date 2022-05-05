@@ -63,7 +63,7 @@ function startCountDown(max_time) {
                 countdown_element.classList.add('bg-danger', 'text-white')
             }
 
-            countdown_element.innerHTML = `Time left: ${hrs}:${mins}:${secs}`;
+            countdown_element.innerHTML = `Time left for Question: ${hrs}:${mins}:${secs}`;
         }
         timing--;
     }, 1000);
