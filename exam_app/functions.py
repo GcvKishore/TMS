@@ -1,6 +1,7 @@
 from .models import *
 from datetime import datetime, date
 import time
+from datetime import timedelta
 
 
 def validate_answers(user_answers, correct_answers, points):
@@ -34,23 +35,16 @@ def checkUserAnswers(request, exam_details):
     for question in questions:
         if not UserQuestionDetails.objects.filter(question=question.id, exam_details=exam_details.id).exists():
             UserQuestionDetails.objects.create(question=question, exam_details=exam_details, username=username,
-                                               start_time=now.strftime("%H:%M:%S"))
+                                               start_time=now, time_elapsed=timedelta(seconds=0))
             question_details = UserQuestionDetails.objects.get(question=question, exam_details=exam_details,
                                                                username=username)
-            question_details.end_time = now.strftime("%H:%M:%S")
+            question_details.end_time = now
             question_details.remark = "Didn't attend the question"
             question_details.save()
 
         user_question_details = UserQuestionDetails.objects.get(question=question.id,
                                                                 exam_details=exam_details.id)
-        start_time = user_question_details.start_time
-        end_time = user_question_details.end_time
-
-        if start_time and end_time:
-            time_elapsed = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
-            user_question_details.time_elapsed = time_elapsed
-            user_question_details.save()
-
+        print(user_question_details.time_elapsed)
         if not question.evaluation_type or None:
             UserResults.objects.filter(username=username, exam_details=exam_details,
                                        question=question).delete()

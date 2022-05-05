@@ -82,8 +82,8 @@ class UserQuestionDetails(models.Model):
     exam_details = models.ForeignKey('UserExamDetails', on_delete=models.CASCADE)
     points = models.IntegerField(blank=True, default=0)
     evaluation_status = models.CharField(max_length=64, blank=True, null=True)
-    start_time = models.TimeField(null=True, default=None)
-    end_time = models.TimeField(null=True, default=None)
+    start_time = models.DateTimeField(null=True, default=None)
+    end_time = models.DateTimeField(null=True, default=None)
     time_elapsed = models.DurationField(null=True)
     remark = models.TextField(default='', blank=True)
 

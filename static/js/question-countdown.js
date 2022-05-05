@@ -1,18 +1,13 @@
-let total_exam_time_left = document.getElementById('total_exam_time_left')
-let total_exam_time = document.getElementById('total_exam_time')
+let total_question_time_left = document.getElementById('total_question_time_left')
+let total_question_time = document.getElementById('total_question_time')
 
-if (total_exam_time_left.innerText.includes('-')) {
-    alert("TIMEOUT: You are out of time.")
-    document.getElementById("quit-btn").click();
-}
+let question_time_left
+let question_total_time
 
-
-let time_left
-let total_time
-
-if (total_exam_time_left) {
-    time_left = convert_to_seconds(total_exam_time_left)
-    total_time = convert_to_seconds(total_exam_time)
+if (total_question_time_left) {
+    console.log('has')
+    question_time_left = convert_to_seconds(total_question_time_left)
+    question_total_time = convert_to_seconds(total_question_time)
 }
 
 function convert_to_seconds(element) {
@@ -22,14 +17,12 @@ function convert_to_seconds(element) {
     return totalSeconds.toString()
 }
 
-console.log(time_left)
-console.log(total_time)
+Question_duration = document.getElementById('question_countdown')
 
-exam_duration = document.getElementById('exam_countdown')
-
-if (exam_duration) {
-    if (time_left !== 'NaN') {
-        startCountDown(parseInt(time_left))
+if (Question_duration) {
+    if (question_time_left !== 'NaN') {
+        console.log(question_time_left)
+        startCountDown(parseInt(question_time_left))
     }
 }
 
@@ -41,8 +34,7 @@ function startCountDown(max_time) {
         let secs;
         if (timing <= 0) {
             clearInterval(timer);
-            alert("TIMEOUT: You are out of time. Click ok to See your exam result")
-            document.getElementById("quit-btn").click();
+            document.getElementById("timeout-btn").click();
         } else {
             hrs = Math.floor(timing / 3600).toString();
             mins = Math.floor((timing % 3600) / 60).toString();
@@ -58,20 +50,20 @@ function startCountDown(max_time) {
                 secs = `0${secs}`
             }
 
-            let countdown_element = document.getElementById("exam_countdown")
+            let countdown_element = document.getElementById("question_countdown")
 
             countdown_element.classList.add('bg-success', 'text-white')
-            if ((timing / total_time) < .50) {
+            if ((timing / question_total_time
+) < .50) {
                 countdown_element.classList.remove('bg-success', 'text-white')
                 countdown_element.classList.add('bg-warning', 'text-dark')
             }
-            if ((timing / total_time) < .25) {
+            if ((timing / question_total_time) < .25) {
                 countdown_element.classList.remove('bg-warning', 'text-dark')
                 countdown_element.classList.add('bg-danger', 'text-white')
             }
 
             countdown_element.innerHTML = `Time left: ${hrs}:${mins}:${secs}`;
-            localStorage.setItem("time_left", timing.toString());
         }
         timing--;
     }, 1000);
