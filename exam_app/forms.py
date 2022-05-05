@@ -7,8 +7,7 @@ class MakeExamForm(ModelForm):
     title = forms.CharField(max_length=124)
     subject = forms.CharField(max_length=64)
     level = forms.CharField(max_length=64)
-    date = forms.DateField(required=False)
-    time = forms.TimeField(required=False)
+    date_time = forms.DateTimeField(required=False)
     duration = forms.DurationField(required=False)
     min_pass_points = forms.IntegerField(required=False)
     status = forms.CharField(required=False)
@@ -18,7 +17,9 @@ class MakeExamForm(ModelForm):
 
     class Meta:
         model = MakeExam
-        fields = ('title', 'subject', 'level', 'date', 'time', 'duration', 'min_pass_points', 'has_sections', 'multiple_attempts')
+        fields = (
+            'title', 'subject', 'level', 'date_time', 'duration', 'min_pass_points', 'has_sections',
+            'multiple_attempts')
         exclude = ['owner']
 
 

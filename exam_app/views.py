@@ -5,6 +5,7 @@ from .models import *
 from .functions import *
 from datetime import datetime
 from django.contrib.auth.models import User
+from datetime import timedelta
 
 
 # Create your views here.
@@ -216,6 +217,7 @@ def editExamDetails(request, exam_id):
             details.owner = request.user
             details.save()
         return redirect("exam_app:edit-exam", exam_id=exam_id)
+    print(type(exam.date_time))
     return render(request, 'exam_app/instructor-edit-exam-details.html', {
         'exam': exam,
         'exam_duration': convertTimeString(str(exam.duration))
@@ -270,8 +272,12 @@ def EditQuestion(request, exam_id, question_id):
 def viewAllExamsTutee(request):
     if request.user.is_staff:
         return redirect('exam_app:view-all-exams-instructors')
-    exams = MakeExam.objects.filter(status='Published')
+    today = datetime.now()
+    exams = MakeExam.objects.filter(multiple_attempts=False, status='Published', date_time__lt=today)
+    mock_exams = MakeExam.objects.filter(multiple_attempts=True, status='Published')
+
     return render(request, 'exam_app/tutee-view-all-exams.html', {
+        'mock_exams': mock_exams,
         'exams': exams,
     })
 
@@ -349,6 +355,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
     if request.method == 'POST':
         user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                                 exam_details=user_exam_details)
+
+        # delete previous answers
+        UserAnswerTextInput.objects.filter(question=user_question_details).delete()
+        UserAnswerFileUpload.objects.filter(question=user_question_details).delete()
 
         # Register time end time
         user_question_details.end_time = now.strftime("%H:%M:%S")
@@ -431,6 +441,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
     user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                             exam_details=user_exam_details)
 
+    user_answers = UserAnswerTextInput.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                  flat=True)
+    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                   flat=True)
     user_question_details.start_time = now.strftime("%H:%M:%S")
     user_question_details.save()
 
@@ -443,6 +457,8 @@ def takeExamSection(request, exam_id, section_index, question_index):
         'question_index': question_index,
         'options': options,
         'question_text': question_text,
+        'user_answers': user_answers,
+        'user_uploads': user_uploads
     })
 
 
