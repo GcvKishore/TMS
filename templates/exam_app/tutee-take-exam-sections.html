@@ -22,7 +22,12 @@
                     <span class="exam-title">{{ exam.title }}</span>
                 </div>
                 <div class="ms-auto">
-                    <strong><span id="exam_countdown"></span></strong>
+                    {% if total_exam_time_left %}
+                        <strong><span id="exam_countdown"></span>
+                            <span id="total_exam_time_left" hidden>{{ total_exam_time_left }}</span>
+                            <span id="total_exam_time" hidden>{{ exam.duration }}</span>
+                        </strong>
+                    {% endif %}
                 </div>
                 <div class="ms-auto">
                     <button type="submit" class="btn btn-danger btn-sm" name="btn_action" id="quit-btn" value="quit">
@@ -56,8 +61,30 @@
                     </div>
                 {% endif %}
                 <div class="col p-3 exam-question-box">
-                    <h6><strong>Question {{ question_index|add:"+1" }}</strong></h6>
-                    <h6><strong id="question_type">{{ question.question_type }}</strong></h6>
+                    <div class="row m-0 p-0">
+                        <div class="col m-0 p-0">
+                            <h6><strong>Question {{ question_index|add:"+1" }}</strong></h6>
+                            <h6><strong id="question_type">{{ question.question_type }}</strong></h6>
+                        </div>
+                        <div class="col m-0 p-0 text-end">
+                            {% if total_question_time_left %}
+                                <strong><span id="question_countdown"></span>
+                                    <span id="total_question_time_left" hidden>{{ total_question_time_left }}</span>
+                                    <span id="total_question_time" hidden>{{ question.max_time }}</span>
+                                </strong>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {#                    <div class="ms-auto">#}
+                    {#                        <strong><span id="exam_countdown"></span>#}
+                    {#                            {% if total_exam_time_left %}#}
+                    {#                                <span id="total_exam_time_left" hidden>{{ total_exam_time_left }}</span>#}
+                    {#                                <span id="total_exam_time" hidden>{{ exam.duration }}</span>#}
+                    {#                            {% endif %}#}
+                    {#                        </strong>#}
+                    {#                    </div>#}
+                    {#                    <h6><strong>Question {{ question_index|add:"+1" }}</strong></h6>#}
+                    {#                    <h6><strong id="question_type">{{ question.question_type }}</strong></h6>#}
                     <hr class="w-100 my-1">
                     <p id="question_text">{{ question_text | safe }}</p>
                     {% if question.question_type == 'Multiple Choice - Multiple Answers' %}
@@ -66,7 +93,8 @@
                                 <div class="form-check mb-3 col-md-6">
                                     <input class="form-check-input" id="answer-{{ forloop.counter }}"
                                            type="checkbox" name="answer-{{ forloop.counter }}" value="{{ option }}"
-                                           {% if option in user_answers %}checked{% endif %}>
+                                           {% if option in user_answers %}checked{% endif %}
+                                           {% if not has_time %}disabled{% endif %}>
                                     <label class="w-75" for="answer-{{ forloop.counter }}">{{ option }}</label>
                                 </div>
                             {% endfor %}
@@ -74,22 +102,25 @@
                     {% elif question.question_type == 'Short Answers' %}
                         <div class="form-floating">
                             <textarea class="form-control" placeholder="" id="floatingTextarea2" name="answer-1"
-                                      rows="10" style="height: 200px">{{ user_answers }}</textarea>
+                                      rows="10" style="height: 200px"
+                                      {% if not has_time %}disabled{% endif %}>{{ user_answers.0 }}</textarea>
                             <label for="floatingTextarea2">Type your answer here</label>
                         </div>
                     {% elif question.question_type == 'File Upload' %}
                         <div>
                             <input class="form-control form-control-sm w-50" id="formFileSm" type="file"
-                                   name="user-upload">
+                                   name="user-upload" {% if not has_time %}disabled{% endif %}>
                         </div>
                     {% elif question.question_type == 'Speaking' %}
                         <input class="form-control form-control-sm w-50" id="formFileSm" type="file" name="user-upload"
-                               hidden>
+                               hidden {% if not has_time %}disabled{% endif %}>
                         <br>
-                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button">Start Recording
+                        <button id="btn-start-recording" class="btn btn-primary btn-sm" type="button"
+                                {% if not has_time %}disabled{% endif %}>Start Recording
                         </button>
                         <p style="color: red;" id="text"></p>
-                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button">Stop Recording
+                        <button id="btn-stop-recording" class="btn btn-danger btn-sm" type="button"
+                                {% if not has_time %}disabled{% endif %}>Stop Recording
                         </button>
                         <p style="color: red;" id="stop"></p>
                         <br>
@@ -156,23 +187,25 @@
                 <div class="col-3 col-md-2 text-end">
                     {% if exam.has_sections %}
                         {% if question_index == section.makequestion_set.count|add:"-1" and section_index == exam.makesection_set.count|add:"-1" %}
-                            <button class="btn btn-success btn-sm" type="submit" name="btn_action"
+                            <button id="timeout-btn" class="btn btn-success btn-sm" type="submit" name="btn_action"
                                     value="finish">
                                 Finish
                             </button>
                         {% else %}
-                            <button class="btn btn-primary btn-sm" type="submit" name="btn_action" value="next">
+                            <button id="timeout-btn" class="btn btn-primary btn-sm" type="submit" name="btn_action"
+                                    value="next">
                                 Next
                             </button>
                         {% endif %}
                     {% else %}
                         {% if question_index == exam.makequestion_set.count|add:"-1" %}
-                            <button class="btn btn-success btn-sm" type="submit" name="btn_action"
+                            <button id="timeout-btn" class="btn btn-success btn-sm" type="submit" name="btn_action"
                                     value="finish">
                                 Finish
                             </button>
                         {% else %}
-                            <button class="btn btn-primary btn-sm" type="submit" name="btn_action" value="next">
+                            <button id="timeout-btn" class="btn btn-primary btn-sm" type="submit" name="btn_action"
+                                    value="next">
                                 Next
                             </button>
                         {% endif %}
@@ -188,6 +221,7 @@
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
     <script src="{% static 'js/exam-countdown.js' %}"></script>
+    <script src="{% static 'js/question-countdown.js' %}"></script>
     <script src="{% static 'js/audio-recording.js' %}"></script>
     <script src="{% static 'js/take-exam-sections.js' %}"></script>
 </body>

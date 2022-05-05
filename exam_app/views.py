@@ -333,6 +333,9 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     # get exam, section, question details
     exam = MakeExam.objects.get(id=exam_id)
+    total_exam_time_left = ""
+    if exam.duration is not None:
+        total_exam_time_left = str(exam.duration - (now - exam.date_time)).split('.')[0]
 
     if exam.has_sections:
         sections = MakeSection.objects.filter(exam=exam).order_by('id')
@@ -361,9 +364,16 @@ def takeExamSection(request, exam_id, section_index, question_index):
         UserAnswerFileUpload.objects.filter(question=user_question_details).delete()
 
         # Register time end time
-        user_question_details.end_time = now.strftime("%H:%M:%S")
-        user_question_details.save()
+        user_question_details.end_time = now
 
+        # calculate time elapsed
+        time_elapsed = user_question_details.end_time - user_question_details.start_time
+        if user_question_details.time_elapsed is None:
+            user_question_details.time_elapsed = time_elapsed
+        else:
+            user_question_details.time_elapsed += time_elapsed
+
+        user_question_details.save()
         count = 0
         for user_input in request.POST:
             if 'answer' in user_input:
@@ -437,16 +447,33 @@ def takeExamSection(request, exam_id, section_index, question_index):
                                                                exam_details=user_exam_details).exists()
     if not user_question_details:
         UserQuestionDetails.objects.create(username=username, question=question, exam_details=user_exam_details,
-                                           start_time=now.strftime("%H:%M:%S"))
+                                           start_time=now, time_elapsed=timedelta(seconds=0))
     user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                             exam_details=user_exam_details)
 
-    user_answers = UserAnswerTextInput.objects.filter(question=user_question_details).values_list('answer_text_input',
-                                                                                                  flat=True)
-    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details).values_list('answer_text_input',
-                                                                                                   flat=True)
-    user_question_details.start_time = now.strftime("%H:%M:%S")
+    user_inputs = UserAnswerTextInput.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                 flat=True)
+    user_answers = []
+    for i in user_inputs:
+        user_answers.append(i)
+
+    user_files = UserAnswerFileUpload.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                 flat=True)
+    user_uploads = []
+    for i in user_files:
+        user_uploads.append(i)
+
+    user_question_details.start_time = now
     user_question_details.save()
+
+    # Time left for the particular question
+    total_question_time_left = ""
+    if question.max_time is not None:
+        total_question_time_left = question.max_time - user_question_details.time_elapsed
+    print(total_question_time_left)
+    has_time = True
+    if 'day' in str(total_question_time_left):
+        has_time = False
 
     return render(request, 'exam_app/tutee-take-exam-sections.html', {
         'exam': exam,
@@ -458,7 +485,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
         'options': options,
         'question_text': question_text,
         'user_answers': user_answers,
-        'user_uploads': user_uploads
+        'user_uploads': user_uploads,
+        'total_exam_time_left': total_exam_time_left,
+        'total_question_time_left': total_question_time_left,
+        'has_time': has_time
     })
 
 
