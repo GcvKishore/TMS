@@ -1,4 +1,4 @@
-{% extends 'instructor/base.html' %}
+{% extends 'tutee/base.html' %}
 
 {% block title %}
     Tutest - Dashboard
@@ -8,12 +8,108 @@
 {% endblock %}
 
 {% block body %}
-    <div class="p-5">
-        <h5><strong>Welcome {{ user.first_name }} {{ user.last_name }}</strong></h5>
+    <div class="p-3">
+        <div class="row">
+            <div class="col-9 my-auto">
+                <h6 class="m-0"><strong>Welcome {{ user.first_name }} {{ user.last_name }}</strong></h6>
+            </div>
+            <div class="col-3 text-end">
+                <a href="{% url 'exam_app:view-all-exams-tutee' %}">
+                    <button class="btn btn-primary btn-sm" type="button" name="btn_action" value="">All Exams</button>
+                </a>
+            </div>
+        </div>
         <hr>
-        <a href="{% url 'exam_app:view-all-exams-tutee' %}">
-            <button class="btn btn-primary" type="button" name="btn_action" value="">View All Exams</button>
-        </a>
+        <div class="row">
+            {% if ongoing_exams %}
+                <div class="col p-3">
+                    <h4>Open/Ongoing Exams</h4>
+                    <table class="table table-striped border rounded text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Date & Time</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">No of Sections</th>
+                            <th scope="col">No of Questions</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ongoing_exam in ongoing_exams %}
+                            <tr>
+                                <th scope="row">{{ ongoing_exam.title }}</th>
+                                <td>{{ ongoing_exam.subject }}</td>
+                                <td>{{ ongoing_exam.date_time }}</td>
+                                <td>{{ ongoing_exam.duration }}</td>
+                                <td>{{ ongoing_exam.makesection_set.count }}</td>
+                                <td>{{ ongoing_exam.makequestion_set.count }}</td>
+                                <td>
+                                    <a href="{% url 'exam_app:view-exam' ongoing_exam.id %}">
+                                        <button type="button" class="btn btn-success btn-sm">Start Exam</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if mock_exams %}
+                <div class="col-md-6 p-3">
+                    <h4>Mock/Practice Exams</h4>
+                    <table class="table table-striped border rounded text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for mock_exam in mock_exams %}
+                            <tr>
+                                <th scope="row">{{ mock_exam.title }}</th>
+                                <td>{{ mock_exam.subject }}</td>
+                                <td>
+                                    <a href="{% url 'exam_app:view-exam' mock_exam.id %}">
+                                        <button type="button" class="btn btn-success btn-sm">Practice</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            {% if upcoming_exams %}
+                <div class="col-md-6 p-3">
+                    <h4>Upcoming Exams</h4>
+                    <table class="table table-striped border rounded text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Date & Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for upcoming_exam in upcoming_exams %}
+                            <tr>
+                                <th scope="row">{{ upcoming_exam.title }}</th>
+                                <td>{{ upcoming_exam.subject }}</td>
+                                <td>{{ upcoming_exam.date_time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
         <hr>
     </div>
 {% endblock %}
