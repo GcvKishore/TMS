@@ -356,6 +356,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
         user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                                 exam_details=user_exam_details)
 
+        # delete previous answers
+        UserAnswerTextInput.objects.filter(question=user_question_details).delete()
+        UserAnswerFileUpload.objects.filter(question=user_question_details).delete()
+
         # Register time end time
         user_question_details.end_time = now.strftime("%H:%M:%S")
         user_question_details.save()
@@ -437,6 +441,10 @@ def takeExamSection(request, exam_id, section_index, question_index):
     user_question_details = UserQuestionDetails.objects.get(username=username, question=question,
                                                             exam_details=user_exam_details)
 
+    user_answers = UserAnswerTextInput.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                  flat=True)
+    user_uploads = UserAnswerFileUpload.objects.filter(question=user_question_details).values_list('answer_text_input',
+                                                                                                   flat=True)
     user_question_details.start_time = now.strftime("%H:%M:%S")
     user_question_details.save()
 
@@ -449,6 +457,8 @@ def takeExamSection(request, exam_id, section_index, question_index):
         'question_index': question_index,
         'options': options,
         'question_text': question_text,
+        'user_answers': user_answers,
+        'user_uploads': user_uploads
     })
 
 
