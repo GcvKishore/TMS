@@ -217,7 +217,6 @@ def editExamDetails(request, exam_id):
             details.owner = request.user
             details.save()
         return redirect("exam_app:edit-exam", exam_id=exam_id)
-    print(type(exam.date_time))
     return render(request, 'exam_app/instructor-edit-exam-details.html', {
         'exam': exam,
         'exam_duration': convertTimeString(str(exam.duration))
@@ -293,7 +292,7 @@ def viewExam(request, exam_id):
         btn_action = request.POST['btn_action']
         if btn_action == 'start' or btn_action == 'retake':
             UserExamDetails.objects.create(username=username, exam=exam, status='Ongoing',
-                                           start_time=now.strftime("%H:%M:%S")).save()
+                                           start_time=now).save()
             return redirect('exam_app:take-exam-section', exam.id, 0, 0)
         elif btn_action == 'view':
             return redirect('exam_app:tutee-exam-results-list', exam.id)
@@ -333,9 +332,6 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     # get exam, section, question details
     exam = MakeExam.objects.get(id=exam_id)
-    total_exam_time_left = ""
-    if exam.duration is not None:
-        total_exam_time_left = str(exam.duration - (now - exam.date_time)).split('.')[0]
 
     if exam.has_sections:
         sections = MakeSection.objects.filter(exam=exam).order_by('id')
@@ -470,10 +466,21 @@ def takeExamSection(request, exam_id, section_index, question_index):
     total_question_time_left = ""
     if question.max_time is not None:
         total_question_time_left = question.max_time - user_question_details.time_elapsed
-    print(total_question_time_left)
     has_time = True
     if 'day' in str(total_question_time_left):
         has_time = False
+
+    total_exam_time_left = ""
+    if exam.duration is not None:
+        if exam.date_time is not None and exam.multiple_attempts is False:
+            total_exam_time_left = str(exam.duration - (now - exam.date_time)).split('.')[0]
+        else:
+            current_time = datetime.now().time()
+
+            total_exam_time_left = str(exam.duration - (
+                    datetime.combine(date.today(), current_time) - datetime.combine(date.today(),
+                                                                                    user_exam_details.start_time))).split(
+                '.')[0]
 
     return render(request, 'exam_app/tutee-take-exam-sections.html', {
         'exam': exam,

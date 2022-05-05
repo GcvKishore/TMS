@@ -44,7 +44,6 @@ def checkUserAnswers(request, exam_details):
 
         user_question_details = UserQuestionDetails.objects.get(question=question.id,
                                                                 exam_details=exam_details.id)
-        print(user_question_details.time_elapsed)
         if not question.evaluation_type or None:
             UserResults.objects.filter(username=username, exam_details=exam_details,
                                        question=question).delete()
