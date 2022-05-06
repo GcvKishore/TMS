@@ -2,14 +2,15 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-def emailPasswordResetLink(token, email, host):
+def emailPasswordResetLink(token, user, host):
     protocol = 'https'
     if settings.DEBUG:
         protocol = 'http'
 
-    subject = 'Your forget password link'
-    message = f'Hi,\n click on the link to reset your password {host}/account/change-password/{token}'
+    subject = 'Your tutest account password reset link'
+    message = f"Hi {user.first_name} {user.last_name},\n\nclick on the link below to reset your password.\nReset " \
+              f"Password link: {protocol}://{host}/account/change-password/{token}\n\nRegards,\nTutest Team "
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [email]
+    recipient_list = [user.email]
     send_mail(subject, message, email_from, recipient_list)
     return True
