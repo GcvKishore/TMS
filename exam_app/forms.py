@@ -20,7 +20,7 @@ class MakeExamForm(ModelForm):
         fields = (
             'title', 'subject', 'level', 'date_time', 'duration', 'min_pass_points', 'has_sections',
             'multiple_attempts')
-        exclude = ['owner']
+        exclude = ['owner', 'instructions']
 
 
 class MakeQuestionForm(ModelForm):
