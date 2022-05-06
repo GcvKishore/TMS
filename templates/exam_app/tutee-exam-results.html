@@ -1,4 +1,5 @@
 {% extends 'exam_app/base.html' %}
+{% load custom_time_delta %}
 
 {% block title %}
     Tutest - {{ exam.title }} Results
@@ -42,7 +43,7 @@
                         <td>{{ exam_details.status }}</td>
                         <td>{{ exam_details.result_status }}</td>
                         <td>{{ exam_details.overall_points }}</td>
-                        <td>{{ exam_details.time_elapsed }}</td>
+                        <td>{{ exam_details.time_elapsed|timeDelta }}</td>
                         <td>
                             <a href="{% url 'exam_app:exam-result' exam_details.id %}">
                                 <button type="button" class="btn btn-primary btn-sm">View</button>
