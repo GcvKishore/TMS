@@ -20,7 +20,13 @@ class MakeExamForm(ModelForm):
         fields = (
             'title', 'subject', 'level', 'date_time', 'duration', 'min_pass_points', 'has_sections',
             'multiple_attempts')
-        exclude = ['owner']
+        exclude = ['owner', 'instructions']
+
+
+class AddExamInstructionsForm(ModelForm):
+    class Meta:
+        model = MakeExam
+        fields = ('instructions',)
 
 
 class MakeQuestionForm(ModelForm):

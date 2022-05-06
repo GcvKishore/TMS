@@ -56,6 +56,12 @@ def editExam(request, exam_id):
         redirect('website:permission-denied')
 
     if request.method == 'POST':
+        if 'add_instructions' in request.POST:
+            exam.instructions = request.POST['instructions']
+            exam.save()
+            print('saved')
+            print()
+
         if 'delete_question' in request.POST:
             delete_question_id = request.POST['delete_question']
             question = MakeQuestion.objects.get(id=delete_question_id)
@@ -86,10 +92,12 @@ def editExam(request, exam_id):
 
     questions_list = MakeQuestion.objects.filter(exam__id=exam_id)
     sections_list = MakeSection.objects.filter(exam=exam)
+    instructions_form = AddExamInstructionsForm(instance=exam)
     return render(request, 'exam_app/instructor-edit-exam.html', {
         'exam': exam,
         'questions': questions_list,
         'sections': sections_list,
+        'instructions_form': instructions_form,
     })
 
 

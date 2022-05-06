@@ -12,7 +12,7 @@
     <style>
     </style>
 </head>
-<body oncopy='return false' oncut='return false'>
+<body oncopy='return false' oncut='return false' id="complete_page">
     <form action="{% url 'exam_app:take-exam-section' exam.id section_index question_index %}" method="post"
           enctype="multipart/form-data">
         {% csrf_token %}
@@ -69,6 +69,10 @@
                         <div class="col m-0 p-0 text-end">
                             {% if total_question_time_left %}
                                 <strong><span id="question_countdown"></span>
+                                    {% if not has_time %}
+                                        <small class="m-0 text-danger">Question Time Out:</small><br>
+                                        <small class="m-0 text-danger">You can't change or submit your answer</small>
+                                    {% endif %}
                                     <span id="total_question_time_left" hidden>{{ total_question_time_left }}</span>
                                     <span id="total_question_time" hidden>{{ question.max_time }}</span>
                                 </strong>

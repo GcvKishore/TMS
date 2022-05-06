@@ -1,4 +1,6 @@
 {% extends 'exam_app/base.html' %}
+{% load custom_time_delta %}
+
 
 {% block title %}
     Tutest - Results - {{ exam.title }}
@@ -37,7 +39,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Elapsed Time</th>
-                    <td>{{ exam_details.time_elapsed }}</td>
+                    <td>{{ exam_details.time_elapsed|timeDelta }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -61,7 +63,7 @@
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ question_result.question_type }}</td>
-                        <td>{{ question_result.time_elapsed }}</td>
+                        <td>{{ question_result.time_elapsed|timeDelta }}</td>
                         <td>{{ question_result.status }}</td>
                         <td>{{ question_result.result }}</td>
                         <td>{{ question_result.points }}</td>
