@@ -8,7 +8,7 @@ def emailPasswordResetLink(token, email, host):
         protocol = 'http'
 
     subject = 'Your forget password link'
-    message = f'Hi,\n click on the link to reset your password {protocol}://{host}/account/change-password/{token}'
+    message = f'Hi,\n click on the link to reset your password {host}/account/change-password/{token}'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
     send_mail(subject, message, email_from, recipient_list)

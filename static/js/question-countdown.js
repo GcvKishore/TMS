@@ -13,7 +13,7 @@ if (total_question_time_left) {
 function convert_to_seconds(element) {
     const hms = element.innerText;
     const [hours, minutes, seconds] = hms.split(':');
-    const totalSeconds = (+hours) * 60 * 60 + (+minutes) * 60 + (+seconds);
+    const totalSeconds = (+hours) * 60 * 60 + (+minutes) * 60 + (+seconds) - 1;
     return totalSeconds.toString()
 }
 
