@@ -23,6 +23,12 @@ class MakeExamForm(ModelForm):
         exclude = ['owner', 'instructions']
 
 
+class AddExamInstructionsForm(ModelForm):
+    class Meta:
+        model = MakeExam
+        fields = ('instructions',)
+
+
 class MakeQuestionForm(ModelForm):
     question_type = forms.CharField(max_length=64)
     max_time = forms.DurationField(required=False)
