@@ -90,26 +90,38 @@ def instructorSignUp(request):
 def forgotPassword(request):
     if request.method == 'POST':
         username = request.POST['username']
-        username_exists = User.objects.filter(username=username).exists()
-        if username_exists:
-            token = str(uuid.uuid4())
-            user = User.objects.get(username=username)
-            ResetPassword.objects.create(owner=user, forgot_password_token=token,
-                                         creates_on=datetime.datetime.now()).save()
-            if emailPasswordResetLink(token, user.email, request.get_host()):
-                # create token and send email
-                messages.success(request,
-                                 'Password resent link sent to your mail. Check your email for further steps...')
-                return render(request, 'accounts/forgot-password.html', {
-                    'link_status': 'sent'
-                })
-        else:
+        email = request.POST['email']
+
+        if len(username) == 0 and len(email) == 0:
+            messages.error(request, 'You need fill at least one field.')
+            return redirect('account:forgot-password')
+
+        user = ""
+        if len(username) > 0:
+            username_exists = User.objects.filter(username=username).exists()
+            if username_exists:
+                user = User.objects.get(username=username)
+            else:
+                messages.error(request, "Username doesn't exists")
+                return redirect('account:forgot-password')
+        elif len(email) > 0:
+            username_exists = User.objects.filter(email=email).exists()
+            if username_exists:
+                user = User.objects.get(email=email)
+            else:
+                messages.error(request, "Email doesn't exists")
+                return redirect('account:forgot-password')
+
+        token = str(uuid.uuid4())
+        ResetPassword.objects.create(owner=user, forgot_password_token=token,
+                                     creates_on=datetime.datetime.now()).save()
+        if emailPasswordResetLink(token, user, request.get_host()):
+            # create token and send email
+            messages.success(request,
+                             'Password resent link sent to your mail. Check your email for further steps...')
             return render(request, 'accounts/forgot-password.html', {
-                'error_message': "Username doesn't exists"
+                'link_status': 'sent'
             })
-
-            # return error message
-
     return render(request, 'accounts/forgot-password.html')
 
 

@@ -65,25 +65,64 @@
                 </table>
                 <form action="{% url 'exam_app:edit-exam' exam.id %}" method="post">
                     {% csrf_token %}
+                    <label for="viewExamLink">
+                        <button class="btn btn-primary btn-sm" onclick="copyLinkFunction()" type="button">Copy Exam
+                            Link
+                        </button>
+                    </label>
+                    <input type="text" id="viewExamLink" class="w-75 mx-md-3 "
+                           value='{{ request.META.HTTP_HOST }}{% url 'exam_app:view-exam' exam.id %}'
+                           disabled hidden>
                     <a href="{% url 'exam_app:edit-details' exam.id %}">
-                        <button class="btn btn-primary btn-sm" type="button">Edit details</button>
+                        <button class="btn btn-primary btn-sm ms-3" type="button">Edit details</button>
                     </a>
-                    <button class="btn btn-danger mx-3 btn-sm" type="submit" name="delete_exam" value="{{ exam.id }}">
+                    <button class="btn btn-danger ms-3 btn-sm" type="submit" name="delete_exam" value="{{ exam.id }}">
                         Delete Exam
                     </button>
-
                 </form>
             </div>
             <div class="col-md-8">
                 <div class="row">
-                    <div class="col">
-                        <label for="viewExamLink">
-                            <button class="btn btn-primary btn-sm" onclick="copyLinkFunction()">Copy Exam Link</button>
-                        </label>
-                        <input type="text" id="viewExamLink" class="w-75 mx-md-3"
-                               value='{{ request.META.HTTP_HOST }}{% url 'exam_app:view-exam' exam.id %}'
-                               disabled>
-                    </div>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% if exam.instructions %}
+                            <h5><strong>Exam Instructions:</strong></h5>
+                            <div class="row" id="display_instructions">
+                                <div>
+                                    {{ exam.instructions|safe }}
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-primary btn-sm" onclick="editInstructions()"
+                                            type="button">Edit Instructions
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="edit_instructions" hidden disabled>
+                                {{ instructions_form.media }}
+                                {{ instructions_form.instructions }}
+                                <div class="text-end mt-2">
+                                    <button class="btn btn-primary btn-sm" type="submit" name="add_instructions"
+                                            value="">
+                                        Update Instructions
+                                    </button>
+                                    <button class="btn btn-warning btn-sm" type="submit" name="" value="">
+                                        Don't Save
+                                    </button>
+                                </div>
+                            </div>
+                        {% else %}
+                            <h5><strong>Add Exam Instructions:</strong></h5>
+                            <div class="row mb-2">
+                                {{ instructions_form.media }}
+                                {{ instructions_form.instructions }}
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary btn-sm" type="submit" name="add_instructions" value="">
+                                    Add Instructions
+                                </button>
+                            </div>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
         </div>
@@ -259,6 +298,14 @@
             navigator.clipboard.writeText(copyText.value);
 
             alert("Copied the text: " + copyText.value);
+        }
+    </script>
+    <script>
+        function editInstructions() {
+            document.getElementById('display_instructions').disabled = true
+            document.getElementById('display_instructions').hidden = true
+            document.getElementById('edit_instructions').disabled = false
+            document.getElementById('edit_instructions').hidden = false
         }
     </script>
 {% endblock %}
