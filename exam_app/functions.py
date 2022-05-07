@@ -86,7 +86,7 @@ def checkUserAnswers(request, exam_details):
 
 def checkEvaluationStatus(exam_details_id):
     exam_details = UserExamDetails.objects.get(id=exam_details_id)
-
+    print("checking")
     username = exam_details.username
     exam = exam_details.exam
     questions = MakeQuestion.objects.filter(exam=exam).order_by('pk')

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import *
@@ -317,10 +318,21 @@ def viewExam(request, exam_id):
             user_exam_status = 'retake'
         else:
             user_exam_status = 'view'
+
+    exam_active = False
+    if '-1 day' not in str(now - exam.date_time):
+        exam_active = True
+
+    if not exam.multiple_attempts and not exam_active:
+        exam_active = False
+    else:
+        exam_active = True
+
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,
         'user_exam_details': user_exam_details,
-        'user_exam_status': user_exam_status
+        'user_exam_status': user_exam_status,
+        'exam_active': exam_active
     })
 
 
@@ -340,6 +352,13 @@ def takeExamSection(request, exam_id, section_index, question_index):
 
     # get exam, section, question details
     exam = MakeExam.objects.get(id=exam_id)
+
+    exam_active = False
+    if '-1 day' not in str(now - exam.date_time):
+        exam_active = True
+    if not exam.multiple_attempts and not exam_active:
+        messages.error(request, 'Exam has not yet started')
+        return redirect('exam_app:view-exam', exam.id)
 
     if exam.has_sections:
         sections = MakeSection.objects.filter(exam=exam).order_by('id')
