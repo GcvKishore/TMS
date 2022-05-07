@@ -101,7 +101,7 @@ def checkEvaluationStatus(exam_details_id):
             exam_details.result_status = 'Pending'
             exam_details.save()
         if exam_question_result.result == 'Incorrect':
-            exam_details.result_status = 'Failed'
+            exam_details.result_status = '--NA--'
         total_points += exam_question_result.points
 
     start_time = exam_details.start_time
