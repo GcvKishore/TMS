@@ -60,9 +60,6 @@ def editExam(request, exam_id):
         if 'add_instructions' in request.POST:
             exam.instructions = request.POST['instructions']
             exam.save()
-            print('saved')
-            print()
-
         if 'delete_question' in request.POST:
             delete_question_id = request.POST['delete_question']
             question = MakeQuestion.objects.get(id=delete_question_id)
