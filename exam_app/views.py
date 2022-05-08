@@ -291,6 +291,7 @@ def viewAllExamsTutee(request):
 def viewExam(request, exam_id):
     now = datetime.now()
     exam = MakeExam.objects.get(id=exam_id)
+
     username = request.user
     user_exam_details = UserExamDetails.objects.filter(exam=exam.id, username=username).exists()
 
@@ -324,6 +325,9 @@ def viewExam(request, exam_id):
         exam_active = False
     else:
         exam_active = True
+
+    if exam.status != 'Published':
+        exam_active = False
 
     return render(request, 'exam_app/tutee-view-exam.html', {
         'exam': exam,

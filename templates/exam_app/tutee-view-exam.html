@@ -38,10 +38,10 @@
                         <th scope="row">Class/Level</th>
                         <td>{{ exam.level }}</td>
                     </tr>
-                    {% if exam.date %}
+                    {% if exam.date_time %}
                         <tr>
-                            <th scope="row">Date</th>
-                            <td>{{ exam.date }}</td>
+                            <th scope="row">Date & Time</th>
+                            <td>{{ exam.date_time }}</td>
                         </tr>
                     {% endif %}
                     {% if exam.time %}
@@ -81,8 +81,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">Mock/Practice Exam</th>
-                        <td>{{ exam.multiple_attempts }}</td>
+                        {% if exam.multiple_attempts %}
+                            <th scope="row">Mock/Practice Exam</th>
+                            <td>{{ exam.multiple_attempts }}</td>
+                        {% endif %}
                     </tr>
                     </tbody>
                 </table>
