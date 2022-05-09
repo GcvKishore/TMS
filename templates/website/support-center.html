@@ -1,0 +1,49 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}
+    Support Center
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 py-4">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h1 class="curve-font mb-4">Tutest Support Center</h1>
+                <h3 class="mb-3">Submit A Request</h3>
+                <select class="form-select mb-3" name="subject"  aria-label="Default select example" required>
+                    <option name="subject" value="" selected disabled hidden>Select A Category</option>
+                    <option name="subject" value="Account">Account</option>
+                    <option name="subject" value="Services">Services</option>
+                    <option name="subject" value="Reporting Bug">Reporting Bug</option>
+                    <option name="subject" value="Others">Others</option>
+                </select>
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label"></label>
+                    <input type="email" required name="email" class="form-control" id="emailInput" placeholder="Your Email ID">
+                    <small>Please, enter the email address where you wish to receive our answer. If you are a registered
+                        user of tutest, please include the email address you used when you registered if possible to
+                        help us locate your account as soon as possible.</small>
+                </div>
+                <div class="mb-3">
+                    <label for="userMessageInput" class="form-label"></label>
+                    <textarea name="message" required class="form-control" id="userMessageInput" rows="7"
+                              placeholder="Write us a message"></textarea>
+                    <small>Please enter the details of your request and, if you have any questions regarding our Terms
+                        of Use, please include specific samples of the usage you wish to give our resources. If you’re
+                        reporting a problem, make sure to include as much information as possible. Please include any
+                        screenshots or videos of issues since this will also help us resolve issues much sooner. Once
+                        your request is submitted, a member of our support staff will respond as soon as
+                        possible.</small>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-success">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

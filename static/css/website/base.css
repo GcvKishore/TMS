@@ -6,12 +6,16 @@
     --navy: #3B4D5E;
     --light: #FFFAE0;
     --mediumOrange: #FFD3A1;
-
+    --lightInputform: #FFFDF2;
+    --darkSuccess: #26847F;
+    --lightSuccess: #69B49C;
 }
 
 body {
     background-color: var(--light);
     font-family: 'Nunito', sans-serif;
+    color: var(--black);
+
 }
 
 main {
@@ -94,9 +98,22 @@ h6.curve-font {
     font-weight: bold;
 }
 
+.btn-success {
+    border-color: var(--light);
+    color: var(--light);
+    background-color: var(--darkSuccess);
+    font-weight: bold;
+}
 
-.greeting img{
-    max-width: 100% ;
+.btn-success:hover {
+    border-color: var(--light);
+    color: var(--navy);
+    background-color: var(--lightSuccess);
+    font-weight: bold;
+}
+
+.greeting img {
+    max-width: 100%;
 }
 
 
@@ -108,11 +125,21 @@ h6.curve-font {
     background-color: #FFFDF2;
 }
 
-.features-icon{
+.features-icon {
     width: 50px;
     height: 50px;
 }
 
 .features-card li {
     font-size: .75rem;
+}
+
+.form-select {
+    background-color: var(--lightInputform);
+    border: 1px solid var(--black50);
+}
+
+.form-control {
+    background-color: var(--lightInputform);
+    border: 1px solid var(--black50);
 }
