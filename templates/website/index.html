@@ -6,22 +6,66 @@
 {% endblock %}
 
 {% block styles %}
-    <style>
-        .home-greet-box {
-            min-height: calc(100vh - 70px);
-        }
-    </style>
 {% endblock %}
 
 
 {% block body %}
-    <div class="row justify-content-center align-items-center home-greet-box">
-        <div class="col-sm-5 p-md-2 m-md-1">
-            <h1>Manage Online Exams with Our All-In-One Online Test Management System</h1>
-            <em>Take the test from anywhere and at any time using a computer or a smartphone</em>
+    <section class="p-3 greeting">
+        <div class="row m-0">
+            <div class="col-md-6 my-auto p-2">
+                <h1 class="curve-font mb-3">Hi,<br>Welcome to Tutest...</h1>
+                <h3 class="curve-font mb-3">Your All-In-One Online Test Management System</h3>
+                <h6 class="curve-font">A platform for all kinds of institutions/Organizations to conduct tests so that
+                    their exam taker can
+                    take the test from anywhere and at any time using a computer or a smartphone.</h6>
+            </div>
+            <div class="col-md-6 my-auto p-2 text-center">
+                <img src="{% static 'images/website/home-page-main-pic.png' %}" alt="Online exam image">
+            </div>
         </div>
-        <div class="col-sm-5 p-md-2 m-md-1 text-center">
-            <img src="{% static 'images/website/home-page-main-pic.png' %}" alt="Online exam image">
+    </section>
+    <hr class="w-50 mx-auto">
+    <section class="p-3">
+        <h2 class="curve-font text-center mb-3">Features</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-sm-4 features-card p-3 m-3">
+                <div class="features-icon mb-3">
+                    <img src="{% static 'images/flaticon/computer.png' %}" alt="Computer Icon">
+                </div>
+                <p><strong>Computer Based Test</strong></p>
+                <ul>
+                    <li>Live exam tracking</li>
+                    <li>Instant results</li>
+                    <li>100% security of data</li>
+                    <li>Vast variety of question types</li>
+                    <li>Candidate can attend exam on smart mobile or table as well</li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-sm-4 features-card p-3 m-3">
+                <div class="features-icon mb-3">
+                    <img src="{% static 'images/flaticon/webcam.png' %}" alt="Computer Icon">
+                </div>
+                <p><strong>Proctored Test</strong></p>
+                <ul>
+                    <li>Anti-cheat detection</li>
+                    <li>Real-Time Candidate’s Photo Capturing</li>
+                    <li>Live and recorded proctoring</li>
+                    <li>secured platform</li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-sm-4 features-card p-3 m-3">
+                <div class="features-icon mb-3">
+                    <img src="{% static 'images/flaticon/additional.png' %}" alt="Computer Icon">
+                </div>
+                <p><strong>Additional Features</strong></p>
+                <ul>
+                    <li>Integrate with in your LMS</li>
+                    <li>Best fit for entrance/weekly/semester exams</li>
+                    <li>Zero downtime in declaring results</li>
+                    <li>Candidate’s insights</li>
+                </ul>
+            </div>
         </div>
-    </div>
+
+    </section>
 {% endblock %}
