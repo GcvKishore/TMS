@@ -142,10 +142,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'MSIT-FSD-TMS',
-        'USER': config('PG_USER'),
-        'PASSWORD': config('PG_PASSWORD'),
-        'HOST': config('PG_HOST'),
-        'PORT': config('PG_PORT'),
+        'USER': config('PG_USER', default='abc'),
+        'PASSWORD': config('PG_PASSWORD', default='abc'),
+        'HOST': config('PG_HOST', default='abc'),
+        'PORT': config('PG_PORT', default='abc'),
     }
 }
 
