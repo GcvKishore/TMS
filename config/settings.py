@@ -141,7 +141,7 @@ load_dotenv(find_dotenv())
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MSIT-FSD-TMS',
+        'NAME': 'msit_fsd_tms',
         'USER': config('PG_USER', default='abc'),
         'PASSWORD': config('PG_PASSWORD', default='abc'),
         'HOST': config('PG_HOST', default='abc'),
