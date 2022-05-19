@@ -1,0 +1,107 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+    Instructor Sign up
+{% endblock %}
+
+{% block styles %}
+    <style>
+        body {
+            background-color: #3B4D5E;
+        }
+
+        .sign-up-box {
+            display: flow;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sign-up-form_area {
+            height: auto;
+            width: 600px;
+            background-color: #FFFAE0;
+            border-radius: 10px;
+
+        }
+
+        .btn-primary {
+            color: #FFFAE0;
+            border-color: #3B4D5E;
+            background-color: #3B4D5E;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            color: #3B4D5E;
+            border-color: #FDC088;
+            background-color: #FDC088;
+            font-weight: bold;
+        }
+
+        .errors-message {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row sign-up-box justify-content-center align-items-center">
+        <div class="col-lg-6 sign-up-form_area p-md-4 p-3 m-3">
+            <h1 class="text-center">Instructor Sign Up Form...</h1>
+            <hr>
+            <small class="errors-message">{{ error_message }}</small>
+            <form action="{% url 'account:sign-up-as-instructor' %}" method="post">
+                {% csrf_token %}
+                <div class="row mx-0">
+                    <div class="mb-3 col-md-6">
+                        <label for="exampleFormControlInput1" class="form-label">First Name</label>
+                        <input type="text" class="form-control" maxlength="30" required
+                               id="exampleFormControlInput1"
+                               placeholder="First Name" name="first_name" value="{{ first_name }}">
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="exampleFormControlInput2" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" maxlength="30" required
+                               id="exampleFormControlInput2"
+                               placeholder="Last Name" name="last_name" value="{{ last_name }}">
+                    </div>
+                </div>
+                <div class="row mx-0">
+                    <div class="mb-3 col-md-6">
+                        <label for="exampleFormControlInput3" class="form-label">Username</label>
+                        <input type="text" class="form-control" maxlength="30" required
+                               id="exampleFormControlInput3"
+                               placeholder="Username" name="username" value="{{ username }}">
+                        <small class="errors-message">{{ username_error }}</small>
+                    </div>
+                    <div class=" mb-3 col-md-6">
+                        <label for="exampleFormControlInput4" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="exampleFormControlInput4"
+                               placeholder="name@example.com" name="email" value="{{ email }}">
+                        <small class="errors-message">{{ email_error }}</small>
+                    </div>
+                </div>
+                <div class="row mx-0">
+                    <div class="mb-3 col">
+                        <label for="exampleFormControlInput5" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleFormControlInput5"
+                               placeholder="Password" name="password1" autocomplete="new-password">
+                        <small class="errors-message">{{ password1_error }}</small>
+                    </div>
+
+                </div>
+                <div class="row mx-0">
+                    <div class="mb-3 col">
+                        <label for="exampleFormControlInput6" class="form-label">Password confirmation</label>
+                        <input type="password" class="form-control" id="exampleFormControlInput6"
+                               placeholder="Password confirmation" name="password2" autocomplete="new-password">
+                        <small class="errors-message">{{ password2_error }}</small>
+                    </div>
+
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Sign up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

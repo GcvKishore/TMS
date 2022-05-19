@@ -1,0 +1,119 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .django-ckeditor-widget {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        <h4><strong>Create Section:</strong></h4>
+        <hr>
+        <form action="{% url 'exam_app:add-section' exam.id %}" method="post">
+            {% csrf_token %}
+            {{ form.media }}
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label class="py-2" for="input-1"><strong>Title: *</strong></label>
+                    <input type="text" class="form-control" id="input-1" placeholder="Enter Section Title" required
+                           name="title"
+                           value="{{ form.cleaned_data.title }}">
+                    <small class="form-text custom-error-message">{{ title_error }}</small>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                    <label class="py-2" for="input-1"><strong>Sub-Title:</strong></label>
+                    <input type="text" class="form-control" id="input-1" placeholder="Enter Section Sub-Title"
+                           name="sub_title"
+                           value="{{ form.cleaned_data.sub_title }}">
+                    <small class="form-text custom-error-message">{{ sub_title_error }}</small>
+                </div>
+
+                <hr>
+                <div id="ckEditInstructionsArea" hidden disabled>
+                    <label for="ckEditorTextArea1" class="mb-3"><strong>Instructions</strong></label>
+                    <div id="ckEditorTextArea1">
+                        {{ form.instructions }}
+                    </div>
+                    <hr>
+                </div>
+                <div id="ckEditSupportiveTextArea" hidden disabled>
+                    <label for="ckEditorTextArea2" class="mb-3"><strong>Passage / Supportive Text</strong></label>
+                    <div id="ckEditorTextArea2">
+                        {{ form.description }}
+                    </div>
+                    <hr>
+                </div>
+                <div class="row p-0 m-0">
+                    <div class="col-md">
+                        <button type="button" id="addInst" class="btn btn-primary mb-3" onclick="enableInstructions()">
+                            Add Section Instructions
+                        </button>
+                        <button type="button" id="removeInst" class="btn btn-warning mb-3"
+                                onclick="disableInstructions()"
+                                hidden>Remove Section Instructions
+                        </button>
+                        <button type="button" id="addSupportiveText" class="btn btn-primary mx-3 mb-3"
+                                onclick="enableSupportiveText()">Add Section Supportive Text
+                        </button>
+                        <button type="button" id="removeSupportiveText" class="btn btn-warning mx-3 mb-3"
+                                onclick="disableSupportiveText()" hidden>Remove Section Supportive Text
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md">
+                        <a href="{% url 'exam_app:edit-exam' exam.id %}">
+                            <button class="btn btn-danger" type="button" name="btn_action" value="exit">
+                                Exit without saving
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-md text-end">
+                        <button class="btn btn-success" type="submit">Create Section & Add Questions</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        function enableInstructions() {
+            document.getElementById('ckEditInstructionsArea').disabled = false
+            document.getElementById('ckEditInstructionsArea').hidden = false
+            document.getElementById('removeInst').hidden = false
+            document.getElementById('addInst').hidden = true
+        }
+
+        function disableInstructions() {
+            document.getElementById('ckEditInstructionsArea').disabled = true
+            document.getElementById('ckEditInstructionsArea').hidden = true
+            document.getElementById('removeInst').hidden = true
+            document.getElementById('addInst').hidden = false
+        }
+
+        function enableSupportiveText() {
+            document.getElementById('ckEditSupportiveTextArea').disabled = false
+            document.getElementById('ckEditSupportiveTextArea').hidden = false
+            document.getElementById('removeSupportiveText').hidden = false
+            document.getElementById('addSupportiveText').hidden = true
+        }
+
+        function disableSupportiveText() {
+            document.getElementById('ckEditSupportiveTextArea').disabled = true
+            document.getElementById('ckEditSupportiveTextArea').hidden = true
+            document.getElementById('removeSupportiveText').hidden = true
+            document.getElementById('addSupportiveText').hidden = false
+        }
+    </script>
+{% endblock %}
+

@@ -1,0 +1,163 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+    Tutest - edit - Question ID {{ question.id }}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .django-ckeditor-widget {
+            width: 100% !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="p-5">
+        <h4><strong>Question Details</strong></h4>
+        {{ make_question_form }}
+        <hr>
+        <form action="{% url 'exam_app:edit-question' exam_id question.id %}" method="post">
+            {% csrf_token %}
+            {{ question_form.media }}
+            <div class="py-3">
+                <label class="form-label" for="questionType">Choose question type:</label>
+                <select name="question_type" id="questionType" class="form-select-sm edit-exam" disabled>
+                    <option value="{{ question.question_type }}" selected hidden>{{ question.question_type }}</option>
+                    <option value="Multiple Choice - Multiple Answers">Multiple Choice - Multiple Answers</option>
+                    <option value="Fill In The Blanks">Fill In The Blanks</option>
+                    <option value="Short Answers">Short Answers</option>
+                    <option value="File Upload">File Upload</option>
+                    <option value="Speaking">Speaking</option>
+                </select>
+            </div>
+            <button class="btn btn-primary edit-exam-btn" type="button" id="generateBtn" hidden
+                    onclick="generateFormat() ">Generate
+                fields
+            </button>
+            <hr>
+            <div id="questionTextArea" class="edit-exam">
+                {{ question_form.question_text | safe }}
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label class="py-2" for="input-6">Max Time</label>
+                        <input type="time" step="1" class="form-control edit-exam" id="input-6" disabled
+                               placeholder="HH:MM:SS"
+                               name="max_time" value="{{ question_duration }}" aria-describedby="durationDescription">
+                        <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
+                    </div>
+                    <div class="form-row col-md-3">
+                        <label class="py-2" for="input-7">Max Points</label>
+                        <input type="number" class="form-control edit-exam" id="input-7" disabled placeholder="Points"
+                               name="max_points" value="{{ question.max_points }}" min="0" max="100">
+                    </div>
+                    <div class="form-row col-md-3">
+                        <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
+                        <select name="difficulty_level" id="questionDifficultyLevel" class="form-select edit-exam"
+                                disabled>
+                            <option value="{{ question.difficulty_level }}" hidden selected
+                            >{{ question.difficulty_level }}</option>
+                            <option value="Hard">Hard</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Easy">Easy</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="" id="questionArea">
+                <hr>
+                {% if options %}
+                    <div class="row" id="options_answers_area">
+                        {% for option in options %}
+                            <div id="option-{{ forloop.counter }}-div-id" class="col-md-4 option-answer">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input mt-2 edit-exam" id="option-{{ forloop.counter }}"
+                                           type="checkbox"
+                                           name="answer-{{ forloop.counter }}" value="option-{{ forloop.counter }}"
+                                           {% if option in answers %}checked{% endif %} disabled>
+                                    <label class="w-75" for="option-{{ forloop.counter }}">
+                                        <input class="form-control edit-exam" type="text"
+                                               name="option-{{ forloop.counter }}"
+                                               maxlength="248" required value="{{ option }}"
+                                               id="id_text" placeholder="Add Option" disabled>
+                                    </label>
+                                    <button class="btn edit-exam-btn" name="option-{{ forloop.counter }}" hidden
+                                            onclick="deleteObject('option-{{ forloop.counter }}-div-id')">
+                                        <i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary edit-exam-btn" type="button" id="generateBtn" onclick="addOption()"
+                            hidden>
+                        Add Option
+                    </button>
+                    <hr>
+                {% elif answers %}
+                    <div class="row" id="options_answers_area">
+                        {% for answer in answers %}
+                            <div id="answer-{{ forloop.counter }}-div-id" class="col-md-4 option-answer">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="inputGroup-sizing-default${count}">Answer</span>
+                                    <input type="text" class="form-control edit-exam" aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default${count}" name="answer-${count}"
+                                           value="{{ answer }}" disabled>
+                                    <button class="btn edit-exam-btn" name="option-${count}"
+                                            onclick="deleteObject('answer-${count}-div-id')" hidden>
+                                        <i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button onclick="addAnswer()" class="btn btn-primary edit-exam-btn" type="button" id="generateBtn"
+                            hidden>
+                        Add Answer
+                    </button>
+                    <hr>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col text-end" id="action-buttons-view">
+                    <button class="btn btn-primary" type="button" id="editBtn" name="btn_action"
+                            onclick="toggleReadOnly( false ); editExam()"
+                            value="edit">
+                        Edit
+                    </button>
+                    <a href="{% url 'exam_app:edit-exam' exam_id %}">
+                        <button class="btn btn-primary ms-3" type="button" name="btn_action" value="exit">
+                            Back to Exam Page
+                        </button>
+                    </a>
+                </div>
+                <div class="col text-end" id="action-buttons-edit" hidden>
+                    <button class="btn btn-primary" type="submit" id="saveBtn" name="btn_action" value="save">
+                        Save & Exit
+                    </button>
+                    <a href="{% url 'exam_app:edit-question' exam_id question.id %}">
+                        <button class="btn btn-primary ms-3" type="button" name="btn_action" value="exit">
+                            Exit Without Saving
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/edit-question.js' %}"></script>
+    <script data-sample="1">
+        var editor;
+        CKEDITOR.on('instanceReady', function (ev) {
+            editor = ev.editor;
+            editor.setReadOnly(true);
+        });
+        toggleReadOnly('')
+        function toggleReadOnly(isReadOnly) {
+            editor.setReadOnly(isReadOnly);
+        }
+    </script>
+{% endblock %}

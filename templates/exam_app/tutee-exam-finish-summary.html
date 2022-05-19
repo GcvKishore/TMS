@@ -1,0 +1,34 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+    Tutest - Exam Summary
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .summary-box {
+            min-height: 85vh;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row summary-box justify-content-center align-content-center">
+        <div class="col-md-5 text-center">
+            <img src="{% static 'images/exam_app/exam-submission-tick.png' %}" alt="exam submission successful">
+            <h3><strong>Congratulations</strong></h3>
+            <h5>Your exam has been submitted successfully!!!</h5>
+            <hr>
+            Result Status: {{ user_exam_details.result_status }}
+            <hr>
+            <a href="{% url 'exam_app:exam-result' user_exam_details.id %}">
+                <button type="button" class="btn btn-primary"> View Exam Results</button>
+            </a>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

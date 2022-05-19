@@ -1,0 +1,130 @@
+{% extends 'exam_app/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .django-ckeditor-widget {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="px-5 py-3">
+        <h6><em>{{ exam.title }} | {{ exam.subject }} | {{ exam.level }}</em></h6>
+        <hr>
+        <h1><strong>{{ section.title }}</strong></h1>
+        <h4><em>{{ section.sub_title }}</em></h4>
+        <hr>
+        <div class="row">
+            {% if section.description %}
+                <div class="col-lg">
+                    <h5><strong>Section Passage:</strong></h5>
+                    <hr>
+                    <p>{{ section.description | safe }}</p>
+                    <hr>
+                </div>
+            {% endif %}
+            <div class="col-lg">
+                <h5><strong>Add Question:</strong></h5>
+                <hr>
+                <form action="{% url 'exam_app:section-add-question' exam.id section.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="py-3">
+                        <label class="form-label" for="questionType">Choose question type:</label>
+                        <select name="question_type" id="questionType" class="form-select-sm">
+                            <option value="none" selected disabled hidden>Select type</option>
+                            <option value="Multiple Choice - Multiple Answers">Multiple Choice - Multiple Answers
+                            </option>
+                            <option value="Fill In The Blanks">Fill In The Blanks</option>
+                            <option value="Short Answers">Short Answers</option>
+                            <option value="File Upload">File Upload</option>
+                            <option value="Speaking">Speaking</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="button" id="generateBtn" onclick="generateFormat()">
+                        Generate
+                        fields
+                    </button>
+                    <hr>
+                    <div id="questionTextArea" hidden>
+                        {{ form.question_text }}
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label class="py-2" for="input-6">Max Time</label>
+                                <input type="time" step="1" class="form-control" id="input-6" placeholder="HH:MM:SS"
+                                       name="max_time"
+                                       value=""
+                                       aria-describedby="durationDescription">
+                                <small id="durationDescription" class="form-text text-muted">HH:MM:SS</small>
+                            </div>
+                            <div class="form-row col-md-3">
+                                <label class="py-2" for="input-7">Max Points</label>
+                                <input type="number" class="form-control" id="input-7" placeholder="Points"
+                                       name="max_points"
+                                       value="" min="0"
+                                       max="100">
+                            </div>
+                            <div class="form-row col-md-3">
+                                <label class="py-2" for="questionDifficultyLevel">Difficulty Level</label>
+                                <select name="difficulty_level" id="questionDifficultyLevel" class="form-select">
+                                    <option value="None">---</option>
+                                    <option value="Hard">Hard</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Easy">Easy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="" id="questionArea">
+                    </div>
+                    <div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" type="submit" id="addBtn" name="btn_action"
+                                    value="next_question" disabled>
+                                Add Next Question
+                            </button>
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary ms-3 btn-sm" disabled id="saveExitBtn" type="submit"
+                                    name="btn_action" value="save_exit">
+                                Save & Exit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" type="submit" id="saveCreateBtn" name="btn_action"
+                                    value="save_create_section" disabled>
+                                Save & Create New Section
+                            </button>
+                        </div>
+                        <div class="col text-end">
+                            <a href="{% url 'exam_app:edit-exam' exam.id %}">
+                                <button class="btn btn-danger ms-3 btn-sm" type="button" name="btn_action"
+                                        value="exit">
+                                    Exit
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'js/section-add-question.js' %}"></script>
+{% endblock %}
+

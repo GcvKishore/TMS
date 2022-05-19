@@ -1,0 +1,311 @@
+{% extends 'exam_app/base.html' %}
+
+{% block title %}
+    Tutest - Edit Exam - {{ exam.title }}
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <div class="row">
+            <div class="col">
+                <h4 class="my-3"><strong>Exam Overview</strong></h4>
+            </div>
+            <div class="col text-end py-2">
+                <a class="m-auto" href="{% url 'exam_app:view-all-exams-instructors' %}">
+                    <button class="btn btn-primary" type="button">View All Exams</button>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <h5 class="my-3"><strong>Details:</strong></h5>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Title</th>
+                        <td>{{ exam.title }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Subject</th>
+                        <td>{{ exam.subject }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Class/Level</th>
+                        <td>{{ exam.level }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date & Time</th>
+                        <td>{{ exam.date_time }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Duration</th>
+                        <td>{{ exam.duration }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Min Pass Percentage</th>
+                        <td>{{ exam.min_pass_points }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Has Sections</th>
+                        <td>{{ exam.has_sections }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mock/Practice Exam</th>
+                        <td>{{ exam.multiple_attempts }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td>{{ exam.status }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <form action="{% url 'exam_app:edit-exam' exam.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="viewExamLink">
+                        <button class="btn btn-primary btn-sm" onclick="copyLinkFunction()" type="button">Copy Exam
+                            Link
+                        </button>
+                    </label>
+                    <input type="text" id="viewExamLink" class="w-75 mx-md-3 "
+                           value='{{ request.META.HTTP_HOST }}{% url 'exam_app:view-exam' exam.id %}'
+                           disabled hidden>
+                    <a href="{% url 'exam_app:edit-details' exam.id %}">
+                        <button class="btn btn-primary btn-sm ms-3" type="button">Edit details</button>
+                    </a>
+                    <button class="btn btn-danger ms-3 btn-sm" type="submit" name="delete_exam" value="{{ exam.id }}">
+                        Delete Exam
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% if exam.instructions %}
+                            <h5><strong>Exam Instructions:</strong></h5>
+                            <div class="row" id="display_instructions">
+                                <div>
+                                    {{ exam.instructions|safe }}
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-primary btn-sm" onclick="editInstructions()"
+                                            type="button">Edit Instructions
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="edit_instructions" hidden disabled>
+                                {{ instructions_form.media }}
+                                {{ instructions_form.instructions }}
+                                <div class="text-end mt-2">
+                                    <button class="btn btn-primary btn-sm" type="submit" name="add_instructions"
+                                            value="">
+                                        Update Instructions
+                                    </button>
+                                    <button class="btn btn-warning btn-sm" type="submit" name="" value="">
+                                        Don't Save
+                                    </button>
+                                </div>
+                            </div>
+                        {% else %}
+                            <h5><strong>Add Exam Instructions:</strong></h5>
+                            <div class="row mb-2">
+                                {{ instructions_form.media }}
+                                {{ instructions_form.instructions }}
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary btn-sm" type="submit" name="add_instructions" value="">
+                                    Add Instructions
+                                </button>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% if exam.has_sections %}
+            <div>
+                {#                <h5 class="my-3"><strong>Sections:</strong></h5>#}
+                <div>
+                    <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
+                        {% csrf_token %}
+                        <table class="table align-middle text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Section</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">No of Questions</th>
+                                <th scope="col">View/Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for section in sections %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td><strong>{{ section.title }}</strong> | <em>{{ section.sub_title }}</em></td>
+                                    <td>{{ section.makequestion_set.count }}</td>
+                                    <td>
+                                        <a href="{% url 'exam_app:edit-section' exam.id section.id %}">
+                                            <button class="btn btn-primary btn-sm" type="button">view/edit</button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" type="submit" name="delete_section"
+                                                value="{{ section.id }}">delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <th scope="row">--</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'exam_app:add-section' exam.id %}">
+                                <button class="btn btn-success" type="button">+ Add Section</button>
+                            </a>
+                        </div>
+                        <div class="col text-end">
+
+                            {% if sections %}
+                                {% if exam.status == 'Published' %}
+                                    <button class="btn btn-danger" type="submit" name="un-publish-exam"
+                                            value="{{ exam.id }}">
+                                        Un Publish Exam
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-success" type="submit" name="publish-exam"
+                                            value="{{ exam.id }}">
+                                        Publish Exam
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                            <a class="m-auto" href="{% url 'exam_app:view-all-exams-instructors' %}">
+                                <button class="btn btn-primary mx-3" type="button">View All Exams</button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div>
+                <h5 class="my-3"><strong>Questions:</strong></h5>
+                <div>
+                    <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
+                        {% csrf_token %}
+                        <table class="table align-middle text-center">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Question Type</th>
+                                <th scope="col">Max Points</th>
+                                <th scope="col">Max Time</th>
+                                <th scope="col">Difficulty Level</th>
+                                <th scope="col">View/Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for question in questions %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ question.question_type }}</td>
+                                    <td>{{ question.max_points }}</td>
+                                    <td>{{ question.max_time }}</td>
+                                    <td>{{ question.difficulty_level }}</td>
+                                    <td>
+                                        <a href="{% url 'exam_app:edit-question' exam.id question.id %}">
+                                            <button class="btn btn-primary btn-sm" type="button">view/edit</button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" type="submit" name="delete_question"
+                                                value="{{ question.id }}">delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <th scope="row">--</th>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <form action="{% url 'exam_app:edit-exam' exam.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'exam_app:add-question' exam.id %}">
+                                <button class="btn btn-success" type="button">+ Add Questions</button>
+                            </a>
+                        </div>
+                        <div class="col text-end">
+
+                            {% if questions %}
+                                {% if exam.status == 'Published' %}
+                                    <button class="btn btn-danger" type="submit" name="un-publish-exam"
+                                            value="{{ exam.id }}">
+                                        Un Publish Exam
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-success" type="submit" name="publish-exam"
+                                            value="{{ exam.id }}">
+                                        Publish Exam
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                            <a class="m-auto" href="{% url 'exam_app:view-all-exams-instructors' %}">
+                                <button class="btn btn-primary mx-3" type="button">View All Exams</button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function copyLinkFunction() {
+            let copyText = document.getElementById("viewExamLink");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            navigator.clipboard.writeText(copyText.value);
+
+            alert("Copied the text: " + copyText.value);
+        }
+    </script>
+    <script>
+        function editInstructions() {
+            document.getElementById('display_instructions').disabled = true
+            document.getElementById('display_instructions').hidden = true
+            document.getElementById('edit_instructions').disabled = false
+            document.getElementById('edit_instructions').hidden = false
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'instructor/base.html' %}
+
+{% block title %}
+    Tutest - {{ user.username }} Dashboard
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-md-5 p-3">
+        <h6><strong>Welcome {{ user.first_name }} {{ user.last_name }}</strong></h6>
+        <hr>
+        <a href="{% url 'exam_app:create-exam' %}">
+            <button type="button" class="btn btn-success">Create Exam</button>
+        </a>
+        <a href="{% url 'exam_app:view-all-exams-instructors' %}">
+            <button type="button" class="btn btn-primary ms-2">View Exams</button>
+        </a>
+        <hr>
+    </div>
+{% endblock %}

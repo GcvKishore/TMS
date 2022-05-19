@@ -1,0 +1,83 @@
+{% extends 'exam_app/base.html' %}
+{% load custom_time_delta %}
+
+{% block title %}
+    Tutest - {{ exam.title }} Details
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+    <div class="p-3">
+        <div class="row">
+            <div class="col">
+                <h3><strong>{{ exam.title }} </strong></h3>
+                <h5>{{ exam.subject }} | {{ exam.level }}</h5>
+            </div>
+            <div class="col text-end my-auto">
+                <a href="{% url 'exam_app:view-all-exams-instructors' %}">
+                    <button type="button" class="btn btn-primary">View All Exams</button>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <form action="{% url 'exam_app:view-all-exams-instructors' %}" method="post">
+            {% if student_exam_details %}
+                <table class="table align-middle" id="resultsTable">
+                    <thead class="thead-dark">
+                    <tr class="text-center">
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Date & Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Results</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in student_exam_details %}
+                        <tr class="text-center">
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ student.username }}</td>
+                            <td>{{ student.date }}</td>
+                            <td>{{ student.time_elapsed|timeDelta }}</td>
+                            <td>{{ student.status }}</td>
+                            <td>{{ student.overall_points }}</td>
+                            <td>{{ student.result_status }}</td>
+                            <td>
+                                <a href="{% url 'exam_app:tutee-exam-results' exam.id student.id %}">
+                                    <button type="button" class="btn btn-primary">
+                                        details
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-primary" id="downloadtable">
+                    Click to Download
+                </button>
+            {% else %}
+                <h5><em>No user has attempted this exam</em></h5>
+            {% endif %}
+        </form>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+         $('#downloadtable').on('click', function(e){
+        e.preventDefault();
+        ResultsTable();
+    });
+        function ResultsTable(){
+           $("#resultsTable").table2excel({
+               filename: "Students.xls",
+        });
+        }
+    });
+       </script>
+{% endblock %}

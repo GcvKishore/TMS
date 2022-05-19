@@ -1,0 +1,27 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}
+    Tutest - Online Exam Platform
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .home-greet-box {
+            min-height: calc(100vh - 70px);
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row justify-content-center align-items-center home-greet-box">
+        <div class="col-sm-5 p-md-2 m-md-1">
+            <h1>Manage Online Exams with Our All-In-One Online Test Management System</h1>
+            <em>Take the test from anywhere and at any time using a computer or a smartphone</em>
+        </div>
+        <div class="col-sm-5 p-md-2 m-md-1 text-center">
+            <img src="{% static 'images/website/home-page-main-pic.png' %}" alt="Online exam image">
+        </div>
+    </div>
+{% endblock %}
