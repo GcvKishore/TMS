@@ -1,4 +1,4 @@
-name: Test & deploy to Heroku deployment branch
+name: Test & deploy to deployment branch
 
 on:
   push:
