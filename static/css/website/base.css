@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+    --black: #303030;
+    --black50: rgba(48, 48, 48, 50%);
+    --navy: #3B4D5E;
+    --light: #FFFAE0;
+    --mediumOrange: #FFD3A1;
+    --lightInputform: #FFFDF2;
+    --darkSuccess: #26847F;
+    --lightSuccess: #69B49C;
+}
+
+body {
+    background-color: var(--light);
+    font-family: 'Nunito', sans-serif;
+    color: var(--black);
+
+}
+
+main {
+    min-height: calc(100vh - 80px - 80px);
+}
+
+footer {
+    height: 80px;
+    background-color: var(--navy);
+}
+
+footer small {
+    color: var(--light);
+}
+
+.curve-font {
+    font-family: 'Mali', cursive;
+}
+
+h1.curve-font {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+h2.curve-font {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h3.curve-font {
+    font-size: 1.5rem;
+}
+
+h6.curve-font {
+    font-size: 1rem;
+}
+
+.navbar {
+    background-color: var(--navy);
+    height: 80px;
+}
+
+.navbar-nav .nav-link {
+    color: var(--light);
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--mediumOrange);
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+
+.btn-outline-light {
+    border-color: var(--light);
+    color: var(--light);
+    font-weight: bold;
+}
+
+.btn-outline-light:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background-color: var(--mediumOrange);
+    font-weight: bold;
+}
+
+.btn-light {
+    border-color: var(--navy);
+    color: var(--navy);
+    background-color: var(--light);
+    font-weight: bold;
+}
+
+.btn-light:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background-color: var(--mediumOrange);
+    font-weight: bold;
+}
+
+.btn-success {
+    border-color: var(--light);
+    color: var(--light);
+    background-color: var(--darkSuccess);
+    font-weight: bold;
+}
+
+.btn-success:hover {
+    border-color: var(--light);
+    color: var(--navy);
+    background-color: var(--lightSuccess);
+    font-weight: bold;
+}
+
+.greeting img {
+    max-width: 100%;
+}
+
+
+.features-card {
+    border: 1px solid var(--black50);
+    border-radius: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
+    background-color: #FFFDF2;
+}
+
+.features-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.features-card li {
+    font-size: .75rem;
+}
+
+.form-select {
+    background-color: var(--lightInputform);
+    border: 1px solid var(--black50);
+}
+
+.form-control {
+    background-color: var(--lightInputform);
+    border: 1px solid var(--black50);
+}
