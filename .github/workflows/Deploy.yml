@@ -1,4 +1,4 @@
-name: Test & deploy to Heroku deployment branch
+name: Test & deploy to deployment branch
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8.10]
+        python-version: [3.10.4]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,8 +28,8 @@ jobs:
       run: |
         python manage.py test
 
-    - name: Deploy to heroku 🚀
+    - name: Preparing for production 🚀
       uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
-        branch: heroku-deployment
+        branch: deployment-branch
         folder: .
