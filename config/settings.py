@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY', default='abc')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tutest.msit.ac.in']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'tutest.msit.ac.in', 'tutest-online-exam-platform.herokuapp.com']
 
 CSRF_TRUSTED_ORIGINS = ['https://tutest.msit.ac.in']
 
